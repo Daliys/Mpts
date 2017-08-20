@@ -58,16 +58,16 @@ public class KeyActionListener implements KeyListener {
 
     public static void render() {
         if (pressKey[0]) {
-            Map.IndentY -= 3;
+            Map.setIndentY(Map.getIndentY()-3);
         }
         if (pressKey[1]) {
-            Map.IndentY += 3;
+            Map.setIndentY(Map.getIndentY()+3);
         }
         if (pressKey[2]) {
-            Map.IndentX -= 3;
+            Map.setIndentX(Map.getIndentX()-3);
         }
         if (pressKey[3]) {
-            Map.IndentX += 3;
+            Map.setIndentX(Map.getIndentX()+3);
         }
     }
 }
