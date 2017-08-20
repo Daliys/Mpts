@@ -1,8 +1,10 @@
 package ru.mpts.listener.Events;
 
 import ru.mpts.engine.Display;
+import ru.mpts.map.Location;
 import ru.mpts.map.Map;
-import ru.mpts.ru.mpts.units.TaskPlayers;
+import ru.mpts.units.TaskPlayerType;
+import ru.mpts.units.TaskPlayers;
 
 import java.applet.Applet;
 import java.awt.event.MouseEvent;
@@ -34,7 +36,7 @@ public class MouseAction extends Applet implements MouseListener {
             System.out.println("Mouse x:" + x + "  Mouse y:" + y);
             Display.MenutextLabel.setText("x:" + x + "  y:" + y);
             if (MouseStage == "mine") {
-                TaskPlayers.AddTask(x, y, "mine");
+                TaskPlayers.AddTask(new Location(x, y, 0), TaskPlayerType.MINE);
             }
         }
     }

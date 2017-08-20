@@ -1,7 +1,8 @@
-package ru.mpts.ru.mpts.units;
+package ru.mpts.units;
 
 import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
+import ru.mpts.map.Location;
 import ru.mpts.map.Map;
 
 import java.awt.*;
@@ -10,35 +11,24 @@ import java.util.List;
 
 public abstract class TaskPlayers {
 
-    // x , y , numAction(1-mine) , The task is taken by the hero?(0/1);*
-    public static volatile List<int[]> taskAction = new ArrayList<int[]>();
+    public static volatile List<Action> taskAction = new ArrayList<Action>();
 
-    public static void AddTask(int x, int y, String action) {
-        if (CheckListTask(x, y)) {     // проверка на то ести ли в задния эта задача(х,у),если есть то удалить ее
+    public static void AddTask(Location location, int action) {
+        if (CheckListTask(location)) {     // проверка на то ести ли в задния эта задача(х,у),если есть то удалить ее
             return;
         }
-        int[] Action = new int[4];
-
-        if (action.equals("mine")) {
-            Action[2] = 1;
-        } else {
-            return;
-        }
-        Action[0] = x;
-        Action[1] = y;
-        Action[3] = 0;
-        taskAction.add(Action);
+        taskAction.add(new Action(location, action));
         Display.MenuTextTask.setText("Task: " + taskAction.size());
     }
 
     // проверят на наличие задания, если в этой клетке нет задания то добавить, иначе удалить это задание
-    private static boolean CheckListTask(int x, int y) {
+    private static boolean CheckListTask(Location location) {
         for (int i = 0; i < taskAction.size(); i++) {
-            if (taskAction.get(i)[0] == x && taskAction.get(i)[1] == y) {
-                if (taskAction.get(i)[3] == 0) {
+            if (taskAction.get(i).getLocation().getX() == location.getX() && taskAction.get(i).getLocation().getY() == location.getY()) {
+                if (taskAction.get(i).isTaken()) {
                     taskAction.remove(i);
-                } else if (taskAction.get(i)[3] == 1) {
-                    Units.removeHeroesTask(x, y);
+                } else if (taskAction.get(i).isTaken()) {
+                    Units.removeHeroesTask(location);
                     taskAction.remove(i);
                 }
                 return true;
@@ -48,9 +38,9 @@ public abstract class TaskPlayers {
     }
 
     // удали задание из списка заданий  и из задания героя
-    public static void RemoveTask(int x, int y) {
+    public static void RemoveTask(Location location) {
         for (int a = 0; a < taskAction.size(); a++) {
-            if (taskAction.get(a)[0] == x && taskAction.get(a)[1] == y) {
+            if (taskAction.get(a).getLocation().getX() == location.getX() && taskAction.get(a).getLocation().getY() == location.getY()) {
                 taskAction.remove(a);
                 Display.MenuTextTask.setText("Task: " + taskAction.size());
             }
@@ -60,7 +50,7 @@ public abstract class TaskPlayers {
     private static boolean ThreadTask = true;
 
     // герой запрашивает задание. Здесь проверяется задания может ли герой до него дойти. Если может то дать задание иначе игнор
-    public static synchronized void getTask(int ID, int HeroesX, int HeroesY) {
+    public static synchronized void getTask(int heroId, Location location) {
         if (ThreadTask) {
             ThreadTask = false;
         } else {
@@ -69,13 +59,13 @@ public abstract class TaskPlayers {
         Thread FindWays = new Thread(() -> {
 
             for (int a = 0; a < taskAction.size(); a++) {
-                if (taskAction.get(a)[3] == 1) {
+                if (taskAction.get(a).isTaken()) {
                     continue;
                 }
 
                 int ThreadMapWay[][] = new int[Map.WightMap][Map.HeightMap];
                 int inc = 2;
-                ThreadMapWay[HeroesX][HeroesY] = inc;
+                ThreadMapWay[location.getX()][location.getY()] = inc;
                 boolean boolWhile = true;
                 boolean FindRout = false;
 
@@ -85,26 +75,26 @@ public abstract class TaskPlayers {
 
                     for (int x = 0; x < Map.WightMap; x++) {
                         for (int y = 0; y < Map.HeightMap; y++) {
-                            //System.out.println(taskAction.get(a)[0]+" - "+x+" "+taskAction.get(a)[1]+" - " + y + "  |"+mapWay[x][y] + " - " + inc);
-                            if (x == taskAction.get(a)[0] && y == taskAction.get(a)[1] && (ThreadMapWay[x][y] == (inc - 1) || ThreadMapWay[x][y] == inc)) {
+                            //System.out.println(taskAction.get(a).getLocation().getX()+" - "+x+" "+taskAction.get(a).getLocation().getY()+" - " + y + "  |"+mapWay[x][y] + " - " + inc);
+                            if (x == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY() && (ThreadMapWay[x][y] == (inc - 1) || ThreadMapWay[x][y] == inc)) {
                                 FindRout = true;
                                 //  System.out.println(FindRout);
                                 break exitWhile;
                             } else if (ThreadMapWay[x][y] == inc) {
 
-                                if ((x + 1) < Map.WightMap && (Map.map[x + 1][y] == 0 || ((x + 1) == taskAction.get(a)[0] && y == taskAction.get(a)[1])) && ThreadMapWay[x + 1][y] == 0) {
+                                if ((x + 1) < Map.WightMap && (Map.map[x + 1][y] == 0 || ((x + 1) == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x + 1][y] == 0) {
                                     ThreadMapWay[x + 1][y] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((x - 1) >= 0 && (Map.map[x - 1][y] == 0 || ((x - 1) == taskAction.get(a)[0] && y == taskAction.get(a)[1])) && ThreadMapWay[x - 1][y] == 0) {
+                                if ((x - 1) >= 0 && (Map.map[x - 1][y] == 0 || ((x - 1) == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x - 1][y] == 0) {
                                     ThreadMapWay[x - 1][y] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((y + 1) < Map.HeightMap && (Map.map[x][y + 1] == 0 || (x == taskAction.get(a)[0] && (y + 1) == taskAction.get(a)[1])) && ThreadMapWay[x][y + 1] == 0) {
+                                if ((y + 1) < Map.HeightMap && (Map.map[x][y + 1] == 0 || (x == taskAction.get(a).getLocation().getX() && (y + 1) == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x][y + 1] == 0) {
                                     ThreadMapWay[x][y + 1] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((y - 1) >= 0 && (Map.map[x][y - 1] == 0 || (x == taskAction.get(a)[0] && (y - 1) == taskAction.get(a)[1])) && ThreadMapWay[x][y - 1] == 0) {
+                                if ((y - 1) >= 0 && (Map.map[x][y - 1] == 0 || (x == taskAction.get(a).getLocation().getX() && (y - 1) == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x][y - 1] == 0) {
                                     ThreadMapWay[x][y - 1] = (inc + 1);
                                     AliveTide = true;
                                 }
@@ -121,9 +111,9 @@ public abstract class TaskPlayers {
 
                 }
                 if (FindRout) {
-                    if (taskAction.get(a)[3] == 0) {
-                        Units.setHeroesTask(taskAction.get(a)[0], taskAction.get(a)[1], taskAction.get(a)[2], ID);
-                        taskAction.get(a)[3] = 1;
+                    if (!taskAction.get(a).isTaken()) {
+                        Units.setHeroesTask(taskAction.get(a).getLocation(), taskAction.get(a).getAction(), heroId);
+                        taskAction.get(a).setTaken(true);
                     }
                     ThreadTask = true;
 
@@ -142,15 +132,15 @@ public abstract class TaskPlayers {
 
     public static void render() {
         for (int i = 0; i < taskAction.size(); i++) {
-            if (taskAction.get(i)[3] == 0) {
+            if (!taskAction.get(i).isTaken()) {
                 Engine.g.setColor(new Color(0xAC5800));
             } else {
                 Engine.g.setColor(new Color(0x00A8BB));
-                Engine.g.fillRect((int) (taskAction.get(i)[0] * Map.scale + Map.IndentX + 2), (int) (taskAction.get(i)[1] * Map.scale + Map.IndentY + 2),
+                Engine.g.fillRect((int) (taskAction.get(i).getLocation().getX() * Map.scale + Map.IndentX + 2), (int) (taskAction.get(i).getLocation().getY() * Map.scale + Map.IndentY + 2),
                         (int) (Map.scale - 5), (int) (Map.scale - 5));
                 Engine.g.setColor(new Color(0xAF0063));
             }
-            Engine.g.drawRect((int) (taskAction.get(i)[0] * Map.scale + Map.IndentX + 2), (int) (taskAction.get(i)[1] * Map.scale + Map.IndentY + 2),
+            Engine.g.drawRect((int) (taskAction.get(i).getLocation().getX() * Map.scale + Map.IndentX + 2), (int) (taskAction.get(i).getLocation().getY() * Map.scale + Map.IndentY + 2),
                     (int) (Map.scale - 5), (int) (Map.scale - 5));
 
         }
