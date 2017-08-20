@@ -1,12 +1,14 @@
 package ru.mpts.map;
 
-public class MapObject {
+public class Object {
     private Location location;
     private int type;
+    private int durability;
 
-    public MapObject(Location location, int type) {
+    public Object(Location location, int type) {
         this.location = location;
         this.type = type;
+        durability = 100;
     }
 
     public void setLocation(Location location) {
@@ -17,11 +19,19 @@ public class MapObject {
         this.type = type;
     }
 
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+
     public Location getLocation() {
         return location;
     }
 
     public int getType() {
         return type;
+    }
+
+    public int getDurability() {
+        return durability;
     }
 }

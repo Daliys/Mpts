@@ -92,15 +92,19 @@ public class Hero {
     }
 
     private void MineResource() {
-        if (Map.getObject(taskLocation).getType() == MapObjectType.IRON_ORE) {
-            Map.addObject(taskLocation, MapObjectType.GRASS);
-            StageHero = 0;
-        }
-        TaskPlayers.RemoveTask(taskLocation);
+        if(Map.getObject(taskLocation).getDurability() <= 0) {
+            if (Map.getObject(taskLocation).getType() == MapObjectType.IRON_ORE) {
+                Map.addObject(taskLocation, MapObjectType.GRASS);
+                StageHero = 0;
+            }
+            TaskPlayers.RemoveTask(taskLocation);
 
-        taskLocation.setX(0);
-        taskLocation.setY(0);
-        StageHero = 0;
+            taskLocation.setX(0);
+            taskLocation.setY(0);
+            StageHero = 0;
+        } else {
+            Map.getObject(taskLocation).setDurability(Map.getObject(taskLocation).getDurability()-5);
+        }
     }
 
     private void CleanMapAll() {

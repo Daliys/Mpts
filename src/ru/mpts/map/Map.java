@@ -4,8 +4,6 @@ import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Map {
     private static int WightMap = 30;
@@ -13,12 +11,12 @@ public class Map {
     private static int IndentX = 5;
     private static int IndentY = 5;
     private static float scale;
-    private static MapObject[][] map;
+    private static Object[][] map;
     private static float[][] mapStageRess;
     private Graphics2D graphics;
 
     public Map() {
-        map = new MapObject[WightMap][HeightMap];
+        map = new Object[WightMap][HeightMap];
 
         setScale();
         InitializationMap();
@@ -37,7 +35,7 @@ public class Map {
     private void InitializationMap() {
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < WightMap; y++) {
-                map[x][y] = new MapObject(new Location(x, y, 0), MapObjectType.GRASS);
+                map[x][y] = new Object(new Location(x, y, 0), MapObjectType.GRASS);
             }
         }
 
@@ -45,10 +43,10 @@ public class Map {
     }
 
     public static void addObject(Location location, int objectType) {
-        map[location.getX()][location.getY()] = new MapObject(location, objectType);
+        map[location.getX()][location.getY()] = new Object(location, objectType);
     }
 
-    public static MapObject getObject(Location location) {
+    public static Object getObject(Location location) {
         return map[location.getX()][location.getY()];
     }
 
