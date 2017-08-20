@@ -14,7 +14,7 @@ public class Timer {
     }
 
     public boolean getTimeHero() {
-        if (System.currentTimeMillis() - lastTimeHero >= 500) {
+        if (System.currentTimeMillis() - lastTimeHero >= 100) {
             lastTimeHero = System.currentTimeMillis();
             return true;
         }
