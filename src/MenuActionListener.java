@@ -4,10 +4,10 @@ import java.awt.event.ActionListener;
 public class MenuActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand() == "Mine"){
-            if(MouseAction.getMouseStage() == "mine"){
+        if (e.getActionCommand() == "Mine") {
+            if (MouseAction.getMouseStage() == "mine") {
                 MouseAction.setMouseStage("mouse");
-            }else {
+            } else {
                 System.out.println("Mine");
                 MouseAction.setMouseStage("mine");
             }

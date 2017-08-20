@@ -1,17 +1,14 @@
 import java.awt.*;
 
 public class Map {
-    public Graphics2D graphics;
-
-
     public static int WightMap = 30;
     public static int HeightMap = 30;
     public static int IndentX = 5;
     public static int IndentY = 5;
     public static float scale;
-
     public static int[][] map;
     public static float[][] mapStageRess;
+    public Graphics2D graphics;
 
 
     public Map() {
@@ -21,15 +18,12 @@ public class Map {
         setScale();
         InitializationMap();
         graphics = Engine.g;
-
-
     }
 
     private void setScale() {
         if ((float) (Display.WIGHT / WightMap) > (float) (Display.HIGHT / HeightMap)) {
             scale = (float) ((Display.HIGHT - 10) / (HeightMap));
         } else {
-
             scale = (float) ((Display.WIGHT - 10) / (WightMap));
         }
     }
@@ -109,7 +103,7 @@ public class Map {
         }
 
 
-       // graphics.setColor(new Color(0x030077));
+        // graphics.setColor(new Color(0x030077));
      /*   for (int x = 0; x <= HeightMap; x++) {
             graphics.drawLine((int) ((scale * 0) + IndentX), (int) ((scale * x) + IndentY), (int) ((scale * (WightMap) + IndentX)), (int) ((scale * x) + IndentY));
         }

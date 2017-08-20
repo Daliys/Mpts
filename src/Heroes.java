@@ -6,10 +6,10 @@ public class Heroes {
     private int HeroesX;
     private int HeroesY;
     public int StageHeroes = 0;     // 0 - ничего не делает(инициализация) берет задачу,
-                                    // 1 - искать путь,ожидает находа пути,
-                                    // 2 - путь найдеn, ходить,
-                                    // 4 - добывает,
-                                    // 5 - получен ответ от TaskPlayers, начать обработку задания
+    // 1 - искать путь,ожидает находа пути,
+    // 2 - путь найдеn, ходить,
+    // 4 - добывает,
+    // 5 - получен ответ от TaskPlayers, начать обработку задания
     private int[][] mapWay;
 
     private int TaskX = 0;
@@ -20,13 +20,9 @@ public class Heroes {
 
     private int ID;
 
-
     Timer timerHero;
 
-
-
-
-    public Heroes(int x, int y, int ID){
+    public Heroes(int x, int y, int ID) {
         graphics = Engine.g;
 
         HeroesX = x;
@@ -36,53 +32,55 @@ public class Heroes {
         mapWay = new int[Map.WightMap][Map.HeightMap];
         Map.map[x][y] = 10;
         CleanMapAll();
-        mapWay[HeroesX][HeroesY] = 0 ;
+        mapWay[HeroesX][HeroesY] = 0;
 
         timerHero = new Timer();
         update();
     }
 
-    public void update(){
+    public void update() {
 
-      //  System.out.println("ID:"+ID+" St"+StageHeroes);
+        //  System.out.println("ID:"+ID+" St"+StageHeroes);
 
-        if(StageHeroes == 2){      // движится только тогда когда нашел путь
-            if(timerHero.getTimeHeroes()) {
+        if (StageHeroes == 2) {      // движится только тогда когда нашел путь
+            if (timerHero.getTimeHeroes()) {
                 MoveOnMap();
             }
-        } else if (StageHeroes == 4){
+        } else if (StageHeroes == 4) {
             CleanMapAll();
             MineResource();
-        }else if(StageHeroes == 0){
-            if(timerHero.getTimeHeroes()) {
+        } else if (StageHeroes == 0) {
+            if (timerHero.getTimeHeroes()) {
                 TakeTask();
             }
-        }else if (StageHeroes == 5){
-            if(timerHero.getTimeHeroes()) {
+        } else if (StageHeroes == 5) {
+            if (timerHero.getTimeHeroes()) {
                 FindWay();
                 StageHeroes = 5;
             }
         }
     }
-    private void TakeTask(){
-       // StageHeroes = 5;
-        TaskPlayers.getTask(ID,HeroesX,HeroesY);
+
+    private void TakeTask() {
+        // StageHeroes = 5;
+        TaskPlayers.getTask(ID, HeroesX, HeroesY);
     }
-    private void MineResource(){
+
+    private void MineResource() {
         //System.out.println("Ress %"+Map.map[xRess][yRess]+" " + Map.mapStageRess[xRess][yRess]);
 
-        if(Map.mapStageRess[TaskX][TaskY] <= 0){
-            if(Map.map[TaskX][TaskY] != 10) {
+        if (Map.mapStageRess[TaskX][TaskY] <= 0) {
+            if (Map.map[TaskX][TaskY] != 10) {
                 Map.map[TaskX][TaskY] = 0;
                 StageHeroes = 0;
             }
-            TaskPlayers.RemoveTask(TaskX,TaskY);
+            TaskPlayers.RemoveTask(TaskX, TaskY);
 
             TaskX = 0;
             TaskY = 0;
             StageHeroes = 0;
 
-        }else {
+        } else {
             Map.mapStageRess[TaskX][TaskY] -= 0.5;
         }
     }
@@ -93,45 +91,44 @@ public class Heroes {
                 mapWay[x][y] = 0;
             }
         }
-        mapWay[HeroesX][HeroesY] = 1 ;
+        mapWay[HeroesX][HeroesY] = 1;
     }
 
-
-    private void MoveOnMap(){
-        if((((HeroesX - TaskX) == 1 || (HeroesX - TaskX) == -1 )&&((HeroesY - TaskY) == 0)) ||
-                (((HeroesY - TaskY) == 1 || (HeroesY - TaskY) == -1)&&((HeroesX - TaskX) == 0))){
+    private void MoveOnMap() {
+        if ((((HeroesX - TaskX) == 1 || (HeroesX - TaskX) == -1) && ((HeroesY - TaskY) == 0)) ||
+                (((HeroesY - TaskY) == 1 || (HeroesY - TaskY) == -1) && ((HeroesX - TaskX) == 0))) {
 
             StageHeroes = 4;
             return;
         }
-        if((HeroesX-1) >= 0 && mapWay[HeroesX-1][HeroesY] == -10 && Map.map[HeroesX-1][HeroesY] != 10){
+        if ((HeroesX - 1) >= 0 && mapWay[HeroesX - 1][HeroesY] == -10 && Map.map[HeroesX - 1][HeroesY] != 10) {
             Map.map[HeroesX][HeroesY] = 0;
-            Map.map[HeroesX-1][HeroesY] = 10;
+            Map.map[HeroesX - 1][HeroesY] = 10;
             HeroesX--;
             System.out.println("move");
-        }else if((HeroesX+1) < Map.WightMap && mapWay[HeroesX+1][HeroesY] == -10 && Map.map[HeroesX+1][HeroesY] != 10){
+        } else if ((HeroesX + 1) < Map.WightMap && mapWay[HeroesX + 1][HeroesY] == -10 && Map.map[HeroesX + 1][HeroesY] != 10) {
             Map.map[HeroesX][HeroesY] = 0;
-            Map.map[HeroesX+1][HeroesY] = 10;
+            Map.map[HeroesX + 1][HeroesY] = 10;
             HeroesX++;
             System.out.println("move");
-        }else if((HeroesY-1) >= 0 && mapWay[HeroesX][HeroesY-1] == -10 && Map.map[HeroesX][HeroesY-1] != 10){
+        } else if ((HeroesY - 1) >= 0 && mapWay[HeroesX][HeroesY - 1] == -10 && Map.map[HeroesX][HeroesY - 1] != 10) {
             Map.map[HeroesX][HeroesY] = 0;
-            Map.map[HeroesX][HeroesY-1] = 10;
+            Map.map[HeroesX][HeroesY - 1] = 10;
             HeroesY--;
             System.out.println("move");
-        }else if((HeroesY+1) < Map.HeightMap && mapWay[HeroesX][HeroesY+1] == -10 && Map.map[HeroesX][HeroesY+1] != 10){
+        } else if ((HeroesY + 1) < Map.HeightMap && mapWay[HeroesX][HeroesY + 1] == -10 && Map.map[HeroesX][HeroesY + 1] != 10) {
             Map.map[HeroesX][HeroesY] = 0;
-            Map.map[HeroesX][HeroesY+1] = 10;
+            Map.map[HeroesX][HeroesY + 1] = 10;
             HeroesY++;
             System.out.println("move");
         }
         StageHeroes = 5;
     }
 
-    private void CleanMapWay(int numR){
+    private void CleanMapWay(int numR) {
         for (int x = 0; x < Map.WightMap; x++) {
             for (int y = 0; y < Map.HeightMap; y++) {
-                if(mapWay[x][y] != numR){
+                if (mapWay[x][y] != numR) {
                     mapWay[x][y] = 0;
                 }
             }
@@ -139,29 +136,29 @@ public class Heroes {
 
     }
 
-    public void render(){
-        for(int x = 0; x < Map.WightMap; x++) {
+    public void render() {
+        for (int x = 0; x < Map.WightMap; x++) {
             for (int y = 0; y < Map.HeightMap; y++) {
-                if(mapWay[x][y] == -10){
+                if (mapWay[x][y] == -10) {
                     graphics.setColor(new Color(0x267775));
-                   // graphics.drawLine((int)((Map.scale*x)+5+(Map.scale/2)),(int)((Map.scale*y)+5+(Map.scale/2)),);
-                    graphics.fillRect((int)((Map.scale*x)+Map.IndentX+2),(int)((Map.scale*y)+Map.IndentY+2),(int)(Map.scale-4),(int)(Map.scale-4));
+                    // graphics.drawLine((int)((Map.scale*x)+5+(Map.scale/2)),(int)((Map.scale*y)+5+(Map.scale/2)),);
+                    graphics.fillRect((int) ((Map.scale * x) + Map.IndentX + 2), (int) ((Map.scale * y) + Map.IndentY + 2), (int) (Map.scale - 4), (int) (Map.scale - 4));
                 }
 
             }
         }
     }
-        // дать герою задния из списка
-    public void setTask(int x, int y, int numAction){
+
+    // дать герою задния из списка
+    public void setTask(int x, int y, int numAction) {
         TaskX = x;
         TaskY = y;
         this.TaskNumAction = numAction;
-        System.out.println("Task:"+x+" "+y+" IdD:"+ID);
+        System.out.println("Task:" + x + " " + y + " IdD:" + ID);
         StageHeroes = 5;
     }
 
-
-    public void removeTask(){
+    public void removeTask() {
         TaskX = 0;
         TaskY = 0;
         TaskNumAction = 0;
@@ -169,15 +166,15 @@ public class Heroes {
         CleanMapAll();
     }
 
-
-    public int getTaskX(){
+    public int getTaskX() {
         return TaskX;
     }
-    public int getTaskY(){
+
+    public int getTaskY() {
         return TaskY;
     }
 
-    private void FindWay(){
+    private void FindWay() {
 
         Thread threadFindWay = new Thread(new Runnable() {
             @Override
@@ -231,47 +228,50 @@ public class Heroes {
 
                 if (FindRout) {
 
-                    System.out.println("ID:" + ID + "  x:" + HeroesX + "  y:" + HeroesY + "  Long:" + (inc-2));
-                    int xWay = TaskX ;
+                    System.out.println("ID:" + ID + "  x:" + HeroesX + "  y:" + HeroesY + "  Long:" + (inc - 2));
+                    int xWay = TaskX;
                     int yWay = TaskY;
-                    inc = mapWay[xWay][yWay] ;
+                    inc = mapWay[xWay][yWay];
                     mapWay[xWay][yWay] = -10;
 
                     while (inc > 3) {
                         inc--;
-                        char rand = RandomWay(xWay,yWay,inc);
-                        if(rand == 'L'){
+                        char rand = RandomWay(xWay, yWay, inc);
+                        if (rand == 'L') {
                             xWay--;
-                        }else if(rand == 'R'){
+                        } else if (rand == 'R') {
                             xWay++;
-                        }else if(rand == 'U'){
+                        } else if (rand == 'U') {
                             yWay--;
-                        }else if(rand == 'D'){
+                        } else if (rand == 'D') {
                             yWay++;
                         }
                         mapWay[xWay][yWay] = -10;
                     }
                     CleanMapWay(-10);
-                }else{
+                } else {
                     StageHeroes = 0;
                 }
                 StageHeroes = 2;
             }
 
-            char RandomWay(int Mx, int My, int inc){
+            char RandomWay(int Mx, int My, int inc) {
                 ArrayList<Character> AvailableMove = new ArrayList<>();
                 Random random = new Random();
 
-                if((Mx-1) >= 0 && mapWay[Mx-1][My] == inc){
+                if ((Mx - 1) >= 0 && mapWay[Mx - 1][My] == inc) {
                     AvailableMove.add('L');
-                }if((My-1) >= 0 && mapWay[Mx][My-1] == inc){
+                }
+                if ((My - 1) >= 0 && mapWay[Mx][My - 1] == inc) {
                     AvailableMove.add('U');
-                }if((Mx+1) < Map.WightMap && mapWay[Mx+1][My] == inc){
+                }
+                if ((Mx + 1) < Map.WightMap && mapWay[Mx + 1][My] == inc) {
                     AvailableMove.add('R');
-                }if((My+1) < Map.HeightMap && mapWay[Mx][My+1] == inc){
+                }
+                if ((My + 1) < Map.HeightMap && mapWay[Mx][My + 1] == inc) {
                     AvailableMove.add('D');
                 }
-                if(AvailableMove.size() == 0) {
+                if (AvailableMove.size() == 0) {
                     return 'N';
                 }
 
@@ -281,9 +281,6 @@ public class Heroes {
         threadFindWay.start();
 
     }
-
-
-
 
 
 }
