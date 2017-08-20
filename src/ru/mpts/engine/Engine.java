@@ -1,42 +1,51 @@
+package ru.mpts.engine;
+
+import ru.mpts.listener.Events.KeyActionListener;
+import ru.mpts.map.Map;
+import ru.mpts.ru.mpts.units.TaskPlayers;
+import ru.mpts.ru.mpts.units.Units;
+import ru.mpts.timers.Timer;
+
 import java.awt.*;
 
 public class Engine implements Runnable {
+    public static Graphics2D g;
+    private static long nanosec = 1000000000;
+    private static float UpdateInterval = nanosec / 60.0f; // кол во обновления game
+    Map map;
+    Units units;
+    Timer timer = new Timer(30);
     private boolean startGame;
     private float delta;
-    private static long nanosec = 1000000000;
-    private static float UpdateInterval = nanosec /60.0f; // кол во обновления game
     private int fps;
     private int upd;
     private int updSkip;            // считает количество пропусков update
-    public static Graphics2D g;
     private int witx = 0;       // для круга
     private int wity = 0;
     private int addx = 1;
     private int addy = 1;
 
-    Map map;
-    Units units;
-
-    public Engine(){
-        Display.CreateBuffer(0xff000000,2);
+    public Engine() {
+        Display.CreateBuffer(0xff000000, 2);
         g = Display.getGraphics();
 
         map = new Map();
         units = new Units();
 
-        Thread thread = new Thread(this,"Engine");
+        Thread thread = new Thread(this, "ru.mpts.engine.Engine");
         thread.start();
     }
 
-    public void StartGame(){startGame = true;}
-    public void PauseGame(){startGame = false;}
+    public void StartGame() {
+        startGame = true;
+    }
 
-    Timer timer = new Timer(30);
+    public void PauseGame() {
+        startGame = false;
+    }
 
-    public void render(){
+    public void render() {
         Display.clear();
-
-
 
         map.render();
         units.render();
@@ -44,24 +53,23 @@ public class Engine implements Runnable {
         TaskPlayers.render();
 
 
-        g.fillOval(witx,wity,50,50);
+        g.fillOval(witx, wity, 50, 50);
 
 
         Display.swapBuffer();
-        if(timer.getTime())
+        if (timer.getTime())
             KeyActionListener.render();
     }
 
-    public void update(){
-        if(wity > 550 || wity < 0 ){
-            addy *=-1;
+    public void update() {
+        if (wity > 550 || wity < 0) {
+            addy *= -1;
         }
-        if(witx > 550 || witx < 0 ){
-            addx *=-1;
+        if (witx > 550 || witx < 0) {
+            addx *= -1;
         }
         witx += addx;
         wity += addy;
-
 
         map.update();
         units.update();
@@ -69,7 +77,7 @@ public class Engine implements Runnable {
     }
 
     @Override
-    public void run(){
+    public void run() {
 
         long lastTime = System.nanoTime();
         long coutSec = 0;
@@ -84,21 +92,21 @@ public class Engine implements Runnable {
                 coutSec += elapsedTime;
                 boolean render = false;
                 delta += (elapsedTime / UpdateInterval);
-                while (delta >1){
+                while (delta > 1) {
 
                     update();
                     upd++;
                     delta--;
-                    if(render){
+                    if (render) {
                         updSkip++;
-                    }else {
+                    } else {
                         render = true;
                     }
                 }
-                if(render){
+                if (render) {
                     render();
                     fps++;
-                }else {
+                } else {
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {
@@ -106,9 +114,9 @@ public class Engine implements Runnable {
                     }
                 }
 
-                if(coutSec >= nanosec){
+                if (coutSec >= nanosec) {
                     coutSec = 0;
-                    Display.setTitle("FPS:" + fps + "  UPD:" + upd + "  SKIP:"+updSkip);
+                    Display.setTitle("FPS:" + fps + "  UPD:" + upd + "  SKIP:" + updSkip);
                     fps = 0;
                     upd = 0;
                     updSkip = 0;
@@ -118,10 +126,10 @@ public class Engine implements Runnable {
             }
 
 
-            try{    //проверка снята ли игра с паузы
+            try {    //проверка снята ли игра с паузы
                 Thread.sleep(300);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

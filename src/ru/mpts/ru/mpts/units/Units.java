@@ -1,3 +1,5 @@
+package ru.mpts.ru.mpts.units;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +11,6 @@ public class Units {
         AddHeroes(21, 17, 1);
         AddHeroes(11, 15, 2);
         AddHeroes(0, 0);     /// не безопасный тк при удаление перс может нумирация ебнуться (подумать)
-
-
     }
 
     public static void AddHeroes(int x, int y, int id) {

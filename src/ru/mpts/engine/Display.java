@@ -1,3 +1,10 @@
+package ru.mpts.engine;
+
+import ru.mpts.listener.Events.KeyActionListener;
+import ru.mpts.listener.Events.MenuActionListener;
+import ru.mpts.listener.Events.MouseAction;
+import ru.mpts.map.Map;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
@@ -26,7 +33,7 @@ public class Display {
     public static JButton MenuButtonMine;
 
 
-    public static void CreateBuffer(int _color, int numBuffer){
+    public static void CreateBuffer(int _color, int numBuffer) {
         frame = new JFrame("Mpts");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -38,15 +45,15 @@ public class Display {
         content.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                if(e.getWheelRotation() < 0){
+                if (e.getWheelRotation() < 0) {
                     Map.scale += 15;
-                }else{
-                    if(Map.scale > 30) {
+                } else {
+                    if (Map.scale > 30) {
                         Map.scale -= 15;
-                    }else if(Map.scale > 10){
-                        Map.scale -=2;
-                    }else{
-                        Map.scale -=1;
+                    } else if (Map.scale > 10) {
+                        Map.scale -= 2;
+                    } else {
+                        Map.scale -= 1;
                     }
                 }
                 System.out.println("Scale " + Map.scale);
@@ -61,14 +68,13 @@ public class Display {
         // ------------
 
 
-
         JPanel panelMenuInformation = new JPanel();
         MenutextLabel = new JLabel("x:0  y:0");
         MenuTextStageMouse = new JLabel("mouse");
         MenuTextTask = new JLabel("Task: 0");
 
         JPanel panelMenuAction = new JPanel();
-        Dimension MenuSizeButtonMine = new Dimension(75,25);
+        Dimension MenuSizeButtonMine = new Dimension(75, 25);
         MenuButtonMine = new JButton("Mine");
         MenuButtonMine.setPreferredSize(MenuSizeButtonMine);
         MenuButtonMine.setActionCommand("Mine");
@@ -84,9 +90,8 @@ public class Display {
         panelMenuAction.add(MenuButtonMine);
 
 
-
         // панель меню с кнопками и информацией
-        panelMenu.setLayout(new BoxLayout(panelMenu,BoxLayout.Y_AXIS));
+        panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
         panelMenu.add(panelMenuInformation);
         panelMenu.add(panelMenuAction);
 
@@ -96,17 +101,15 @@ public class Display {
         panelMenu.setBackground(new Color(0x4D4E4F));
 
 
-
         panelCanvas.setBackground(Color.BLACK);
         panelCanvas.add(content);
 
 
-        panel.add(panelCanvas,BorderLayout.CENTER);
+        panel.add(panelCanvas, BorderLayout.CENTER);
         panel.add(panelMenu, BorderLayout.EAST);
 
 
-
-      //  frame.setSize(WIGHT,HIGHT);
+        //  frame.setSize(WIGHT,HIGHT);
         frame.setResizable(false);
         frame.getContentPane().add(panel);
         frame.pack();
@@ -115,10 +118,10 @@ public class Display {
         frame.addMouseListener(new MouseAction());
 
 
-        buffer = new BufferedImage(WIGHT,HIGHT,BufferedImage.TYPE_INT_ARGB);
-        bufferData = ((DataBufferInt)buffer.getRaster().getDataBuffer()).getData();
+        buffer = new BufferedImage(WIGHT, HIGHT, BufferedImage.TYPE_INT_ARGB);
+        bufferData = ((DataBufferInt) buffer.getRaster().getDataBuffer()).getData();
         bufferGraphics = buffer.getGraphics();
-        ((Graphics2D)bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);       //сглаживание
+        ((Graphics2D) bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);       //сглаживание
         clearColor = _color;
 
         content.createBufferStrategy(numBuffer);
@@ -126,21 +129,22 @@ public class Display {
 
     }
 
-    public static void clear(){
-        Arrays.fill(bufferData,clearColor);
+    public static void clear() {
+        Arrays.fill(bufferData, clearColor);
     }       // закрашивает экран белым цветом
-    public static void swapBuffer(){
+
+    public static void swapBuffer() {
         Graphics g = bufferStrategy.getDrawGraphics();
-        g.drawImage(buffer,0,0,null);
+        g.drawImage(buffer, 0, 0, null);
         bufferStrategy.show();
     }
 
 
-    public static void setTitle(String title){
-        frame.setTitle("Mpts   "+title);
+    public static void setTitle(String title) {
+        frame.setTitle("Mpts   " + title);
     }
 
-    public static Graphics2D getGraphics(){
-        return (Graphics2D)bufferGraphics;
+    public static Graphics2D getGraphics() {
+        return (Graphics2D) bufferGraphics;
     }
 }
