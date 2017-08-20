@@ -1,32 +1,31 @@
 package ru.mpts.timers;
 
 public class Timer {
-    public long lastTimeHeroes;
+    public long lastTimeHero;
     private int interval;
 
     public Timer(int interval) {
-        lastTimeHeroes = System.currentTimeMillis();
+        lastTimeHero = System.currentTimeMillis();
         this.interval = interval;
     }
 
     public Timer() {
-        lastTimeHeroes = System.currentTimeMillis();
+        lastTimeHero = System.currentTimeMillis();
     }
 
-    public boolean getTimeHeroes() {
-        if (System.currentTimeMillis() - lastTimeHeroes >= 500) {
-            lastTimeHeroes = System.currentTimeMillis();
+    public boolean getTimeHero() {
+        if (System.currentTimeMillis() - lastTimeHero >= 500) {
+            lastTimeHero = System.currentTimeMillis();
             return true;
         }
         return false;
     }
 
     public boolean getTime() {
-        if (System.currentTimeMillis() - lastTimeHeroes >= interval) {
-            lastTimeHeroes = System.currentTimeMillis();
+        if (System.currentTimeMillis() - lastTimeHero >= interval) {
+            lastTimeHero = System.currentTimeMillis();
             return true;
         }
         return false;
     }
-
 }

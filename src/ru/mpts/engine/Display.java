@@ -46,17 +46,17 @@ public class Display {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getWheelRotation() < 0) {
-                    Map.scale += 15;
+                    Map.setScale(Map.getScale() + 15);
                 } else {
-                    if (Map.scale > 30) {
-                        Map.scale -= 15;
-                    } else if (Map.scale > 10) {
-                        Map.scale -= 2;
+                    if (Map.getScale() > 30) {
+                        Map.setScale(Map.getScale() - 15);
+                    } else if (Map.getScale() > 10) {
+                        Map.setScale(Map.getScale() - 2);
                     } else {
-                        Map.scale -= 1;
+                        Map.setScale(Map.getScale() - 1);
                     }
                 }
-                System.out.println("Scale " + Map.scale);
+                System.out.println("Scale " + Map.getScale());
             }
         });
 
