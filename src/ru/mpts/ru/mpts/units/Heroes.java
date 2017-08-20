@@ -1,3 +1,7 @@
+package ru.mpts.ru.mpts.units;
+
+import ru.mpts.map.Map;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,7 +13,7 @@ public class Heroes {
     // 1 - искать путь,ожидает находа пути,
     // 2 - путь найдеn, ходить,
     // 4 - добывает,
-    // 5 - получен ответ от TaskPlayers, начать обработку задания
+    // 5 - получен ответ от ru.mpts.ru.mpts.units.TaskPlayers, начать обработку задания
     private int[][] mapWay;
 
     private int TaskX = 0;
@@ -67,7 +71,7 @@ public class Heroes {
     }
 
     private void MineResource() {
-        //System.out.println("Ress %"+Map.map[xRess][yRess]+" " + Map.mapStageRess[xRess][yRess]);
+        //System.out.println("Ress %"+ru.mpts.map.Map.map[xRess][yRess]+" " + ru.mpts.map.Map.mapStageRess[xRess][yRess]);
 
         if (Map.mapStageRess[TaskX][TaskY] <= 0) {
             if (Map.map[TaskX][TaskY] != 10) {
@@ -141,7 +145,7 @@ public class Heroes {
             for (int y = 0; y < Map.HeightMap; y++) {
                 if (mapWay[x][y] == -10) {
                     graphics.setColor(new Color(0x267775));
-                    // graphics.drawLine((int)((Map.scale*x)+5+(Map.scale/2)),(int)((Map.scale*y)+5+(Map.scale/2)),);
+                    // graphics.drawLine((int)((ru.mpts.map.Map.scale*x)+5+(ru.mpts.map.Map.scale/2)),(int)((ru.mpts.map.Map.scale*y)+5+(ru.mpts.map.Map.scale/2)),);
                     graphics.fillRect((int) ((Map.scale * x) + Map.IndentX + 2), (int) ((Map.scale * y) + Map.IndentY + 2), (int) (Map.scale - 4), (int) (Map.scale - 4));
                 }
 

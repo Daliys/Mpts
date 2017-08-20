@@ -1,3 +1,10 @@
+package ru.mpts.engine;
+
+import ru.mpts.listener.Events.KeyActionListener;
+import ru.mpts.listener.Events.MenuActionListener;
+import ru.mpts.listener.Events.MouseAction;
+import ru.mpts.map.Map;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;

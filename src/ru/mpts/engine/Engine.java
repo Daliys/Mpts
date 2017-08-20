@@ -1,3 +1,11 @@
+package ru.mpts.engine;
+
+import ru.mpts.listener.Events.KeyActionListener;
+import ru.mpts.map.Map;
+import ru.mpts.ru.mpts.units.TaskPlayers;
+import ru.mpts.ru.mpts.units.Units;
+import ru.mpts.timers.Timer;
+
 import java.awt.*;
 
 public class Engine implements Runnable {
@@ -24,7 +32,7 @@ public class Engine implements Runnable {
         map = new Map();
         units = new Units();
 
-        Thread thread = new Thread(this, "Engine");
+        Thread thread = new Thread(this, "ru.mpts.engine.Engine");
         thread.start();
     }
 

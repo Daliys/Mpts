@@ -1,3 +1,8 @@
+package ru.mpts.map;
+
+import ru.mpts.engine.Display;
+import ru.mpts.engine.Engine;
+
 import java.awt.*;
 
 public class Map {

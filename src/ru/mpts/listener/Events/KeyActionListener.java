@@ -1,3 +1,7 @@
+package ru.mpts.listener.Events;
+
+import ru.mpts.map.Map;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

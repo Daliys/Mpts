@@ -1,3 +1,9 @@
+package ru.mpts.listener.Events;
+
+import ru.mpts.engine.Display;
+import ru.mpts.map.Map;
+import ru.mpts.ru.mpts.units.TaskPlayers;
+
 import java.applet.Applet;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

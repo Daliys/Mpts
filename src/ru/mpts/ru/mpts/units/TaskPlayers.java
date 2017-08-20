@@ -1,3 +1,9 @@
+package ru.mpts.ru.mpts.units;
+
+import ru.mpts.engine.Display;
+import ru.mpts.engine.Engine;
+import ru.mpts.map.Map;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;

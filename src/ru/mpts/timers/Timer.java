@@ -1,3 +1,5 @@
+package ru.mpts.timers;
+
 public class Timer {
     public long lastTimeHeroes;
     private int interval;
