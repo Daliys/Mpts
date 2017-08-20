@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_mpts" default="compile.module.mpts">
+  <dirname property="module.mpts.basedir" file="${ant.file.module_mpts}"/>
+  
+  <property name="module.jdk.home.mpts" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.mpts" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.mpts" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.mpts" value="-encoding UTF-8 -source 9 -target 9 ${compiler.args}"/>
+  
+  <property name="mpts.output.dir" value="${module.mpts.basedir}/out/production/Mpts"/>
+  <property name="mpts.testoutput.dir" value="${module.mpts.basedir}/out/test/Mpts"/>
+  
+  <path id="mpts.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="mpts.module.production.classpath">
+    <path refid="${module.jdk.classpath.mpts}"/>
+  </path>
+  
+  <path id="mpts.runtime.production.module.classpath">
+    <pathelement location="${mpts.output.dir}"/>
+  </path>
+  
+  <path id="mpts.module.classpath">
+    <path refid="${module.jdk.classpath.mpts}"/>
+    <pathelement location="${mpts.output.dir}"/>
+  </path>
+  
+  <path id="mpts.runtime.module.classpath">
+    <pathelement location="${mpts.testoutput.dir}"/>
+    <pathelement location="${mpts.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.mpts">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.mpts">
+    <patternset refid="excluded.from.module.mpts"/>
+  </patternset>
+  
+  <path id="mpts.module.sourcepath">
+    <dirset dir="${module.mpts.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.mpts" depends="compile.module.mpts.production,compile.module.mpts.tests" description="Compile module Mpts"/>
+  
+  <target name="compile.module.mpts.production" depends="register.custom.compilers" description="Compile module Mpts; production classes">
+    <mkdir dir="${mpts.output.dir}"/>
+    <javac2 destdir="${mpts.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.mpts}/javac">
+      <compilerarg line="${compiler.args.mpts}"/>
+      <bootclasspath refid="mpts.module.bootclasspath"/>
+      <classpath refid="mpts.module.production.classpath"/>
+      <src refid="mpts.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.mpts"/>
+    </javac2>
+    
+    <copy todir="${mpts.output.dir}">
+      <fileset dir="${module.mpts.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.mpts.tests" depends="register.custom.compilers,compile.module.mpts.production" description="compile module Mpts; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.mpts" description="cleanup module">
+    <delete dir="${mpts.output.dir}"/>
+    <delete dir="${mpts.testoutput.dir}"/>
+  </target>
+</project>
