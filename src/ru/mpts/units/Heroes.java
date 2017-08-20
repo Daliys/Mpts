@@ -1,42 +1,38 @@
-package ru.mpts.ru.mpts.units;
+package ru.mpts.units;
 
+import ru.mpts.engine.Engine;
+import ru.mpts.map.Location;
 import ru.mpts.map.Map;
+import ru.mpts.timers.Timer;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Heroes {
-    private int HeroesX;
-    private int HeroesY;
-    public int StageHeroes = 0;     // 0 - ничего не делает(инициализация) берет задачу,
-    // 1 - искать путь,ожидает находа пути,
-    // 2 - путь найдеn, ходить,
-    // 4 - добывает,
-    // 5 - получен ответ от ru.mpts.ru.mpts.units.TaskPlayers, начать обработку задания
+    private Location location;
+    public int StageHeroes = TaskHeroType.NONE;
     private int[][] mapWay;
 
-    private int TaskX = 0;
-    private int TaskY = 0;
+    private Location taskLocation;
     private int TaskNumAction = 0;      // 0 - задачи нет, 1 - mine
 
     private Graphics2D graphics;
 
-    private int ID;
+    private int id;
 
     Timer timerHero;
 
-    public Heroes(int x, int y, int ID) {
+    public Heroes(Location location, int id) {
         graphics = Engine.g;
-
-        HeroesX = x;
-        HeroesY = y;
-        this.ID = ID;
+        this.location = location;
+        
+        this.id = id;
 
         mapWay = new int[Map.WightMap][Map.HeightMap];
-        Map.map[x][y] = 10;
+        Map.map[location.getX()][location.getY()] = 10;
         CleanMapAll();
-        mapWay[HeroesX][HeroesY] = 0;
+        mapWay[location.getX()][location.getY()] = 0;
 
         timerHero = new Timer();
         update();
@@ -44,7 +40,7 @@ public class Heroes {
 
     public void update() {
 
-        //  System.out.println("ID:"+ID+" St"+StageHeroes);
+        //  System.out.println("id:"+id+" St"+StageHeroes);
 
         if (StageHeroes == 2) {      // движится только тогда когда нашел путь
             if (timerHero.getTimeHeroes()) {
@@ -65,27 +61,31 @@ public class Heroes {
         }
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     private void TakeTask() {
         // StageHeroes = 5;
-        TaskPlayers.getTask(ID, HeroesX, HeroesY);
+        TaskPlayers.getTask(id, location);
     }
 
     private void MineResource() {
         //System.out.println("Ress %"+ru.mpts.map.Map.map[xRess][yRess]+" " + ru.mpts.map.Map.mapStageRess[xRess][yRess]);
 
-        if (Map.mapStageRess[TaskX][TaskY] <= 0) {
-            if (Map.map[TaskX][TaskY] != 10) {
-                Map.map[TaskX][TaskY] = 0;
+        if (Map.mapStageRess[taskLocation.getX()][taskLocation.getY()] <= 0) {
+            if (Map.map[taskLocation.getX()][taskLocation.getY()] != 10) {
+                Map.map[taskLocation.getX()][taskLocation.getY()] = 0;
                 StageHeroes = 0;
             }
-            TaskPlayers.RemoveTask(TaskX, TaskY);
+            TaskPlayers.RemoveTask(taskLocation);
 
-            TaskX = 0;
-            TaskY = 0;
+            taskLocation.setX(0);
+            taskLocation.setY(0);
             StageHeroes = 0;
 
         } else {
-            Map.mapStageRess[TaskX][TaskY] -= 0.5;
+            Map.mapStageRess[taskLocation.getX()][taskLocation.getY()] -= 0.5;
         }
     }
 
@@ -95,35 +95,35 @@ public class Heroes {
                 mapWay[x][y] = 0;
             }
         }
-        mapWay[HeroesX][HeroesY] = 1;
+        mapWay[location.getX()][location.getY()] = 1;
     }
 
     private void MoveOnMap() {
-        if ((((HeroesX - TaskX) == 1 || (HeroesX - TaskX) == -1) && ((HeroesY - TaskY) == 0)) ||
-                (((HeroesY - TaskY) == 1 || (HeroesY - TaskY) == -1) && ((HeroesX - TaskX) == 0))) {
+        if ((((location.getX() - taskLocation.getX()) == 1 || (location.getX() - taskLocation.getX()) == -1) && ((location.getY() - taskLocation.getY()) == 0)) ||
+                (((location.getY() - taskLocation.getY()) == 1 || (location.getY() - taskLocation.getY()) == -1) && ((location.getX() - taskLocation.getX()) == 0))) {
 
             StageHeroes = 4;
             return;
         }
-        if ((HeroesX - 1) >= 0 && mapWay[HeroesX - 1][HeroesY] == -10 && Map.map[HeroesX - 1][HeroesY] != 10) {
-            Map.map[HeroesX][HeroesY] = 0;
-            Map.map[HeroesX - 1][HeroesY] = 10;
-            HeroesX--;
+        if ((location.getX() - 1) >= 0 && mapWay[location.getX() - 1][location.getY()] == -10 && Map.map[location.getX() - 1][location.getY()] != 10) {
+            Map.map[location.getX()][location.getY()] = 0;
+            Map.map[location.getX() - 1][location.getY()] = 10;
+            location.setX(location.getX()-1);
             System.out.println("move");
-        } else if ((HeroesX + 1) < Map.WightMap && mapWay[HeroesX + 1][HeroesY] == -10 && Map.map[HeroesX + 1][HeroesY] != 10) {
-            Map.map[HeroesX][HeroesY] = 0;
-            Map.map[HeroesX + 1][HeroesY] = 10;
-            HeroesX++;
+        } else if ((location.getX() + 1) < Map.WightMap && mapWay[location.getX() + 1][location.getY()] == -10 && Map.map[location.getX() + 1][location.getY()] != 10) {
+            Map.map[location.getX()][location.getY()] = 0;
+            Map.map[location.getX() + 1][location.getY()] = 10;
+            location.setX(location.getX()+1);
             System.out.println("move");
-        } else if ((HeroesY - 1) >= 0 && mapWay[HeroesX][HeroesY - 1] == -10 && Map.map[HeroesX][HeroesY - 1] != 10) {
-            Map.map[HeroesX][HeroesY] = 0;
-            Map.map[HeroesX][HeroesY - 1] = 10;
-            HeroesY--;
+        } else if ((location.getY() - 1) >= 0 && mapWay[location.getX()][location.getY() - 1] == -10 && Map.map[location.getX()][location.getY() - 1] != 10) {
+            Map.map[location.getX()][location.getY()] = 0;
+            Map.map[location.getX()][location.getY() - 1] = 10;
+            location.setY(location.getY()-1);
             System.out.println("move");
-        } else if ((HeroesY + 1) < Map.HeightMap && mapWay[HeroesX][HeroesY + 1] == -10 && Map.map[HeroesX][HeroesY + 1] != 10) {
-            Map.map[HeroesX][HeroesY] = 0;
-            Map.map[HeroesX][HeroesY + 1] = 10;
-            HeroesY++;
+        } else if ((location.getY() + 1) < Map.HeightMap && mapWay[location.getX()][location.getY() + 1] == -10 && Map.map[location.getX()][location.getY() + 1] != 10) {
+            Map.map[location.getX()][location.getY()] = 0;
+            Map.map[location.getX()][location.getY() + 1] = 10;
+            location.setY(location.getY()+1);
             System.out.println("move");
         }
         StageHeroes = 5;
@@ -154,28 +154,27 @@ public class Heroes {
     }
 
     // дать герою задния из списка
-    public void setTask(int x, int y, int numAction) {
-        TaskX = x;
-        TaskY = y;
+    public void setTask(Location location, int numAction) {
+        taskLocation = location;
         this.TaskNumAction = numAction;
-        System.out.println("Task:" + x + " " + y + " IdD:" + ID);
+        System.out.println("Task:" + location.getX() + " " + location.getY() + " idD:" + id);
         StageHeroes = 5;
     }
 
     public void removeTask() {
-        TaskX = 0;
-        TaskY = 0;
+        taskLocation.setX(0);
+        taskLocation.setY(0);
         TaskNumAction = 0;
         StageHeroes = 0;
         CleanMapAll();
     }
 
-    public int getTaskX() {
-        return TaskX;
+    public Location getTaskLocation() {
+        return taskLocation;
     }
 
-    public int getTaskY() {
-        return TaskY;
+    public int getId() {
+        return id;
     }
 
     private void FindWay() {
@@ -186,7 +185,7 @@ public class Heroes {
                 StageHeroes = 1;
                 CleanMapAll();
                 int inc = 2;
-                mapWay[HeroesX][HeroesY] = inc;
+                mapWay[location.getX()][location.getY()] = inc;
                 boolean boolWhile = true;
                 boolean FindRout = false;
 
@@ -197,24 +196,24 @@ public class Heroes {
                     for (int x = 0; x < Map.WightMap; x++) {
                         for (int y = 0; y < Map.HeightMap; y++) {
                             //System.out.println(taskAction.get(a)[0]+" - "+x+" "+taskAction.get(a)[1]+" - " + y + "  |"+mapWay[x][y] + " - " + inc);
-                            if (x == TaskX && y == TaskY && (mapWay[x][y] == (inc - 1) || mapWay[x][y] == inc)) {
+                            if (x == taskLocation.getX() && y ==taskLocation.getY() && (mapWay[x][y] == (inc - 1) || mapWay[x][y] == inc)) {
                                 FindRout = true;
                                 break exitWhile;
                             } else if (mapWay[x][y] == inc) {
 
-                                if ((x + 1) < Map.WightMap && (Map.map[x + 1][y] == 0 || ((x + 1) == TaskX && y == TaskY)) && mapWay[x + 1][y] == 0) {
+                                if ((x + 1) < Map.WightMap && (Map.map[x + 1][y] == 0 || ((x + 1) == taskLocation.getX() && y == taskLocation.getY())) && mapWay[x + 1][y] == 0) {
                                     mapWay[x + 1][y] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((x - 1) >= 0 && (Map.map[x - 1][y] == 0 || ((x - 1) == TaskX && y == TaskY)) && mapWay[x - 1][y] == 0) {
+                                if ((x - 1) >= 0 && (Map.map[x - 1][y] == 0 || ((x - 1) == taskLocation.getX() && y == taskLocation.getY())) && mapWay[x - 1][y] == 0) {
                                     mapWay[x - 1][y] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((y + 1) < Map.HeightMap && (Map.map[x][y + 1] == 0 || (x == TaskX && (y + 1) == TaskY)) && mapWay[x][y + 1] == 0) {
+                                if ((y + 1) < Map.HeightMap && (Map.map[x][y + 1] == 0 || (x == taskLocation.getX() && (y + 1) == taskLocation.getY())) && mapWay[x][y + 1] == 0) {
                                     mapWay[x][y + 1] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((y - 1) >= 0 && (Map.map[x][y - 1] == 0 || (x == TaskX && (y - 1) == TaskY)) && mapWay[x][y - 1] == 0) {
+                                if ((y - 1) >= 0 && (Map.map[x][y - 1] == 0 || (x == taskLocation.getX() && (y - 1) == taskLocation.getY())) && mapWay[x][y - 1] == 0) {
                                     mapWay[x][y - 1] = (inc + 1);
                                     AliveTide = true;
                                 }
@@ -232,9 +231,9 @@ public class Heroes {
 
                 if (FindRout) {
 
-                    System.out.println("ID:" + ID + "  x:" + HeroesX + "  y:" + HeroesY + "  Long:" + (inc - 2));
-                    int xWay = TaskX;
-                    int yWay = TaskY;
+                    System.out.println("id:" + id + "  x:" + location.getX() + "  y:" + location.getY() + "  Long:" + (inc - 2));
+                    int xWay = taskLocation.getX();
+                    int yWay = taskLocation.getY();
                     inc = mapWay[xWay][yWay];
                     mapWay[xWay][yWay] = -10;
 
@@ -259,20 +258,20 @@ public class Heroes {
                 StageHeroes = 2;
             }
 
-            char RandomWay(int Mx, int My, int inc) {
+            char RandomWay(int mX, int mY, int inc) {
                 ArrayList<Character> AvailableMove = new ArrayList<>();
                 Random random = new Random();
 
-                if ((Mx - 1) >= 0 && mapWay[Mx - 1][My] == inc) {
+                if ((mX - 1) >= 0 && mapWay[mX - 1][mY] == inc) {
                     AvailableMove.add('L');
                 }
-                if ((My - 1) >= 0 && mapWay[Mx][My - 1] == inc) {
+                if ((mY - 1) >= 0 && mapWay[mX][mY - 1] == inc) {
                     AvailableMove.add('U');
                 }
-                if ((Mx + 1) < Map.WightMap && mapWay[Mx + 1][My] == inc) {
+                if ((mX + 1) < Map.WightMap && mapWay[mX + 1][mY] == inc) {
                     AvailableMove.add('R');
                 }
-                if ((My + 1) < Map.HeightMap && mapWay[Mx][My + 1] == inc) {
+                if ((mY + 1) < Map.HeightMap && mapWay[mX][mY + 1] == inc) {
                     AvailableMove.add('D');
                 }
                 if (AvailableMove.size() == 0) {
