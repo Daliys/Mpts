@@ -2,8 +2,8 @@ package ru.mpts.engine;
 
 import ru.mpts.listener.Events.KeyActionListener;
 import ru.mpts.map.Map;
-import ru.mpts.ru.mpts.units.TaskPlayers;
-import ru.mpts.ru.mpts.units.Units;
+import ru.mpts.units.TaskPlayers;
+import ru.mpts.units.Units;
 import ru.mpts.timers.Timer;
 
 import java.awt.*;
