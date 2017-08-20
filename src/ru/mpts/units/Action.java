@@ -13,6 +13,12 @@ public class Action {
         isTaken = false;
     }
 
+    public Action() {
+        this.location = location;
+        this.action = TaskType.NONE;
+        isTaken = false;
+    }
+
     public boolean isTaken() {
         return isTaken;
     }
