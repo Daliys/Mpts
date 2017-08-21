@@ -3,9 +3,6 @@ package ru.mpts.listener.Events;
 import ru.mpts.engine.Display;
 import ru.mpts.map.Location;
 import ru.mpts.map.Map;
-import ru.mpts.timers.Timer;
-import ru.mpts.units.TaskPlayers;
-import ru.mpts.units.TaskType;
 
 import java.applet.Applet;
 import java.awt.event.MouseEvent;
