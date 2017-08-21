@@ -38,56 +38,60 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
 
     @Override
     public void mousePressed(MouseEvent e) {
-        /*if (e.getX() >= 5 && e.getY() >= 5 &&
-                e.getX() <= (Map.getWightMap() * Map.getScale() + 5) && e.getY() <= (Map.getHeightMap() * Map.getScale() + 5)) {
-            int x = (int) ((e.getX() - Map.getIndentX()) / Map.getScale());
-            int y = (int) ((e.getY() - Map.getIndentY()) / Map.getScale());
-            System.out.println("Mouse x:" + x + "  Mouse y:" + y);
-            Display.MenutextLabel.setText("x:" + x + "  y:" + y);
-            if (MouseStage == "mine") {
-                TaskPlayers.AddTask(new Location(x, y, 0), TaskType.MINE);
-            }
-        }*/
-        handlingMouseEvent.getLocationStartSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
-        handlingMouseEvent.getLocationStartSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
-        handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
-        handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
-        handlingMouseEvent.setIsSelect(true);
-        handlingMouseEvent.setIsPressMouse(true);
+        if(isMouseBeyundBorders(new Location(e.getX(),e.getY(),0))) {
+            handlingMouseEvent.getLocationStartSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
+            handlingMouseEvent.getLocationStartSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
+            handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
+            handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
+            handlingMouseEvent.setIsSelect(true);
+            handlingMouseEvent.setIsPressMouse(true);
+        }
 
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
-        handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
+        if(isMouseBeyundBorders(new Location(e.getX(),e.getY(),0))) {
+            handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
+            handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
+        }
         handlingMouseEvent.setIsSelect(false);
         handlingMouseEvent.setIsPressMouse(false);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        System.out.println("mouseEntered");
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        System.out.println("mouseExited");
+
     }
 
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        System.out.println("1");
-        if (handlingMouseEvent.isSelect()) {
-            System.out.println("2");
-            handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
-            handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
+        if(isMouseBeyundBorders(new Location(e.getX(),e.getY(),0))) {
+            if (handlingMouseEvent.isSelect()) {
+
+                handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
+                handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
+            }
         }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
 
+    }
+
+    private boolean isMouseBeyundBorders(Location location){
+        if ((location.getX() >= Map.getIndentX()) && (location.getY() >= Map.getIndentY())
+                && (location.getX() <= (Map.getWightMap() * Map.getScale() + Map.getIndentX() - 2))
+                && (location.getY() <= (Map.getHeightMap() * Map.getScale() + Map.getIndentY())-2)) {
+            return true;
+        }
+        return false;
     }
 }

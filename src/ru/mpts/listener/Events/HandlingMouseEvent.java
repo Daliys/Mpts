@@ -3,6 +3,7 @@ package ru.mpts.listener.Events;
 import ru.mpts.engine.Engine;
 import ru.mpts.map.Location;
 import ru.mpts.map.Map;
+import ru.mpts.map.MapObjectType;
 import ru.mpts.units.TaskPlayers;
 import ru.mpts.units.TaskType;
 
@@ -40,7 +41,7 @@ public class HandlingMouseEvent {
     }
 
     public void setIsSelect(boolean isSelect) {
-        System.out.println("1");
+
         this.isSelect = isSelect;
         if (!isSelect) {
             addInTask();
@@ -119,7 +120,9 @@ public class HandlingMouseEvent {
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 Engine.g.setColor(new Color(0xFF00EA));
-                Engine.g.drawRect((int) (x * Map.getScale() + Map.getIndentX()), (int) (y * Map.getScale() + Map.getIndentY()), (int) Map.getScale(), (int) Map.getScale());
+                if(Map.getObject(new Location(x,y,0)) == MapObjectType.IRON_ORE) {
+                    Engine.g.drawRect((int) (x * Map.getScale() + Map.getIndentX()), (int) (y * Map.getScale() + Map.getIndentY()), (int) Map.getScale(), (int) Map.getScale());
+                }
             }
         }
     }
