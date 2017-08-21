@@ -90,7 +90,7 @@ public class HandlingMouseEvent {
 
     public static void render() {
         if(isPressMouse){
-
+            return;
         }
         int minX;
         int maxX;
