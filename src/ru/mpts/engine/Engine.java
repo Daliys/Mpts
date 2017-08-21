@@ -15,7 +15,7 @@ public class Engine implements Runnable {
     private static float UpdateInterval = nanosec / 60.0f; // кол во обновления game
     Map map;
     Units units;
-    Timer timer = new Timer(30);
+    Timer timer = new Timer();
     private boolean startGame;
     private float delta;
     private int fps;
@@ -53,12 +53,10 @@ public class Engine implements Runnable {
         HandlingMouseEvent.render();
         TaskPlayers.render();
 
-
         g.fillOval(witx, wity, 50, 50);
 
-
         Display.swapBuffer();
-        if (timer.getTime())
+        if (timer.getTime(timer.RENDER_SPEED))
             KeyActionListener.render();
     }
 

@@ -33,6 +33,8 @@ public class Hero {
         this.action = new Action();
         this.id = id;
 
+        System.out.println("move speed===" + speedMove);
+
         taskLocation = new Location(0,0,0);
         TaskNumAction = 0;
 
@@ -69,26 +71,27 @@ public class Hero {
                 StageHero = TaskType.GET_TASK;
             }
             case TaskType.GET_TASK: {
-                if (timerHero.getTimeHero(speedMove)) {
+                if (timerHero.getTime(timerHero.GAME_SPEED)) {
                     TakeTask();
                 }
                 break;
             }
             case TaskType.MOVE: {
-                if (timerHero.getTimeHero(speedMove)) {
+                if (timerHero.getTime(speedMove)) {
+                    System.out.println("hero speed: " + speedMove);
                     MoveOnMap();
                 }
                 break;
             }
             case TaskType.MINE: {
-                if (timerHero.getTimeHero(speedMove)) {
+                if (timerHero.getTime(500)) {
                     CleanMapAll();
                     MineResource();
                 }
                 break;
             }
             case TaskType.FIND_WAY: {
-                if (timerHero.getTimeHero(speedMove)) {
+                if (timerHero.getTime(timerHero.GAME_SPEED)) {
                     FindWay();
                     StageHero = TaskType.WAIT_FIND_WAY;
                 }

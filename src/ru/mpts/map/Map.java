@@ -1,6 +1,5 @@
 package ru.mpts.map;
 
-import com.sun.xml.internal.fastinfoset.algorithm.IntEncodingAlgorithm;
 import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
 

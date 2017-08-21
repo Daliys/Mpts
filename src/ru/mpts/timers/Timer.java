@@ -2,26 +2,14 @@ package ru.mpts.timers;
 
 public class Timer {
     public long lastTimeHero;
-    private int interval;
-
-    public Timer(int interval) {
-        lastTimeHero = System.currentTimeMillis();
-        this.interval = interval;
-    }
+    public static float GAME_SPEED = 500.0f;
+    public static float RENDER_SPEED = 30.0f;
 
     public Timer() {
         lastTimeHero = System.currentTimeMillis();
     }
 
-    public boolean getTimeHero(float speedMove) {
-        if (System.currentTimeMillis() - lastTimeHero >= 500/speedMove) {
-            lastTimeHero = System.currentTimeMillis();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean getTime() {
+    public boolean getTime(float interval) {
         if (System.currentTimeMillis() - lastTimeHero >= interval) {
             lastTimeHero = System.currentTimeMillis();
             return true;

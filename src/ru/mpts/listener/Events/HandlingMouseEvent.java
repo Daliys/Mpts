@@ -120,7 +120,7 @@ public class HandlingMouseEvent {
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 Engine.g.setColor(new Color(0xFF00EA));
-                if(Map.getObject(new Location(x,y,0)) == MapObjectType.IRON_ORE) {
+                if(Map.getObject(new Location(x,y,0)).getType() == MapObjectType.IRON_ORE) {
                     Engine.g.drawRect((int) (x * Map.getScale() + Map.getIndentX()), (int) (y * Map.getScale() + Map.getIndentY()), (int) Map.getScale(), (int) Map.getScale());
                 }
             }
