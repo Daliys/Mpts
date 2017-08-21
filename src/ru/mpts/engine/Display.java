@@ -3,6 +3,7 @@ package ru.mpts.engine;
 import ru.mpts.listener.Events.KeyActionListener;
 import ru.mpts.listener.Events.MenuActionListener;
 import ru.mpts.listener.Events.MouseAction;
+import ru.mpts.listener.Events.MouseTypeAction;
 import ru.mpts.map.Map;
 
 import javax.swing.*;
@@ -41,6 +42,7 @@ public class Display {
         Dimension size = new Dimension(WIGHT, HIGHT);
         content.setPreferredSize(size);
         content.addMouseListener(new MouseAction());     // cлушатель мыши
+        content.addMouseMotionListener(new MouseAction());     // cлушатель мыши
         content.addKeyListener(new KeyActionListener());
         content.addMouseWheelListener(new MouseWheelListener() {
             @Override
@@ -77,7 +79,7 @@ public class Display {
         Dimension MenuSizeButtonMine = new Dimension(75, 25);
         MenuButtonMine = new JButton("Mine");
         MenuButtonMine.setPreferredSize(MenuSizeButtonMine);
-        MenuButtonMine.setActionCommand("Mine");
+        MenuButtonMine.setActionCommand(MouseTypeAction.MINE);
         MenuButtonMine.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
 
 

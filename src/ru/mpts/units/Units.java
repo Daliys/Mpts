@@ -25,10 +25,12 @@ public class Units {
         for (int i = 0; i < heroesList.size(); i++) {
             if (heroesList.get(i).getId() != i) {
                 heroesList.add(new Hero(i, location, new Inventory(), 1.0f, 100));
+                heroesList.sort(Comparator.comparing(Hero::getId));
                 return;
             }
         }
         heroesList.add(new Hero(heroesList.size(), location, new Inventory(), 1.0f, 100));
+        heroesList.sort(Comparator.comparing(Hero::getId));
     }
 
     public static void RemoveHero(int id) {
@@ -38,13 +40,16 @@ public class Units {
 
     public static void setHeroesTask(Location location, int numAction, int ID) {
         heroesList.get(ID).setTask(location, numAction);
+
     }
 
 
     public static void removeHeroesTask(Location location) {
-        for (int i = 0; i < heroesList.size(); i++) {
-            if (heroesList.get(i).getTaskLocation().equals(location)) {
+       for (int i = 0; i < heroesList.size(); i++) {
+            System.out.println(heroesList.get(i).getId()+" "+i);
+            if (heroesList.get(i).getTaskLocation().getX() == location.getX() && heroesList.get(i).getTaskLocation().getY() == location.getY()) {
                 heroesList.get(i).removeTask();
+                
                 return;
             }
         }

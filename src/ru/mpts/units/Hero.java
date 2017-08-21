@@ -32,6 +32,10 @@ public class Hero {
         this.healthPoints = healthPoints;
         this.action = new Action();
         this.id = id;
+
+        taskLocation = new Location(0,0,0);
+        TaskNumAction = 0;
+
         mapWay = new int[Map.getWightMap()][Map.getHeightMap()];
 
         Map.addObject(location, MapObjectType.HERO);
@@ -53,7 +57,7 @@ public class Hero {
     }
 
     private void TakeTask() {
-        // StageHero = 5;
+
         TaskPlayers.getTask(id, location);
     }
 
@@ -62,29 +66,32 @@ public class Hero {
         //  System.out.println("id:"+id+" St"+StageHero);
 
         switch (StageHero) {
-            case 0: {
+            case TaskType.NONE:{
+                StageHero = TaskType.GET_TASK;
+            }
+            case TaskType.GET_TASK: {
                 if (timerHero.getTimeHero()) {
                     TakeTask();
                 }
                 break;
             }
-            case 2: {
+            case TaskType.MOVE: {
                 if (timerHero.getTimeHero()) {
                     MoveOnMap();
                 }
                 break;
             }
-            case 4: {
+            case TaskType.MINE: {
                 if (timerHero.getTimeHero()) {
                     CleanMapAll();
                     MineResource();
                 }
                 break;
             }
-            case 5: {
+            case TaskType.FIND_WAY: {
                 if (timerHero.getTimeHero()) {
                     FindWay();
-                    StageHero = 5;
+                    StageHero = TaskType.WAIT_FIND_WAY;
                 }
                 break;
             }
@@ -95,13 +102,13 @@ public class Hero {
         if(Map.getObject(taskLocation).getDurability() <= 0) {
             if (Map.getObject(taskLocation).getType() == MapObjectType.IRON_ORE) {
                 Map.addObject(taskLocation, MapObjectType.GRASS);
-                StageHero = 0;
+                StageHero = TaskType.NONE;
             }
             TaskPlayers.RemoveTask(taskLocation);
 
             taskLocation.setX(0);
             taskLocation.setY(0);
-            StageHero = 0;
+            StageHero = TaskType.NONE;
         } else {
             Map.getObject(taskLocation).setDurability(Map.getObject(taskLocation).getDurability()-5);
         }
@@ -120,7 +127,7 @@ public class Hero {
         if ((((location.getX() - taskLocation.getX()) == 1 || (location.getX() - taskLocation.getX()) == -1) && ((location.getY() - taskLocation.getY()) == 0)) ||
                 (((location.getY() - taskLocation.getY()) == 1 || (location.getY() - taskLocation.getY()) == -1) && ((location.getX() - taskLocation.getX()) == 0))) {
 
-            StageHero = 4;
+            StageHero = TaskType.MINE;
             return;
         }
         if ((location.getX() - 1) >= 0 && mapWay[location.getX() - 1][location.getY()] == -10 && Map.getObject(new Location(location.getX()-1, location.getY(), 0)).getType() != MapObjectType.HERO) {
@@ -144,7 +151,7 @@ public class Hero {
             Map.addObject(location, MapObjectType.HERO);
             System.out.println("move");
         }
-        StageHero = 5;
+        StageHero = TaskType.FIND_WAY;
     }
 
     private void CleanMapWay(int numR) {
@@ -161,16 +168,17 @@ public class Hero {
     public void setTask(Location location, int numAction) {
         taskLocation = location;
         this.TaskNumAction = numAction;
-        System.out.println("Task:" + location.getX() + " " + location.getY() + " idD:" + id);
-        StageHero = 5;
+        System.out.println("Task:" + taskLocation.getX() + " " + taskLocation.getY() + " idD:" + id);
+        StageHero = TaskType.FIND_WAY;
     }
 
     public void removeTask() {
         taskLocation.setX(0);
         taskLocation.setY(0);
         TaskNumAction = 0;
-        StageHero = 0;
+        StageHero = TaskType.NONE;
         CleanMapAll();
+
     }
 
     private void FindWay() {
@@ -178,7 +186,7 @@ public class Hero {
         Thread threadFindWay = new Thread(new Runnable() {
             @Override
             public void run() {
-                StageHero = 1;
+                StageHero = TaskType.WAIT_FIND_WAY;
                 CleanMapAll();
                 int inc = 2;
                 mapWay[location.getX()][location.getY()] = inc;
@@ -220,7 +228,8 @@ public class Hero {
                     if (!AliveTide) {
                         boolWhile = false;
                         FindRout = false;
-                        StageHero = 0;
+                        StageHero = TaskType.NONE;
+                        // дописать удаления из списка и из героя
                     }
                     inc++;
                 }
@@ -249,9 +258,9 @@ public class Hero {
                     }
                     CleanMapWay(-10);
                 } else {
-                    StageHero = 0;
+                    StageHero = TaskType.NONE;
                 }
-                StageHero = 2;
+                StageHero = TaskType.MOVE;
             }
 
             char RandomWay(int mX, int mY, int inc) {

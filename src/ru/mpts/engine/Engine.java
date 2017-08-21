@@ -1,5 +1,6 @@
 package ru.mpts.engine;
 
+import ru.mpts.listener.Events.HandlingMouseEvent;
 import ru.mpts.listener.Events.KeyActionListener;
 import ru.mpts.map.Map;
 import ru.mpts.units.TaskPlayers;
@@ -49,7 +50,7 @@ public class Engine implements Runnable {
 
         map.render();
         units.render();
-
+        HandlingMouseEvent.render();
         TaskPlayers.render();
 
 
