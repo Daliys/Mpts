@@ -15,7 +15,7 @@ public abstract class TaskPlayers {
     public static volatile List<Action> taskAction = new ArrayList<Action>();
 
     public static void AddTask(Location location, int action) {
-        if (CheckListTask(location)) {     // проверка на то ести ли в задния эта задача(х,у),если есть то удалить ее
+        if (CheckListTask(location)) {     // проверка на то ести ли в заднияx эта задача(х,у),если есть то удалить ее
             return;
         }
         taskAction.add(new Action(location, action));
@@ -26,15 +26,20 @@ public abstract class TaskPlayers {
     private static boolean CheckListTask(Location location) {
         for (int i = 0; i < taskAction.size(); i++) {
             if (taskAction.get(i).getLocation().getX() == location.getX() && taskAction.get(i).getLocation().getY() == location.getY()) {
-                if (taskAction.get(i).isTaken()) {
+                if (!taskAction.get(i).isTaken()) {
                     taskAction.remove(i);
+
                 } else if (taskAction.get(i).isTaken()) {
                     Units.removeHeroesTask(location);
                     taskAction.remove(i);
+
                 }
+                Display.MenuTextTask.setText("Task: " + taskAction.size());
+
                 return true;
             }
         }
+        Display.MenuTextTask.setText("Task: " + taskAction.size());
         return false;
     }
 

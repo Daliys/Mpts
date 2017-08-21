@@ -40,6 +40,12 @@ public class Map {
         }
 
         addObject(new Location(15, 25, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(16, 25, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(17, 25, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(18, 25, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(16, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(15, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(17, 24, 0), MapObjectType.IRON_ORE);
     }
 
     public static void addObject(Location location, int objectType) {
@@ -68,7 +74,7 @@ public class Map {
                         break;
                     }
                     case MapObjectType.IRON_ORE: {
-                        graphics.setColor(new Color(0x4A4949));
+                        graphics.setColor(new Color(0x636163));
                         break;
                     }
                 }

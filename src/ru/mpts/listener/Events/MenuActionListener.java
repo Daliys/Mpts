@@ -6,12 +6,13 @@ import java.awt.event.ActionListener;
 public class MenuActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "Mine") {
-            if (MouseAction.getMouseStage() == "mine") {
-                MouseAction.setMouseStage("mouse");
+        if (e.getActionCommand() == MouseTypeAction.MINE) {
+            if (MouseAction.getMouseStage() == MouseTypeAction.MINE) {
+                System.out.println(MouseTypeAction.MOUSE);
+                MouseAction.setMouseStage(MouseTypeAction.MOUSE);
             } else {
-                System.out.println("Mine");
-                MouseAction.setMouseStage("mine");
+                System.out.println(MouseTypeAction.MINE);
+                MouseAction.setMouseStage(MouseTypeAction.MINE);
             }
         }
     }
