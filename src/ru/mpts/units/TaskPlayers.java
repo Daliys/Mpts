@@ -12,6 +12,9 @@ import java.util.List;
 
 public abstract class TaskPlayers {
 
+    public static boolean AddSelectAll = true;
+    public static boolean RemoveSelectlAll = false;
+
     public static volatile List<Action> taskAction = new ArrayList<Action>();
 
     public static void AddTask(Location location, int action) {
@@ -42,7 +45,9 @@ public abstract class TaskPlayers {
         Display.MenuTextTask.setText("Task: " + taskAction.size());
         return false;
     }
-
+    public static Action getTaskAction(){
+        return taskAction;
+    }
     // удали задание из списка заданий  и из задания героя
     public static void RemoveTask(Location location) {
         for (int a = 0; a < taskAction.size(); a++) {

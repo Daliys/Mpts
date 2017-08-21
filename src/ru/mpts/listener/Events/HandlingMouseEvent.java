@@ -82,11 +82,15 @@ public class HandlingMouseEvent {
             minY = locationStartSelect.getY();
         }
 
+        boolean boolSelected = true;
 
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 if(mouseStage == MouseTypeAction.MINE) {
                     if (Map.getObject(new Location(x, y, 0)).getType() == MapObjectType.IRON_ORE) {
+                        if(x == minX && y == minY){
+                            if(TaskPlayers.getTask();)
+                        }
                         TaskPlayers.AddTask(new Location(x, y, 0), TaskType.MINE);
                     }
                 }
