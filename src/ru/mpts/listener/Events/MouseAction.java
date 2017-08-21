@@ -34,7 +34,6 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("MouseClicked");
     }
 
     @Override
@@ -53,7 +52,7 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
         handlingMouseEvent.getLocationStartSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
         handlingMouseEvent.setIsSelect(true);
         handlingMouseEvent.setIsPressMouse(true);
-        System.out.println("mousePressed");
+
     }
 
     @Override
@@ -62,7 +61,7 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
         handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
         handlingMouseEvent.setIsSelect(false);
         handlingMouseEvent.setIsPressMouse(false);
-        System.out.println("mouseReleased");
+
     }
 
     @Override

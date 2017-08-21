@@ -89,9 +89,11 @@ public class HandlingMouseEvent {
 
 
     public static void render() {
-        if(isPressMouse){
+        if(!isPressMouse()){
             return;
+
         }
+        System.out.println("Render");
         int minX;
         int maxX;
         int minY;
