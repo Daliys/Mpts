@@ -57,7 +57,6 @@ public class Hero {
     }
 
     private void TakeTask() {
-
         TaskPlayers.getTask(id, location);
     }
 
@@ -70,26 +69,26 @@ public class Hero {
                 StageHero = TaskType.GET_TASK;
             }
             case TaskType.GET_TASK: {
-                if (timerHero.getTimeHero()) {
+                if (timerHero.getTimeHero(speedMove)) {
                     TakeTask();
                 }
                 break;
             }
             case TaskType.MOVE: {
-                if (timerHero.getTimeHero()) {
+                if (timerHero.getTimeHero(speedMove)) {
                     MoveOnMap();
                 }
                 break;
             }
             case TaskType.MINE: {
-                if (timerHero.getTimeHero()) {
+                if (timerHero.getTimeHero(speedMove)) {
                     CleanMapAll();
                     MineResource();
                 }
                 break;
             }
             case TaskType.FIND_WAY: {
-                if (timerHero.getTimeHero()) {
+                if (timerHero.getTimeHero(speedMove)) {
                     FindWay();
                     StageHero = TaskType.WAIT_FIND_WAY;
                 }

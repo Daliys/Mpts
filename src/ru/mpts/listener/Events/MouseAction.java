@@ -50,6 +50,8 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
         }*/
         handlingMouseEvent.getLocationStartSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
         handlingMouseEvent.getLocationStartSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
+        handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
+        handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
         handlingMouseEvent.setIsSelect(true);
         handlingMouseEvent.setIsPressMouse(true);
 
@@ -61,7 +63,6 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
         handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
         handlingMouseEvent.setIsSelect(false);
         handlingMouseEvent.setIsPressMouse(false);
-
     }
 
     @Override
@@ -77,14 +78,16 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        System.out.println("1");
+        if (handlingMouseEvent.isSelect()) {
+            System.out.println("2");
+            handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
+            handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (handlingMouseEvent.isSelect()) {
-            handlingMouseEvent.getLocationNowSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
-            handlingMouseEvent.getLocationNowSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
-        }
+
     }
 }

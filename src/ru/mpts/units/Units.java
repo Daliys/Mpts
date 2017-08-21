@@ -11,9 +11,9 @@ public class Units {
     public static List<Hero> heroesList = new ArrayList<>();
 
     public Units() {
-        AddHero(new Location(1, 15, 0));
-        AddHero(new Location(2, 15, 0));
-        AddHero(new Location(3, 15, 0));
+        AddHero(new Location(1, 15, 0), 1.0f, 100);
+        AddHero(new Location(2, 15, 0), 2.5f, 100);
+        AddHero(new Location(3, 15, 0), 0.1f, 100);
     }
 
     public static void AddHero(Location location, int id) {
@@ -21,10 +21,10 @@ public class Units {
         heroesList.sort(Comparator.comparing(Hero::getId));
     }
 
-    public static void AddHero(Location location) {
+    public static void AddHero(Location location, float speedMove, int healthPoints) {
         for (int i = 0; i < heroesList.size(); i++) {
             if (heroesList.get(i).getId() != i) {
-                heroesList.add(new Hero(i, location, new Inventory(), 1.0f, 100));
+                heroesList.add(new Hero(i, location, new Inventory(), speedMove, healthPoints));
                 heroesList.sort(Comparator.comparing(Hero::getId));
                 return;
             }

@@ -1,13 +1,14 @@
 package ru.mpts.map;
 
+import com.sun.xml.internal.fastinfoset.algorithm.IntEncodingAlgorithm;
 import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
 
 import java.awt.*;
 
 public class Map {
-    private static int WightMap = 30;
-    private static int HeightMap = 30;
+    private static int WightMap = 32;
+    private static int HeightMap = 32;
     private static int IndentX = 5;
     private static int IndentY = 5;
     private static float scale;

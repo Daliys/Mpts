@@ -40,6 +40,7 @@ public class HandlingMouseEvent {
     }
 
     public void setIsSelect(boolean isSelect) {
+        System.out.println("1");
         this.isSelect = isSelect;
         if (!isSelect) {
             addInTask();
@@ -93,7 +94,7 @@ public class HandlingMouseEvent {
             return;
 
         }
-        System.out.println("Render");
+        //System.out.println("Render");
         int minX;
         int maxX;
         int minY;
@@ -117,7 +118,7 @@ public class HandlingMouseEvent {
 
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                Engine.g.setColor(new Color(0x004F4E));
+                Engine.g.setColor(new Color(0xFF00EA));
                 Engine.g.drawRect((int) (x * Map.getScale() + Map.getIndentX()), (int) (y * Map.getScale() + Map.getIndentY()), (int) Map.getScale(), (int) Map.getScale());
             }
         }

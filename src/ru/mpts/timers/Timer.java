@@ -13,8 +13,8 @@ public class Timer {
         lastTimeHero = System.currentTimeMillis();
     }
 
-    public boolean getTimeHero() {
-        if (System.currentTimeMillis() - lastTimeHero >= 100) {
+    public boolean getTimeHero(float speedMove) {
+        if (System.currentTimeMillis() - lastTimeHero >= 500/speedMove) {
             lastTimeHero = System.currentTimeMillis();
             return true;
         }
