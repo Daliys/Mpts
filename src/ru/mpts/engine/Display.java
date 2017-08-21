@@ -27,6 +27,7 @@ public class Display {
     public static JLabel MenutextLabel;
     public static JLabel MenuTextStageMouse;
     public static JLabel MenuTextTask;
+    public static JLabel MenuTextSelect;
 
     public static JButton MenuButtonMine;
 
@@ -71,6 +72,7 @@ public class Display {
         MenutextLabel = new JLabel("x:0  y:0");
         MenuTextStageMouse = new JLabel("mouse");
         MenuTextTask = new JLabel("Task: 0");
+        MenuTextSelect = new JLabel("Select: 0");
 
         JPanel panelMenuAction = new JPanel();
         Dimension MenuSizeButtonMine = new Dimension(75, 25);
@@ -84,6 +86,7 @@ public class Display {
         panelMenuInformation.add(MenutextLabel);
         panelMenuInformation.add(MenuTextStageMouse);
         panelMenuInformation.add(MenuTextTask);
+        panelMenuInformation.add(MenuTextSelect);
 
         // панель кнопак
         panelMenuAction.add(MenuButtonMine);

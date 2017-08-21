@@ -1,5 +1,6 @@
 package ru.mpts.listener.Events;
 
+import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
 import ru.mpts.map.Location;
 import ru.mpts.map.Map;
@@ -84,13 +85,19 @@ public class HandlingMouseEvent {
 
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                TaskPlayers.AddTask(new Location(x, y, 0), TaskType.MINE);
+                if(mouseStage == MouseTypeAction.MINE) {
+                    if (Map.getObject(new Location(x, y, 0)).getType() == MapObjectType.IRON_ORE) {
+                        TaskPlayers.AddTask(new Location(x, y, 0), TaskType.MINE);
+                    }
+                }
             }
         }
     }
 
 
     public static void render() {
+        int countSelect = 0;
+        Display.MenuTextSelect.setText(Integer.toString(countSelect)+" Iron");
         if(!isPressMouse()){
             return;
 
@@ -120,8 +127,11 @@ public class HandlingMouseEvent {
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 Engine.g.setColor(new Color(0xFF00EA));
-                if(Map.getObject(new Location(x,y,0)) == MapObjectType.IRON_ORE) {
+
                     Engine.g.drawRect((int) (x * Map.getScale() + Map.getIndentX()), (int) (y * Map.getScale() + Map.getIndentY()), (int) Map.getScale(), (int) Map.getScale());
+               if(Map.getObject(new Location(x,y,0)).getType() == MapObjectType.IRON_ORE) {
+                   countSelect++;
+                   Display.MenuTextSelect.setText(Integer.toString(countSelect)+" Iron");
                 }
             }
         }
