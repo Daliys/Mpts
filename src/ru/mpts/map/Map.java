@@ -119,9 +119,6 @@ public class Map {
                 graphics.fillRect((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), (int) (scale), (int) (scale));
                 graphics.setColor(new Color(0x030077));
                 graphics.drawRect((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), (int) (scale), (int) (scale));
-                graphics.setColor(new Color(0xFFF700));
-                graphics.drawLine(0,0,(Display.WIGHT),(Display.HIGHT));
-                graphics.drawLine((Display.WIGHT),0,0,(Display.HIGHT));
             }
         }
     }

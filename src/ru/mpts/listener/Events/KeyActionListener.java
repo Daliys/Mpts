@@ -59,16 +59,16 @@ public class KeyActionListener implements KeyListener {
 
     public static void render() {
         if (pressKey[0]) {
-            Map.setIndentY(Map.getIndentY()-speedScrollMap);
-        }
-        if (pressKey[1]) {
             Map.setIndentY(Map.getIndentY()+speedScrollMap);
         }
+        if (pressKey[1]) {
+            Map.setIndentY(Map.getIndentY()-speedScrollMap);
+        }
         if (pressKey[2]) {
-            Map.setIndentX(Map.getIndentX()-speedScrollMap);
+            Map.setIndentX(Map.getIndentX()+speedScrollMap);
         }
         if (pressKey[3]) {
-            Map.setIndentX(Map.getIndentX()+speedScrollMap);
+            Map.setIndentX(Map.getIndentX()-speedScrollMap);
         }
     }
 }

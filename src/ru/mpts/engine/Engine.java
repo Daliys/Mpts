@@ -53,26 +53,14 @@ public class Engine implements Runnable {
         HandlingMouseEvent.render();
         TaskPlayers.render();
 
-        g.fillOval(witx, wity, 50, 50);
-
         Display.swapBuffer();
         if (timer.getTime(timer.RENDER_SPEED))
             KeyActionListener.render();
     }
 
     public void update() {
-        if (wity > 550 || wity < 0) {
-            addy *= -1;
-        }
-        if (witx > 550 || witx < 0) {
-            addx *= -1;
-        }
-        witx += addx;
-        wity += addy;
-
         map.update();
         units.update();
-
     }
 
     @Override
