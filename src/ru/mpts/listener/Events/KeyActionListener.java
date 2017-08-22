@@ -9,7 +9,7 @@ public class KeyActionListener implements KeyListener {
     private static boolean pressKey[] = new boolean[4];       //0 - w, 1 - s , 2 - a, 3 - d
     private static int speedScrollMap = 5 ;
 
-    @Override   
+    @Override
     public void keyTyped(KeyEvent e) {
 
     }

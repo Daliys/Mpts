@@ -77,14 +77,14 @@ public class Hero {
                 break;
             }
             case TaskType.MOVE: {
-                if (timerHero.getHeroTime(speedMove)) {
+                if (timerHero.getHeroTimeMove(speedMove)) {
                     System.out.println("hero speed: " + speedMove);
                     MoveOnMap();
                 }
                 break;
             }
             case TaskType.MINE: {
-                if (timerHero.getTime(100.0f)) {
+                if (timerHero.getHeroTimeMine(1.0f)) {
                     CleanMapAll();
                     MineResource();
                 }

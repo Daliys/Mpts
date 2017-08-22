@@ -2,7 +2,14 @@ package ru.mpts.timers;
 
 public class Timer {
     public long lastTimeHero;
-    public static float GAME_SPEED = 1.0f;
+    public static float GAME_SPEED = 1000.0f;
+    public static float GAME_SPEED1 = 1000.0f;
+    public static float GAME_SPEED2 = 750.0f;
+    public static float GAME_SPEED3 = 500.0f;
+
+    public static float GAME_SPEED_MINE = 500.0f;
+    public static float GAME_SPEED_MOVE = 400.0f;
+
     public static float RENDER_SPEED = 30.0f;
 
     public Timer() {
@@ -16,11 +23,13 @@ public class Timer {
         }
         return false;
     }
-    public boolean getHeroTime(float heroSpeed) {
-        if (System.currentTimeMillis() - lastTimeHero >= GAME_SPEED*1000/heroSpeed) {
-            lastTimeHero = System.currentTimeMillis();
-            return true;
-        }
-        return false;
+
+    /// 0.9
+    public boolean getHeroTimeMove(float heroMoveSpeed) {
+       return getTime(GAME_SPEED_MOVE/heroMoveSpeed);
+    }
+
+    public boolean getHeroTimeMine(float heroMineSpeed) {
+       return getTime(GAME_SPEED_MINE/heroMineSpeed);
     }
 }
