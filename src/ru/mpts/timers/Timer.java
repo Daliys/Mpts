@@ -4,7 +4,7 @@ public class Timer {
     public long lastTimeHero;
     public static float GAME_SPEED = 1000.0f;
 
-
+    public static float GAME_SPEED_GET_TASK = 500;
     public static float GAME_SPEED_MINE = 50.0f;
     public static float GAME_SPEED_MOVE = 400.0f;
 

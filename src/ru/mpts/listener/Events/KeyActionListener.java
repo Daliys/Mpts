@@ -7,7 +7,6 @@ import java.awt.event.KeyListener;
 
 public class KeyActionListener implements KeyListener {
     private static boolean pressKey[] = new boolean[4];       //0 - w, 1 - s , 2 - a, 3 - d
-    private static int speedScrollMap = 5 ;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -58,8 +57,10 @@ public class KeyActionListener implements KeyListener {
     }
 
     public static void render() {
+        int speedScrollMap = (int)(Map.getScale()*0.45);
         if (pressKey[0]) {
             Map.setIndentY(Map.getIndentY()+speedScrollMap);
+            System.out.println(Map.getScale());
         }
         if (pressKey[1]) {
             Map.setIndentY(Map.getIndentY()-speedScrollMap);

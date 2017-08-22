@@ -71,7 +71,7 @@ public class Hero {
                 StageHero = TaskType.GET_TASK;
             }
             case TaskType.GET_TASK: {
-                if (timerHero.getTime(Timer.GAME_SPEED)) {
+                if (timerHero.getTime(Timer.GAME_SPEED_GET_TASK)) {
                     TakeTask();
                 }
                 break;
@@ -91,10 +91,10 @@ public class Hero {
                 break;
             }
             case TaskType.FIND_WAY: {
-                if (timerHero.getTime(1)) {
+
                     FindWay();
                     StageHero = TaskType.WAIT_FIND_WAY;
-                }
+
                 break;
             }
         }
