@@ -3,9 +3,7 @@ package ru.mpts.timers;
 public class Timer {
     public long lastTimeHero;
     public static float GAME_SPEED = 1000.0f;
-    public static float GAME_SPEED1 = 1000.0f;
-    public static float GAME_SPEED2 = 750.0f;
-    public static float GAME_SPEED3 = 500.0f;
+
 
     public static float GAME_SPEED_MINE = 500.0f;
     public static float GAME_SPEED_MOVE = 400.0f;
