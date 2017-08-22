@@ -115,7 +115,6 @@ public class HandlingMouseEvent {
             return;
 
         }
-        //System.out.println("Render");
         int minX;
         int maxX;
         int minY;

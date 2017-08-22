@@ -46,7 +46,7 @@ public class Display {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getWheelRotation() < 0) {
-                    if(Map.getScale() < 30) {
+                    if(Map.getScale() < 64) {
                         double CellsOfCenterX = (((Display.WIGHT/2) - Map.getIndentX()) / Map.getScale());     // находим количество клеток до центра
                         double changeIndentX = (CellsOfCenterX * (Map.getScale() + 3) - (Display.WIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
                         changeIndentX *= -1;        // инверсируем
