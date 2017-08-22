@@ -12,6 +12,9 @@ import java.util.List;
 
 public abstract class TaskPlayers {
 
+    public static boolean ADD_SELECT_ALL = true;
+    public static boolean REMOVE_SELECT_ALL = false;
+
     public static volatile List<Action> taskAction = new ArrayList<Action>();
 
     public static void AddTask(Location location, int action) {
@@ -20,6 +23,20 @@ public abstract class TaskPlayers {
         }
         taskAction.add(new Action(location, action));
         Display.MenuTextTask.setText("Task: " + taskAction.size());
+
+    }
+
+    public static void AddSelectionTask(Location location, int action){
+        if(!getFoundLocation(location)){
+            taskAction.add(new Action(location,action));
+        }
+    }
+    public static void RemoveSelectionTask(Location location, int action){
+        if(getFoundLocation(location)){
+            if(!CheckListTask(location)) {
+                RemoveTask(location);
+            }
+        }
     }
 
     // проверят на наличие задания, если в этой клетке нет задания то добавить, иначе удалить это задание
@@ -42,7 +59,14 @@ public abstract class TaskPlayers {
         Display.MenuTextTask.setText("Task: " + taskAction.size());
         return false;
     }
-
+    public static boolean getFoundLocation(Location location){
+        for(int i = 0; i < taskAction.size(); i++){
+            if(taskAction.get(i).getLocation().getX() == location.getX() && taskAction.get(i).getLocation().getY() == location.getY()){
+                return true;
+            }
+        }
+        return false;
+    }
     // удали задание из списка заданий  и из задания героя
     public static void RemoveTask(Location location) {
         for (int a = 0; a < taskAction.size(); a++) {
@@ -78,7 +102,9 @@ public abstract class TaskPlayers {
                 exitWhile:
                 while (boolWhile) {
                     boolean AliveTide = false;
-
+                    if(taskAction.size() <= a){
+                        return;
+                    }
                     for (int x = 0; x < Map.getWightMap(); x++) {
                         for (int y = 0; y < Map.getHeightMap(); y++) {
                             //System.out.println(taskAction.get(a).getLocation().getX()+" - "+x+" "+taskAction.get(a).getLocation().getY()+" - " + y + "  |"+mapWay[x][y] + " - " + inc);

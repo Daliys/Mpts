@@ -27,6 +27,7 @@ public class Display {
     public static JLabel MenutextLabel;
     public static JLabel MenuTextStageMouse;
     public static JLabel MenuTextTask;
+    public static JLabel MenuTextSelect;
 
     public static JButton MenuButtonMine;
 
@@ -45,17 +46,41 @@ public class Display {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getWheelRotation() < 0) {
-                    Map.setScale(Map.getScale() + 15);
+                    if(Map.getScale() < 30) {
+                        double CellsOfCenterX = (((Display.WIGHT/2) - Map.getIndentX()) / Map.getScale());     // находим количество клеток до центра
+                        double changeIndentX = (CellsOfCenterX * (Map.getScale() + 3) - (Display.WIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
+                        changeIndentX *= -1;        // инверсируем
+
+                        Map.setIndentX((int)(changeIndentX));
+
+                        double CellsOfCenterY = (((Display.HIGHT/2) - Map.getIndentY()) / Map.getScale());     // находим количество клеток до центра
+                        double changeIndentY = (CellsOfCenterY * (Map.getScale() + 3) - (Display.HIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
+                        changeIndentY *= -1;        // инверсируем
+
+                        Map.setIndentY((int)(changeIndentY));
+
+                        Map.setScale(Map.getScale() + 3);
+
+                    }
                 } else {
-                    if (Map.getScale() > 30) {
-                        Map.setScale(Map.getScale() - 15);
-                    } else if (Map.getScale() > 10) {
-                        Map.setScale(Map.getScale() - 2);
-                    } else {
-                        Map.setScale(Map.getScale() - 1);
+                    if(Map.getScale() > 9) {
+                        double CellsOfCenterX = (((Display.WIGHT/2) - Map.getIndentX()) / Map.getScale());     // находим количество клеток до центра
+                        double changeIndentX = (CellsOfCenterX * (Map.getScale() - 3) - (Display.WIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
+                        changeIndentX *= -1;        // инверсируем
+
+                        Map.setIndentX((int)(changeIndentX));
+
+                        double CellsOfCenterY = (((Display.HIGHT/2) - Map.getIndentY()) / Map.getScale());     // находим количество клеток до центра
+                        double changeIndentY = (CellsOfCenterY * (Map.getScale() - 3) - (Display.HIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
+                        changeIndentY *= -1;        // инверсируем
+
+                        Map.setIndentY((int)(changeIndentY));
+
+                        Map.setScale(Map.getScale() - 3);
+
                     }
                 }
-                System.out.println("Scale " + Map.getScale());
+
             }
         });
 
@@ -71,6 +96,7 @@ public class Display {
         MenutextLabel = new JLabel("x:0  y:0");
         MenuTextStageMouse = new JLabel("mouse");
         MenuTextTask = new JLabel("Task: 0");
+        MenuTextSelect = new JLabel("Select: 0");
 
         JPanel panelMenuAction = new JPanel();
         Dimension MenuSizeButtonMine = new Dimension(75, 25);
@@ -84,6 +110,7 @@ public class Display {
         panelMenuInformation.add(MenutextLabel);
         panelMenuInformation.add(MenuTextStageMouse);
         panelMenuInformation.add(MenuTextTask);
+        panelMenuInformation.add(MenuTextSelect);
 
         // панель кнопак
         panelMenuAction.add(MenuButtonMine);

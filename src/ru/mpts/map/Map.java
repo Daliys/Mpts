@@ -6,10 +6,10 @@ import ru.mpts.engine.Engine;
 import java.awt.*;
 
 public class Map {
-    private static int WightMap = 32;
-    private static int HeightMap = 32;
-    private static int IndentX = 5;
-    private static int IndentY = 5;
+    private static int WightMap = 30;
+    private static int HeightMap = 30;
+    private static int IndentX = 0;
+    private static int IndentY = 0;
     private static float scale;
     private static Object[][] map;
     private static float[][] mapStageRess;
@@ -29,6 +29,7 @@ public class Map {
         } else {
             scale = (float) ((Display.WIGHT - 10) / (WightMap));
         }
+        scale = 20;
     }
 
 
@@ -43,9 +44,46 @@ public class Map {
         addObject(new Location(16, 25, 0), MapObjectType.IRON_ORE);
         addObject(new Location(17, 25, 0), MapObjectType.IRON_ORE);
         addObject(new Location(18, 25, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(16, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(19, 25, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(20, 25, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(21, 25, 0), MapObjectType.IRON_ORE);
+
         addObject(new Location(15, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(16, 24, 0), MapObjectType.IRON_ORE);
         addObject(new Location(17, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(18, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(19, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(20, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(21, 24, 0), MapObjectType.IRON_ORE);
+
+        addObject(new Location(15, 23, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(16, 23, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(17, 23, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(18, 23, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(19, 23, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(20, 23, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(21, 23, 0), MapObjectType.IRON_ORE);
+
+        addObject(new Location(15, 22, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(16, 22, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(17, 22, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(18, 22, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(19, 22, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(20, 22, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(21, 22, 0), MapObjectType.IRON_ORE);
+
+        addObject(new Location(15, 21, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(16, 21, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(17, 21, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(18, 21, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(19, 21, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(20, 21, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(21, 21, 0), MapObjectType.IRON_ORE);
+
+
+
+
+
     }
 
     public static void addObject(Location location, int objectType) {
@@ -81,6 +119,9 @@ public class Map {
                 graphics.fillRect((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), (int) (scale), (int) (scale));
                 graphics.setColor(new Color(0x030077));
                 graphics.drawRect((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), (int) (scale), (int) (scale));
+                graphics.setColor(new Color(0xFFF700));
+                graphics.drawLine(0,0,(Display.WIGHT),(Display.HIGHT));
+                graphics.drawLine((Display.WIGHT),0,0,(Display.HIGHT));
             }
         }
     }
