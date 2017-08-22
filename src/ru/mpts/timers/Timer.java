@@ -6,7 +6,7 @@ public class Timer {
 
 
     public static float GAME_SPEED_MINE = 500.0f;
-    public static float GAME_SPEED_MOVE = 400.0f;
+    public static float GAME_SPEED_MOVE = 50.0f;
 
     public static float RENDER_SPEED = 30.0f;
 

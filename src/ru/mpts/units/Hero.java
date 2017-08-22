@@ -71,7 +71,7 @@ public class Hero {
                 StageHero = TaskType.GET_TASK;
             }
             case TaskType.GET_TASK: {
-                if (timerHero.getTime(1)) {
+                if (timerHero.getTime(Timer.GAME_SPEED)) {
                     TakeTask();
                 }
                 break;
