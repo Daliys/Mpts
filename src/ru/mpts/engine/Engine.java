@@ -10,7 +10,7 @@ import ru.mpts.timers.Timer;
 import java.awt.*;
 
 public class Engine implements Runnable {
-    public static Graphics2D g;
+    public static Graphics2D graphics2D;
     private static long nanosec = 1000000000;
     private static float UpdateInterval = nanosec / 60.0f; // кол во обновления game
     public Map map;
@@ -24,7 +24,7 @@ public class Engine implements Runnable {
 
     public Engine() {
         Display.CreateBuffer(0xff000000, 2);
-        g = Display.getGraphics();
+        graphics2D = Display.getGraphics();
 
         int x = 10;
         int width = 100;

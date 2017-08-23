@@ -2,13 +2,9 @@ package ru.mpts.sprite;
 
 import ru.mpts.engine.Engine;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 
 public class Sprite {
     private int width;
@@ -36,7 +32,7 @@ public class Sprite {
     public void draw(int x, int y, float scale)  {
         //graphics2D.drawImage(image, 0,0, 64, 64, null);
         //if (this.x != x || this.y != y || this.scale != scale) {
-            Engine.g.drawImage(image, (int) (x - ((width / (64 / scale) - scale) / 2)), (int) (y - ((height / (64 / scale) - scale))), (int) (width / (64 / scale)), (int) (height / (64 / scale)), null);
+            Engine.graphics2D.drawImage(image, Math.round(x - ((width / (64 / scale) - scale) / 2)), Math.round(y - ((height / (64 / scale) - scale))), Math.round(width / (64 / scale)), Math.round(height / (64 / scale)), null);
         //}
         this.x = x;
         this.y = y;
