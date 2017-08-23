@@ -4,6 +4,7 @@ import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Map {
     private static int WightMap = 30;
@@ -24,22 +25,27 @@ public class Map {
     }
 
     private void setScale() {
-        if ((float) (Display.WIGHT / WightMap) > (float) (Display.HIGHT / HeightMap)) {
+       /* if ((float) (Display.WIGHT / WightMap) > (float) (Display.HIGHT / HeightMap)) {
             scale = (float) ((Display.HIGHT - 10) / (HeightMap));
         } else {
             scale = (float) ((Display.WIGHT - 10) / (WightMap));
-        }
+        }*/
         scale = 20;
     }
 
 
     private void InitializationMap() {
+
+
+
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < WightMap; y++) {
                 map[x][y] = new Object(new Location(x, y, 0), MapObjectType.GRASS);
             }
         }
+        generationMap();
 
+/*x
         addObject(new Location(15, 25, 0), MapObjectType.IRON_ORE);
         addObject(new Location(16, 25, 0), MapObjectType.IRON_ORE);
         addObject(new Location(17, 25, 0), MapObjectType.IRON_ORE);
@@ -79,11 +85,20 @@ public class Map {
         addObject(new Location(19, 21, 0), MapObjectType.IRON_ORE);
         addObject(new Location(20, 21, 0), MapObjectType.IRON_ORE);
         addObject(new Location(21, 21, 0), MapObjectType.IRON_ORE);
+*/
+    }
+
+    private void generationMap(){
 
 
 
 
-
+        Random random = new Random();
+        for(int a = 0; a < 10; a++) {
+            int x = random.nextInt(30);
+            int y = random.nextInt(30);
+            addObject(new Location(x, y, 0), MapObjectType.STONE);
+        }
     }
 
     public static void addObject(Location location, int objectType) {
@@ -113,6 +128,9 @@ public class Map {
                     }
                     case MapObjectType.IRON_ORE: {
                         graphics.setColor(new Color(0x636163));
+                        break;
+                    }case MapObjectType.STONE: {
+                        graphics.setColor(new Color(0xF9FF00));
                         break;
                     }
                 }

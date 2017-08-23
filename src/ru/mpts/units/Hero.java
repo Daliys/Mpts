@@ -33,7 +33,7 @@ public class Hero {
         this.action = new Action();
         this.id = id;
 
-        System.out.println("move speed===" + speedMove);
+
 
         taskLocation = new Location(0,0,0);
         TaskNumAction = 0;
@@ -78,7 +78,7 @@ public class Hero {
             }
             case TaskType.MOVE: {
                 if (timerHero.getHeroTimeMove(speedMove)) {
-                    System.out.println("hero speed: " + speedMove);
+                  //  System.out.println("hero speed: " + speedMove);
                     MoveOnMap();
                 }
                 break;

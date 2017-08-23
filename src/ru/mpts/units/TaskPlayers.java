@@ -31,13 +31,7 @@ public abstract class TaskPlayers {
             taskAction.add(new Action(location,action));
         }
     }
-    public static void RemoveSelectionTask(Location location, int action){
-        if(getFoundLocation(location)){
-            if(!CheckListTask(location)) {
-                RemoveTask(location);
-            }
-        }
-    }
+
 
     // проверят на наличие задания, если в этой клетке нет задания то добавить, иначе удалить это задание
     private static boolean CheckListTask(Location location) {
