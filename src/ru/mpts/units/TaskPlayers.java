@@ -159,14 +159,14 @@ public abstract class TaskPlayers {
     public static void render() {
         for (int i = 0; i < taskAction.size(); i++) {
             if (!taskAction.get(i).isTaken()) {
-                Engine.g.setColor(new Color(0xAC5800));
+                Engine.graphics2D.setColor(new Color(0xAC5800));
             } else {
-                Engine.g.setColor(new Color(0x00A8BB));
-                Engine.g.fillRect((int) (taskAction.get(i).getLocation().getX() * Map.getScale() + Map.getIndentX() + 2), (int) (taskAction.get(i).getLocation().getY() * Map.getScale() + Map.getIndentY() + 2),
+                Engine.graphics2D.setColor(new Color(0x00A8BB));
+                Engine.graphics2D.fillRect((int) (taskAction.get(i).getLocation().getX() * Map.getScale() + Map.getIndentX() + 2), (int) (taskAction.get(i).getLocation().getY() * Map.getScale() + Map.getIndentY() + 2),
                         (int) (Map.getScale() - 5), (int) (Map.getScale() - 5));
-                Engine.g.setColor(new Color(0xAF0063));
+                Engine.graphics2D.setColor(new Color(0xAF0063));
             }
-            Engine.g.drawRect((int) (taskAction.get(i).getLocation().getX() * Map.getScale() + Map.getIndentX() + 2), (int) (taskAction.get(i).getLocation().getY() * Map.getScale() + Map.getIndentY() + 2),
+            Engine.graphics2D.drawRect((int) (taskAction.get(i).getLocation().getX() * Map.getScale() + Map.getIndentX() + 2), (int) (taskAction.get(i).getLocation().getY() * Map.getScale() + Map.getIndentY() + 2),
                     (int) (Map.getScale() - 5), (int) (Map.getScale() - 5));
 
         }

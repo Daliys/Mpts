@@ -5,6 +5,7 @@ import ru.mpts.engine.Engine;
 import ru.mpts.map.Location;
 import ru.mpts.map.Map;
 import ru.mpts.map.MapObjectType;
+import ru.mpts.sprite.Sprite;
 import ru.mpts.units.TaskPlayers;
 import ru.mpts.units.TaskType;
 
@@ -17,12 +18,14 @@ public class HandlingMouseEvent {
     private  boolean isSelect;
     private static Graphics2D graphics;
     private static boolean isPressMouse = false;
+    private static Sprite spriteSelectCell;
 
     public HandlingMouseEvent() {
         locationStartSelect = new Location(0, 0, 0);
         locationNowSelect = new Location(0, 0, 0);
+        spriteSelectCell = new Sprite("selectCell.png", graphics);
         isSelect = false;
-        graphics = Engine.g;
+        graphics = Engine.graphics2D;
     }
 
     public static void setMouseStage(String mouseStage) {
@@ -113,7 +116,6 @@ public class HandlingMouseEvent {
         Display.MenuTextSelect.setText(Integer.toString(countSelect)+" Iron");
         if(!isPressMouse()){
             return;
-
         }
         int minX;
         int maxX;
@@ -135,13 +137,11 @@ public class HandlingMouseEvent {
             minY = locationStartSelect.getY();
         }
 
-
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                Engine.g.setColor(new Color(0xFF00EA));
+                spriteSelectCell.draw((int) (x * Map.getScale() + Map.getIndentX()), (int)(y * Map.getScale() + Map.getIndentY()), Map.getScale());
 
-                    Engine.g.drawRect((int) (x * Map.getScale() + Map.getIndentX()), (int) (y * Map.getScale() + Map.getIndentY()), (int) Map.getScale(), (int) Map.getScale());
-               if(Map.getObject(new Location(x,y,0)).getType() == MapObjectType.IRON_ORE) {
+                if(Map.getObject(new Location(x,y,0)).getType() == MapObjectType.IRON_ORE) {
                    countSelect++;
                    Display.MenuTextSelect.setText(Integer.toString(countSelect)+" Iron");
                 }

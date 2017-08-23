@@ -22,7 +22,7 @@ public class Map {
 
         setScale();
         InitializationMap();
-        graphics = Engine.g;
+        graphics = Engine.graphics2D;
     }
 
     private void setScale() {
@@ -38,7 +38,7 @@ public class Map {
     private void InitializationMap() {
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < WightMap; y++) {
-                addGround(new Location(x, y, 0), MapObjectType.GRASS);
+                addGround(new Location(x, y, 0), MapGroundType.GRASS);
                 addObject(new Location(x, y, 0), MapObjectType.AIR);
             }
         }
@@ -112,16 +112,6 @@ public class Map {
         switch (groundType) {
             case MapObjectType.GRASS: {
                 mapGrounds[location.getX()][location.getY()] = new Object(location, groundType, new Sprite("grass(1).png", graphics));
-                mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
-                break;
-            }
-            case MapObjectType.HERO: {
-                mapGrounds[location.getX()][location.getY()] = new Object(location, groundType, new Sprite("hero(1).png", graphics));
-                mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
-                break;
-            }
-            case MapObjectType.IRON_ORE: {
-                mapGrounds[location.getX()][location.getY()] = new Object(location, groundType, new Sprite("ironOreBlockCenter(1).png", graphics));
                 mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
                 break;
             }
