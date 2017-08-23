@@ -2,9 +2,9 @@ package ru.mpts.map;
 
 import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
+import ru.mpts.sprite.Sprite;
 
 import java.awt.*;
-import java.util.Random;
 
 public class Map {
     private static int WightMap = 30;
@@ -12,12 +12,13 @@ public class Map {
     private static int IndentX = 0;
     private static int IndentY = 0;
     private static float scale;
-    private static Object[][] map;
-    private static float[][] mapStageRess;
-    private Graphics2D graphics;
+    private static Object[][] mapObjects;
+    private static Object[][] mapGrounds;
+    private static Graphics2D graphics;
 
     public Map() {
-        map = new Object[WightMap][HeightMap];
+        mapObjects = new Object[WightMap][HeightMap];
+        mapGrounds = new Object[WightMap][HeightMap];
 
         setScale();
         InitializationMap();
@@ -25,27 +26,23 @@ public class Map {
     }
 
     private void setScale() {
-       /* if ((float) (Display.WIGHT / WightMap) > (float) (Display.HIGHT / HeightMap)) {
+        if ((float) (Display.WIGHT / WightMap) > (float) (Display.HIGHT / HeightMap)) {
             scale = (float) ((Display.HIGHT - 10) / (HeightMap));
         } else {
             scale = (float) ((Display.WIGHT - 10) / (WightMap));
-        }*/
+        }
         scale = 20;
     }
 
 
     private void InitializationMap() {
-
-
-
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < WightMap; y++) {
-                map[x][y] = new Object(new Location(x, y, 0), MapObjectType.GRASS);
+                addGround(new Location(x, y, 0), MapObjectType.GRASS);
+                addObject(new Location(x, y, 0), MapObjectType.AIR);
             }
         }
-        generationMap();
 
-/*x
         addObject(new Location(15, 25, 0), MapObjectType.IRON_ORE);
         addObject(new Location(16, 25, 0), MapObjectType.IRON_ORE);
         addObject(new Location(17, 25, 0), MapObjectType.IRON_ORE);
@@ -85,28 +82,54 @@ public class Map {
         addObject(new Location(19, 21, 0), MapObjectType.IRON_ORE);
         addObject(new Location(20, 21, 0), MapObjectType.IRON_ORE);
         addObject(new Location(21, 21, 0), MapObjectType.IRON_ORE);
-*/
-    }
-
-    private void generationMap(){
-
-
-
-
-        Random random = new Random();
-        for(int a = 0; a < 10; a++) {
-            int x = random.nextInt(30);
-            int y = random.nextInt(30);
-            addObject(new Location(x, y, 0), MapObjectType.STONE);
-        }
     }
 
     public static void addObject(Location location, int objectType) {
-        map[location.getX()][location.getY()] = new Object(location, objectType);
+        switch (objectType) {
+            case MapObjectType.AIR: {
+                mapObjects[location.getX()][location.getY()] = new Object(location, objectType, new Sprite("air.png", graphics));
+                break;
+            }
+            case MapObjectType.GRASS: {
+                mapObjects[location.getX()][location.getY()] = new Object(location, objectType, new Sprite("grass(1).png", graphics));
+                mapObjects[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
+                break;
+            }
+            case MapObjectType.HERO: {
+                mapObjects[location.getX()][location.getY()] = new Object(location, objectType, new Sprite("hero(1).png", graphics));
+                mapObjects[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
+                break;
+            }
+            case MapObjectType.IRON_ORE: {
+                mapObjects[location.getX()][location.getY()] = new Object(location, objectType, new Sprite("ironOreBlockCenter(1).png", graphics));
+                mapObjects[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
+                break;
+            }
+        }
+    }
+
+    public static void addGround(Location location, int groundType) {
+        switch (groundType) {
+            case MapObjectType.GRASS: {
+                mapGrounds[location.getX()][location.getY()] = new Object(location, groundType, new Sprite("grass(1).png", graphics));
+                mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
+                break;
+            }
+            case MapObjectType.HERO: {
+                mapGrounds[location.getX()][location.getY()] = new Object(location, groundType, new Sprite("hero(1).png", graphics));
+                mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
+                break;
+            }
+            case MapObjectType.IRON_ORE: {
+                mapGrounds[location.getX()][location.getY()] = new Object(location, groundType, new Sprite("ironOreBlockCenter(1).png", graphics));
+                mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
+                break;
+            }
+        }
     }
 
     public static Object getObject(Location location) {
-        return map[location.getX()][location.getY()];
+        return mapObjects[location.getX()][location.getY()];
     }
 
     public void update() {
@@ -117,26 +140,10 @@ public class Map {
 
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < HeightMap; y++) {
-                switch (map[x][y].getType()) {
-                    case MapObjectType.GRASS: {
-                        graphics.setColor(new Color(0x007707));
-                        break;
-                    }
-                    case MapObjectType.HERO: {
-                        graphics.setColor(new Color(0xDA0400));
-                        break;
-                    }
-                    case MapObjectType.IRON_ORE: {
-                        graphics.setColor(new Color(0x636163));
-                        break;
-                    }case MapObjectType.STONE: {
-                        graphics.setColor(new Color(0xF9FF00));
-                        break;
-                    }
+                mapGrounds[x][y].getSprite().draw((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), scale);
+                if(mapObjects[x][y].getType() != MapObjectType.AIR) {
+                    mapObjects[x][y].getSprite().draw((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), scale);
                 }
-                graphics.fillRect((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), (int) (scale), (int) (scale));
-                graphics.setColor(new Color(0x030077));
-                graphics.drawRect((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), (int) (scale), (int) (scale));
             }
         }
     }

@@ -13,7 +13,7 @@ public class Engine implements Runnable {
     public static Graphics2D g;
     private static long nanosec = 1000000000;
     private static float UpdateInterval = nanosec / 60.0f; // кол во обновления game
-    Map map;
+    public Map map;
     Units units;
     Timer timer = new Timer();
     private boolean startGame;
@@ -21,14 +21,15 @@ public class Engine implements Runnable {
     private int fps;
     private int upd;
     private int updSkip;            // считает количество пропусков update
-    private int witx = 0;       // для круга
-    private int wity = 0;
-    private int addx = 1;
-    private int addy = 1;
 
     public Engine() {
         Display.CreateBuffer(0xff000000, 2);
         g = Display.getGraphics();
+
+        int x = 10;
+        int width = 100;
+        int scale = 64;
+        System.out.println((x*scale-((width/(64/scale)-scale)/2)));
 
         map = new Map();
         units = new Units();
@@ -82,6 +83,7 @@ public class Engine implements Runnable {
                 while (delta > 1) {
 
                     update();
+
                     upd++;
                     delta--;
                     if (render) {
@@ -92,6 +94,7 @@ public class Engine implements Runnable {
                 }
                 if (render) {
                     render();
+
                     fps++;
                 } else {
                     try {
@@ -122,4 +125,7 @@ public class Engine implements Runnable {
         }
     }
 
+    public Map getMap() {
+        return map;
+    }
 }
