@@ -34,7 +34,7 @@ public class Hero {
         this.action = new Action();
         this.id = id;
         System.out.println("move speed===" + speedMove);
-        taskLocation = new Location(0,0,0);
+        taskLocation = new Location(0, 0, 0);
         TaskNumAction = 0;
 
         mapWay = new int[Map.getWightMap()][Map.getHeightMap()];
@@ -48,10 +48,14 @@ public class Hero {
     public void render() {
         for (int x = 0; x < Map.getWightMap(); x++) {
             for (int y = 0; y < Map.getHeightMap(); y++) {
-                if (mapWay[x][y] == -10) {
+                if (mapWay[x][y] != 0) {
                     graphics.setColor(new Color(0x267775));
                     // graphics.drawLine((int)((ru.mpts.map.Map.scale*x)+5+(ru.mpts.map.Map.scale/2)),(int)((ru.mpts.map.Map.scale*y)+5+(ru.mpts.map.Map.scale/2)),);
                     graphics.fillRect((int) ((Map.getScale() * x) + Map.getIndentX() + 2), (int) ((Map.getScale() * y) + Map.getIndentY() + 2), (int) (Map.getScale() - 4), (int) (Map.getScale() - 4));
+
+                    graphics.setColor(new Color(0xAD0001));
+                   // graphics.setStroke(mapWay[x][y]);
+                    graphics.drawString(mapWay[x][y] + "",(int) ((Map.getScale() * x) + Map.getIndentX() + 2 +5+2), (int) ((Map.getScale() * y) + Map.getIndentY() + 2+15));
                 }
             }
         }
@@ -66,7 +70,7 @@ public class Hero {
         //  System.out.println("id:"+id+" St"+StageHero);
 
         switch (StageHero) {
-            case TaskType.NONE:{
+            case TaskType.NONE: {
                 StageHero = TaskType.GET_TASK;
             }
             case TaskType.GET_TASK: {
@@ -77,7 +81,7 @@ public class Hero {
             }
             case TaskType.MOVE: {
                 if (timerHero.getHeroTimeMove(speedMove)) {
-                   // MoveOnMap();
+                    // MoveOnMap();
                 }
                 break;
             }
@@ -90,8 +94,8 @@ public class Hero {
             }
             case TaskType.FIND_WAY: {
 
-                    //FindWay();
-                    StageHero = TaskType.WAIT_FIND_WAY;
+                FindWayTask();
+
 
                 break;
             }
@@ -99,7 +103,7 @@ public class Hero {
     }
 
     private void MineResource() {
-        if(Map.getObject(taskLocation).getDurability() <= 0) {
+        if (Map.getObject(taskLocation).getDurability() <= 0) {
             if (Map.getObject(taskLocation).getType() == MapObjectType.IRON_ORE) {
                 Map.addObject(taskLocation, MapObjectType.AIR);
                 StageHero = TaskType.NONE;
@@ -110,7 +114,7 @@ public class Hero {
             taskLocation.setY(0);
             StageHero = TaskType.NONE;
         } else {
-            Map.getObject(taskLocation).setDurability(Map.getObject(taskLocation).getDurability()-5);
+            Map.getObject(taskLocation).setDurability(Map.getObject(taskLocation).getDurability() - 5);
         }
     }
 
@@ -124,42 +128,44 @@ public class Hero {
     }
 
 
-    private void FindWayTask(){
+    private void FindWayTask() {
         StageHero = TaskType.WAIT_FIND_WAY;
         Thread threadFineWay = new Thread(new Runnable() {
             @Override
             public void run() {
                 CleanMapAll();
                 boolean boolWhile = false;
-                boolean FindWay = false;
+                boolean boolFindWay = false;
                 int increment = 1;
 
                 exitWhile:
 
-                while (!boolWhile){
+                while (!boolWhile) {
                     boolean AliveTide = false;
-                    for(int x = 0; x < Map.getWightMap(); x++){
-                        for (int y = 0; y < Map.getHeightMap(); y++){
+                    for (int x = 0; x < Map.getWightMap(); x++) {
+                        for (int y = 0; y < Map.getHeightMap(); y++) {
 
-                            if(mapWay[x][y] == increment){
-                                //if(){
+                            if (CheckTaskCell(new Location(x, y, 0)) && mapWay[x][y] == increment) {
 
-                                //}
+                                boolWhile = true;
+                                boolFindWay = true;
+                                break exitWhile;
+                            } else if (mapWay[x][y] == increment) {
 
-                                if(((x-1) >= 0) && CheckFreeMap(new Location((x-1),y,0)) && mapWay[(x-1)][y] == 0){
-                                    mapWay[x-1][y] = (increment+1);
+                                if (((x - 1) >= 0) && (CheckFreeMap(new Location((x - 1), y, 0)) || CheckTaskCell(new Location((x - 1), y, 0))) && mapWay[(x - 1)][y] == 0) {
+                                    mapWay[x - 1][y] = (increment + 1);
                                     AliveTide = true;
                                 }
-                                if(((x+1) < Map.getWightMap()) && CheckFreeMap(new Location((x+1),y,0)) && mapWay[(x+1)][y] == 0){
-                                    mapWay[x+1][y] = (increment+1);
+                                if (((x + 1) < Map.getWightMap()) && (CheckFreeMap(new Location((x + 1), y, 0)) || CheckTaskCell(new Location((x + 1), y, 0))) && mapWay[(x + 1)][y] == 0) {
+                                    mapWay[x + 1][y] = (increment + 1);
                                     AliveTide = true;
                                 }
-                                if(((y-1) >= 0) && CheckFreeMap(new Location(x,(y-1),0)) && mapWay[x][(y-1)] == 0){
-                                    mapWay[x][y-1] = (increment+1);
+                                if (((y - 1) >= 0) && (CheckFreeMap(new Location(x, (y - 1), 0)) || CheckTaskCell(new Location(x, (y - 1), 0))) && mapWay[x][(y - 1)] == 0) {
+                                    mapWay[x][y - 1] = (increment + 1);
                                     AliveTide = true;
                                 }
-                                if(((y+1) < Map.getHeightMap()) && CheckFreeMap(new Location(x,(y+1),0)) && mapWay[x][(y+1)] == 0){
-                                    mapWay[x][y+1] = (increment+1);
+                                if (((y + 1) < Map.getHeightMap()) && (CheckFreeMap(new Location(x, (y + 1), 0)) || CheckTaskCell(new Location(x, (y + 1), 0))) && mapWay[x][(y + 1)] == 0) {
+                                    mapWay[x][y + 1] = (increment + 1);
                                     AliveTide = true;
                                 }
                             }
@@ -168,20 +174,46 @@ public class Hero {
                         }
                     }
 
-                    if(!AliveTide){
+                    increment++;
+
+                    if (!AliveTide) {
                         StageHero = TaskType.NONE;
+                        System.out.println("HeraKS");
                         boolWhile = true;
+                        boolFindWay = false;
                     }
                 }
 
+                if (boolFindWay) {
+
+                    while (increment < 1) {
+                        for (int x = 0; x < Map.getWightMap(); x++) {
+                            for (int y = 0; y < Map.getHeightMap(); y++) {
+
+
+                            }
+                        }
+                        increment--;
+                    }
+
+
+                }
 
 
             }
 
-            private boolean CheckFreeMap(Location location){
-                if(Map.getObject(location).getType() == MapObjectType.AIR){
+            private boolean CheckFreeMap(Location location) {
+                if (Map.getObject(location).getType() == MapObjectType.AIR) {
                     return true;
-                }else {
+                } else {
+                    return false;
+                }
+            }
+
+            private boolean CheckTaskCell(Location location) {
+                if (taskLocation.getX() == location.getX() && taskLocation.getY() == location.getY()) {
+                    return true;
+                } else {
                     return false;
                 }
             }
@@ -189,42 +221,40 @@ public class Hero {
         threadFineWay.start();
 
 
-
-
     }
 
 
-   /* private void MoveOnMap() {
-        if ((((heroLocation.getX() - taskLocation.getX()) == 1 || (heroLocation.getX() - taskLocation.getX()) == -1) && ((heroLocation.getY() - taskLocation.getY()) == 0)) ||
-                (((heroLocation.getY() - taskLocation.getY()) == 1 || (heroLocation.getY() - taskLocation.getY()) == -1) && ((heroLocation.getX() - taskLocation.getX()) == 0))) {
+    /* private void MoveOnMap() {
+         if ((((heroLocation.getX() - taskLocation.getX()) == 1 || (heroLocation.getX() - taskLocation.getX()) == -1) && ((heroLocation.getY() - taskLocation.getY()) == 0)) ||
+                 (((heroLocation.getY() - taskLocation.getY()) == 1 || (heroLocation.getY() - taskLocation.getY()) == -1) && ((heroLocation.getX() - taskLocation.getX()) == 0))) {
 
-            StageHero = TaskType.MINE;
-            return;
-        }
-        if ((location.getX() - 1) >= 0 && mapWay[location.getX() - 1][location.getY()] == -10 && Map.getObject(new Location(location.getX()-1, location.getY(), 0)).getType() != MapObjectType.HERO) {
-            Map.addObject(location, MapObjectType.AIR);
-            location.setX(location.getX()-1);
-            Map.addObject(location, MapObjectType.HERO);
-            System.out.println("move");
-        } else if ((location.getX() + 1) < Map.getWightMap() && mapWay[location.getX() + 1][location.getY()] == -10 && Map.getObject(new Location(location.getX()+1, location.getY(), 0)).getType() != MapObjectType.HERO) {
-            Map.addObject(location, MapObjectType.AIR);
-            location.setX(location.getX()+1);
-            Map.addObject(location, MapObjectType.HERO);
-            System.out.println("move");
-        } else if ((location.getY() - 1) >= 0 && mapWay[location.getX()][location.getY() - 1] == -10 && Map.getObject(new Location(location.getX(), location.getY()-1, 0)).getType() != MapObjectType.HERO) {
-            Map.addObject(location, MapObjectType.AIR);
-            location.setY(location.getY()-1);
-            Map.addObject(location, MapObjectType.HERO);
-            System.out.println("move");
-        } else if ((location.getY() + 1) < Map.getHeightMap() && mapWay[location.getX()][location.getY() + 1] == -10 && Map.getObject(new Location(location.getX(), location.getY()+1, 0)).getType() != MapObjectType.HERO) {
-            Map.addObject(location, MapObjectType.AIR);
-            location.setY(location.getY()+1);
-            Map.addObject(location, MapObjectType.HERO);
-            System.out.println("move");
-        }
-        StageHero = TaskType.FIND_WAY;
-    }
-*/
+             StageHero = TaskType.MINE;
+             return;
+         }
+         if ((location.getX() - 1) >= 0 && mapWay[location.getX() - 1][location.getY()] == -10 && Map.getObject(new Location(location.getX()-1, location.getY(), 0)).getType() != MapObjectType.HERO) {
+             Map.addObject(location, MapObjectType.AIR);
+             location.setX(location.getX()-1);
+             Map.addObject(location, MapObjectType.HERO);
+             System.out.println("move");
+         } else if ((location.getX() + 1) < Map.getWightMap() && mapWay[location.getX() + 1][location.getY()] == -10 && Map.getObject(new Location(location.getX()+1, location.getY(), 0)).getType() != MapObjectType.HERO) {
+             Map.addObject(location, MapObjectType.AIR);
+             location.setX(location.getX()+1);
+             Map.addObject(location, MapObjectType.HERO);
+             System.out.println("move");
+         } else if ((location.getY() - 1) >= 0 && mapWay[location.getX()][location.getY() - 1] == -10 && Map.getObject(new Location(location.getX(), location.getY()-1, 0)).getType() != MapObjectType.HERO) {
+             Map.addObject(location, MapObjectType.AIR);
+             location.setY(location.getY()-1);
+             Map.addObject(location, MapObjectType.HERO);
+             System.out.println("move");
+         } else if ((location.getY() + 1) < Map.getHeightMap() && mapWay[location.getX()][location.getY() + 1] == -10 && Map.getObject(new Location(location.getX(), location.getY()+1, 0)).getType() != MapObjectType.HERO) {
+             Map.addObject(location, MapObjectType.AIR);
+             location.setY(location.getY()+1);
+             Map.addObject(location, MapObjectType.HERO);
+             System.out.println("move");
+         }
+         StageHero = TaskType.FIND_WAY;
+     }
+ */
     private void CleanMapWay(int numR) {
         for (int x = 0; x < Map.getWightMap(); x++) {
             for (int y = 0; y < Map.getHeightMap(); y++) {

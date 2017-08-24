@@ -82,6 +82,25 @@ public class Map {
         addObject(new Location(19, 21, 0), MapObjectType.IRON_ORE);
         addObject(new Location(20, 21, 0), MapObjectType.IRON_ORE);
         addObject(new Location(21, 21, 0), MapObjectType.IRON_ORE);
+
+
+        addObject(new Location(11, 1, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(21, 10, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(1, 21, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(3, 16, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(8, 28, 0), MapObjectType.IRON_ORE);
+
+        addObject(new Location(17, 5, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(21, 27, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(4, 24, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(19, 25, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(18, 28, 0), MapObjectType.IRON_ORE);
+
+        addObject(new Location(17, 17, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(6, 20, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(9, 20, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(19, 19, 0), MapObjectType.IRON_ORE);
+        addObject(new Location(13, 21, 0), MapObjectType.IRON_ORE);
     }
 
     public static void addObject(Location location, int objectType) {

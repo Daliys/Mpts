@@ -106,23 +106,22 @@ public abstract class TaskPlayers {
                             //System.out.println(taskAction.get(a).getLocation().getX()+" - "+x+" "+taskAction.get(a).getLocation().getY()+" - " + y + "  |"+mapWay[x][y] + " - " + inc);
                             if (x == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY() && (ThreadMapWay[x][y] == (inc - 1) || ThreadMapWay[x][y] == inc)) {
                                 FindRout = true;
-                                //  System.out.println(FindRout);
                                 break exitWhile;
                             } else if (ThreadMapWay[x][y] == inc) {
 
-                                if ((x + 1) < Map.getWightMap() && (Map.getObject(new Location(x+1, y, 0)).getType() == MapObjectType.GRASS || ((x + 1) == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x + 1][y] == 0) {
+                                if ((x + 1) < Map.getWightMap() && (Map.getObject(new Location(x+1, y, 0)).getType() == MapObjectType.AIR || ((x + 1) == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x + 1][y] == 0) {
                                     ThreadMapWay[x + 1][y] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((x - 1) >= 0 && (Map.getObject(new Location(x-1, y, 0)).getType() == MapObjectType.GRASS || ((x - 1) == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x - 1][y] == 0) {
+                                if ((x - 1) >= 0 && (Map.getObject(new Location(x-1, y, 0)).getType() == MapObjectType.AIR || ((x - 1) == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x - 1][y] == 0) {
                                     ThreadMapWay[x - 1][y] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((y + 1) < Map.getHeightMap() && (Map.getObject(new Location(x, y+1, 0)).getType() == MapObjectType.GRASS || (x == taskAction.get(a).getLocation().getX() && (y + 1) == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x][y + 1] == 0) {
+                                if ((y + 1) < Map.getHeightMap() && (Map.getObject(new Location(x, y+1, 0)).getType() == MapObjectType.AIR || (x == taskAction.get(a).getLocation().getX() && (y + 1) == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x][y + 1] == 0) {
                                     ThreadMapWay[x][y + 1] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((y - 1) >= 0 && (Map.getObject(new Location(x, y-1, 0)).getType() == MapObjectType.GRASS || (x == taskAction.get(a).getLocation().getX() && (y - 1) == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x][y - 1] == 0) {
+                                if ((y - 1) >= 0 && (Map.getObject(new Location(x, y-1, 0)).getType() == MapObjectType.AIR || (x == taskAction.get(a).getLocation().getX() && (y - 1) == taskAction.get(a).getLocation().getY())) && ThreadMapWay[x][y - 1] == 0) {
                                     ThreadMapWay[x][y - 1] = (inc + 1);
                                     AliveTide = true;
                                 }
@@ -142,6 +141,7 @@ public abstract class TaskPlayers {
                     if (!taskAction.get(a).isTaken()) {
                         Units.setHeroesTask(taskAction.get(a).getLocation(), taskAction.get(a).getAction(), heroId);
                         taskAction.get(a).setTaken(true);
+
                     }
                     ThreadTask = true;
 
