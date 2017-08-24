@@ -85,37 +85,13 @@ public class Map {
     }
 
     public static void addObject(Location location, int objectType) {
-        switch (objectType) {
-            case MapObjectType.AIR: {
-                mapObjects[location.getX()][location.getY()] = new Object(location, objectType, new Sprite("air.png", graphics));
-                break;
-            }
-            case MapObjectType.GRASS: {
-                mapObjects[location.getX()][location.getY()] = new Object(location, objectType, new Sprite("grass(1).png", graphics));
-                mapObjects[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
-                break;
-            }
-            case MapObjectType.HERO: {
-                mapObjects[location.getX()][location.getY()] = new Object(location, objectType, new Sprite("hero(1).png", graphics));
-                mapObjects[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
-                break;
-            }
-            case MapObjectType.IRON_ORE: {
-                mapObjects[location.getX()][location.getY()] = new Object(location, objectType, new Sprite("ironOreBlockCenter(1).png", graphics));
-                mapObjects[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
-                break;
-            }
-        }
+        mapObjects[location.getX()][location.getY()] = new Object(location, objectType);
+        mapObjects[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
     }
 
     public static void addGround(Location location, int groundType) {
-        switch (groundType) {
-            case MapObjectType.GRASS: {
-                mapGrounds[location.getX()][location.getY()] = new Object(location, groundType, new Sprite("grass(1).png", graphics));
-                mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
-                break;
-            }
-        }
+        mapGrounds[location.getX()][location.getY()] = new Object(location, groundType);
+        mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
     }
 
     public static Object getObject(Location location) {
