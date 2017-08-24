@@ -8,11 +8,37 @@ public class Object {
     private int durability;
     private Sprite sprite;
 
-    public Object(Location location, int type, Sprite sprite) {
+    public Object(Location location, int type) {
         this.location = location;
         this.type = type;
         durability = 100;
-        this.sprite = sprite;
+
+        switch (type) {
+            case MapObjectType.AIR: {
+                sprite = new Sprite("air.png");
+                break;
+            }
+            case MapObjectType.GRASS: {
+                sprite = new Sprite("grass(1).png");
+                break;
+            }
+            case MapObjectType.HERO: {
+                sprite = new Sprite("hero(1).png");
+                break;
+            }
+            case MapObjectType.IRON_ORE: {
+                sprite = new Sprite("ironOreBlockCenter(1).png");
+                break;
+            }
+            case MapObjectType.STONE: {
+                sprite = new Sprite("stoneBlockCenter(1).png");
+                break;
+            }
+            default: {
+                sprite = new Sprite("default.png");
+                break;
+            }
+        }
     }
 
     public void setLocation(Location location) {

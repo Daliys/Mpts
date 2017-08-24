@@ -2,6 +2,7 @@ package ru.mpts.map;
 
 import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
+import ru.mpts.sprite.Sprite;
 
 import java.awt.*;
 import java.util.Random;
@@ -21,7 +22,7 @@ public class Map {
 
         setScale();
         InitializationMap();
-        graphics = Engine.g;
+        graphics = Engine.graphics2D;
     }
 
     private void setScale() {
@@ -35,9 +36,6 @@ public class Map {
 
 
     private void InitializationMap() {
-
-
-
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < WightMap; y++) {
                 map[x][y] = new Object(new Location(x, y, 0), MapObjectType.GRASS);
@@ -89,10 +87,6 @@ public class Map {
     }
 
     private void generationMap(){
-
-
-
-
         Random random = new Random();
         for(int a = 0; a < 10; a++) {
             int x = random.nextInt(30);
@@ -102,7 +96,12 @@ public class Map {
     }
 
     public static void addObject(Location location, int objectType) {
-        map[location.getX()][location.getY()] = new Object(location, objectType);
+        switch (objectType) {
+            case MapObjectType.GRASS: {
+
+            }
+            map[location.getX()][location.getY()] = new Object(location, objectType);
+        }
     }
 
     public static Object getObject(Location location) {
@@ -117,26 +116,7 @@ public class Map {
 
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < HeightMap; y++) {
-                switch (map[x][y].getType()) {
-                    case MapObjectType.GRASS: {
-                        graphics.setColor(new Color(0x007707));
-                        break;
-                    }
-                    case MapObjectType.HERO: {
-                        graphics.setColor(new Color(0xDA0400));
-                        break;
-                    }
-                    case MapObjectType.IRON_ORE: {
-                        graphics.setColor(new Color(0x636163));
-                        break;
-                    }case MapObjectType.STONE: {
-                        graphics.setColor(new Color(0xF9FF00));
-                        break;
-                    }
-                }
-                graphics.fillRect((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), (int) (scale), (int) (scale));
-                graphics.setColor(new Color(0x030077));
-                graphics.drawRect((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), (int) (scale), (int) (scale));
+                map[x][y].getSprite().draw((int)(x*scale+getIndentX()), (int)(y*scale+getIndentY()), (float) scale);
             }
         }
     }

@@ -23,7 +23,7 @@ public class HandlingMouseEvent {
     public HandlingMouseEvent() {
         locationStartSelect = new Location(0, 0, 0);
         locationNowSelect = new Location(0, 0, 0);
-        spriteSelectCell = new Sprite("selectCell.png", graphics);
+        spriteSelectCell = new Sprite("selectCell.png");
         isSelect = false;
         graphics = Engine.graphics2D;
     }

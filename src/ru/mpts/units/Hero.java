@@ -41,7 +41,7 @@ public class Hero {
         mapWay = new int[Map.getWightMap()][Map.getHeightMap()];
 
         Map.addObject(location, MapObjectType.HERO);
-        graphics = Engine.g;
+        graphics = Engine.graphics2D;
 
         timerHero = new Timer();
     }

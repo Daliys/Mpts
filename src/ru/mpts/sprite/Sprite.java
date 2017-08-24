@@ -14,10 +14,8 @@ public class Sprite {
     private float scale = -1;
     private String pathSprites = "resources/sprites/";
     Image image;
-    Graphics2D graphics2D;
 
-    public Sprite(String fileName, Graphics2D graphics2D) {
-        this.graphics2D = graphics2D;
+    public Sprite(String fileName) {
         File imageFile = new File(pathSprites + fileName);
         if (!imageFile.exists()) {
             image = new ImageIcon(pathSprites + "default.png").getImage();
