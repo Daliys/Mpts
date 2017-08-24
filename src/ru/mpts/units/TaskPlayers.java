@@ -29,7 +29,9 @@ public abstract class TaskPlayers {
     public static void AddSelectionTask(Location location, int action){
         if(!getFoundLocation(location)){
             taskAction.add(new Action(location,action));
+            Display.MenuTextTask.setText("Task: " + taskAction.size());
         }
+
     }
 
 

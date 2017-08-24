@@ -100,6 +100,7 @@ public class HandlingMouseEvent {
                         }*/
                         /*if(boolSelected) {*/
                             /*TaskPlayers.AddTask(new Location(x, y, 0), TaskType.MINE);*/
+
                             TaskPlayers.AddSelectionTask(new Location(x,y,0), TaskType.MINE);
                      /*   }else {
                             TaskPlayers.RemoveSelectionTask(new Location(x,y,0), TaskType.MINE);
