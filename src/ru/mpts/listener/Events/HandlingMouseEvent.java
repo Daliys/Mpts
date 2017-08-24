@@ -91,19 +91,19 @@ public class HandlingMouseEvent {
             for (int y = minY; y <= maxY; y++) {
                 if(mouseStage == MouseTypeAction.MINE) {
                     if (Map.getObject(new Location(x, y, 0)).getType() == MapObjectType.IRON_ORE) {
-                        if(x == minX && y == minY){
+                        /*if(x == minX && y == minY){
                             if(TaskPlayers.getFoundLocation(locationStartSelect)){
                                 boolSelected = TaskPlayers.REMOVE_SELECT_ALL;
                             }else{
                                 boolSelected = TaskPlayers.ADD_SELECT_ALL;
                             }
-                        }
-                        if(boolSelected) {
+                        }*/
+                        /*if(boolSelected) {*/
                             /*TaskPlayers.AddTask(new Location(x, y, 0), TaskType.MINE);*/
                             TaskPlayers.AddSelectionTask(new Location(x,y,0), TaskType.MINE);
-                        }else {
+                     /*   }else {
                             TaskPlayers.RemoveSelectionTask(new Location(x,y,0), TaskType.MINE);
-                        }
+                        }*/
                     }
                 }
             }
