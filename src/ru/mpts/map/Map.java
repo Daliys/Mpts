@@ -7,8 +7,8 @@ import java.awt.*;
 import java.util.Random;
 
 public class Map {
-    private static int WightMap = 30;
-    private static int HeightMap = 30;
+    private static int WightMap = 32;
+    private static int HeightMap = 32;
     private static int IndentX = 0;
     private static int IndentY = 0;
     private static int scale;
@@ -37,6 +37,10 @@ public class Map {
 
     public static Object getObject(Location location) {
         return mapObjects[location.getX()][location.getY()];
+    }
+
+    public static Object getGround(Location location) {
+        return mapGrounds[location.getX()][location.getY()];
     }
 
     public static int getHeightMap() {
@@ -97,16 +101,89 @@ public class Map {
     }
 
     private void generationWorld() {
+        int[][] gMap = new int[WightMap][HeightMap];
+        int s = (int)(Math.random() * 7) + 3;
+        int d = (int)(Math.random() * 6) + 2;
 
-        setObject(new Location(0, 0, 0), MapObjectType.STONE);
-        setObject(new Location(29, 0, 0), MapObjectType.STONE);
-        setObject(new Location(15, 29, 0), MapObjectType.STONE);
+        while (d > 0) {
+            for (int x = 0; x < WightMap; x++) {
+                if ((int) (Math.random() * 64) == 0) {
+                    setObject(new Location(x, 0, 0), MapObjectType.STONE);
+                    d--;
+                }
+            }
+            if (d <= 0) break;
+            for (int x = 0; x < WightMap; x++) {
+                if ((int) (Math.random() * 64) == 0) {
+                    setObject(new Location(x, HeightMap-1, 0), MapObjectType.STONE);
+                    d--;
+                }
+            }
+            if (d <= 0) break;
+            for (int y = 0; y < HeightMap; y++) {
+                if ((int) (Math.random() * 64) == 0) {
+                    setObject(new Location(0, y, 0), MapObjectType.STONE);
+                    d--;
+                }
+            }
+            if (d <= 0) break;
+            for (int y = 0; y < HeightMap; y++) {
+                if ((int) (Math.random() * 64) == 0) {
+                    setObject(new Location(WightMap-1, y, 0), MapObjectType.STONE);
+                    d--;
+                }
+            }
+        }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i <= s; i++) {
+
             for (int x = 0; x < WightMap; x++) {
                 for (int y = 0; y < WightMap; y++) {
                     if (getObject(new Location(x, y, 0)).getType() == MapObjectType.STONE) {
+                        if (x + 1 < WightMap) {
+                            if (i == s){
+                                if ((int)(Math.random() * 2) == 1) {
+                                    gMap[x + 1][y] = 1;
+                                }
+                            } else {
+                                gMap[x + 1][y] = 1;
+                            }
+                        }
+                        if (x - 1 >= 0) {
+                            if (i == s) {
+                                if ((int)(Math.random() * 2) == 1) {
+                                    gMap[x - 1][y] = 1;
+                                }
+                            } else {
+                                gMap[x - 1][y] = 1;
+                            }
+                        }
+                        if (y + 1 < HeightMap) {
+                            if (i == s){
+                                if ((int)(Math.random() * 2) == 1) {
+                                    gMap[x][y+ 1] = 1;
+                                }
+                            } else {
+                                gMap[x][y + 1] = 1;
+                            }
+                        }
+                        if (y - 1 >= 0) {
+                            if (i == s){
+                                if ((int)(Math.random() * 2) == 1) {
+                                    gMap[x][y - 1] = 1;
+                                }
+                            } else {
+                                gMap[x][y - 1] = 1;
+                            }
+                        }
+                    }
+                }
+            }
 
+            for (int x = 0; x < WightMap; x++) {
+                for (int y = 0; y < WightMap; y++) {
+                    if (getObject(new Location(x, y, 0)).getType() != MapObjectType.STONE && gMap[x][y] == 1) {
+                        setObject(new Location(x, y, 0), MapObjectType.STONE);
                     }
                 }
             }

@@ -1,21 +1,33 @@
 package ru.mpts.units;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import ru.mpts.inventory.Inventory;
 import ru.mpts.map.Location;
+import ru.mpts.map.Map;
+import ru.mpts.map.MapGroundType;
+import ru.mpts.map.MapObjectType;
 
 public class Units {
     public static List<Hero> heroesList = new ArrayList<>();
 
     public Units() {
-        /*AddHero(new Location(1, 15, 0), 1.0f, 100);
-        AddHero(new Location(2, 15, 0), 1.0f, 100);*/
-        AddHero(new Location(28, 15, 0), 1.0f, 100);
-        //AddHero(new Location(3, 15, 0), 1.0f, 100);
+        int units = 2;
+        end:
+        while (units > 0) {
+            for (int x = 0; x < Map.getWightMap(); x++) {
+                for (int y = 0; y < Map.getHeightMap(); y++) {
+                    if (Map.getObject(new Location(x, y, 0)).getType() == MapObjectType.AIR && (int)(Math.random() * 257) == 1) {
+                        AddHero(new Location(x, y, 0), 1.0f, 100);
+                        units--;
+
+                        if (units <= 0) break end;
+                    }
+                }
+            }
+        }
     }
 
     public static void AddHero(Location location, int id) {
