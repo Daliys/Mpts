@@ -34,6 +34,14 @@ public abstract class TaskPlayers {
 
     }
 
+    public static void RemoveTaskFromHero(Location location){
+        for(int i =0; i < taskAction.size(); i++){
+            if(location.getX() == taskAction.get(i).getLocation().getX() && location.getY() == taskAction.get(i).getLocation().getY()){
+                taskAction.get(i).setTaken(false);
+            }
+        }
+    }
+
 
     // проверят на наличие задания, если в этой клетке нет задания то добавить, иначе удалить это задание
     private static boolean CheckListTask(Location location) {
