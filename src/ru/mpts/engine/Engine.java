@@ -10,25 +10,21 @@ import ru.mpts.timers.Timer;
 import java.awt.*;
 
 public class Engine implements Runnable {
-    public static Graphics2D g;
+    public static Graphics2D graphics2D;
     private static long nanosec = 1000000000;
     private static float UpdateInterval = nanosec / 60.0f; // кол во обновления game
-    Map map;
+    public Map map;
     Units units;
-    Timer timer = new Timer(30);
+    Timer timer = new Timer();
     private boolean startGame;
     private float delta;
     private int fps;
     private int upd;
     private int updSkip;            // считает количество пропусков update
-    private int witx = 0;       // для круга
-    private int wity = 0;
-    private int addx = 1;
-    private int addy = 1;
 
     public Engine() {
         Display.CreateBuffer(0xff000000, 2);
-        g = Display.getGraphics();
+        graphics2D = Display.getGraphics();
 
         map = new Map();
         units = new Units();
@@ -49,32 +45,18 @@ public class Engine implements Runnable {
         Display.clear();
 
         map.render();
-        units.render();
-        HandlingMouseEvent.render();
         TaskPlayers.render();
-
-
-        g.fillOval(witx, wity, 50, 50);
-
+        HandlingMouseEvent.render();
+        units.render();
 
         Display.swapBuffer();
-        if (timer.getTime())
+        if (timer.getTime(timer.RENDER_SPEED))
             KeyActionListener.render();
     }
 
     public void update() {
-        if (wity > 550 || wity < 0) {
-            addy *= -1;
-        }
-        if (witx > 550 || witx < 0) {
-            addx *= -1;
-        }
-        witx += addx;
-        wity += addy;
-
         map.update();
         units.update();
-
     }
 
     @Override
@@ -96,6 +78,7 @@ public class Engine implements Runnable {
                 while (delta > 1) {
 
                     update();
+
                     upd++;
                     delta--;
                     if (render) {
@@ -106,6 +89,7 @@ public class Engine implements Runnable {
                 }
                 if (render) {
                     render();
+
                     fps++;
                 } else {
                     try {
@@ -136,4 +120,7 @@ public class Engine implements Runnable {
         }
     }
 
+    public Map getMap() {
+        return map;
+    }
 }

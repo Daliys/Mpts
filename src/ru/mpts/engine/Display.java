@@ -1,9 +1,6 @@
 package ru.mpts.engine;
 
-import ru.mpts.listener.Events.KeyActionListener;
-import ru.mpts.listener.Events.MenuActionListener;
-import ru.mpts.listener.Events.MouseAction;
-import ru.mpts.listener.Events.MouseTypeAction;
+import ru.mpts.listener.Events.*;
 import ru.mpts.map.Map;
 
 import javax.swing.*;
@@ -30,8 +27,10 @@ public class Display {
     public static JLabel MenutextLabel;
     public static JLabel MenuTextStageMouse;
     public static JLabel MenuTextTask;
+    public static JLabel MenuTextSelect;
 
     public static JButton MenuButtonMine;
+    public static JButton MenuButtonCancel;
 
 
     public static void CreateBuffer(int _color, int numBuffer) {
@@ -48,20 +47,43 @@ public class Display {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getWheelRotation() < 0) {
-                    Map.setScale(Map.getScale() + 15);
+                    if(Map.getScale() < 64) {
+                        double CellsOfCenterX = (((Display.WIGHT/2) - Map.getIndentX()) / Map.getScale());     // находим количество клеток до центра
+                        double changeIndentX = (CellsOfCenterX * (Map.getScale() + 3) - (Display.WIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
+                        changeIndentX *= -1;        // инверсируем
+
+                        Map.setIndentX((int)(changeIndentX));
+
+                        double CellsOfCenterY = (((Display.HIGHT/2) - Map.getIndentY()) / Map.getScale());     // находим количество клеток до центра
+                        double changeIndentY = (CellsOfCenterY * (Map.getScale() + 3) - (Display.HIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
+                        changeIndentY *= -1;        // инверсируем
+
+                        Map.setIndentY((int)(changeIndentY));
+
+                        Map.setScale(Map.getScale() + 3);
+
+                    }
                 } else {
-                    if (Map.getScale() > 30) {
-                        Map.setScale(Map.getScale() - 15);
-                    } else if (Map.getScale() > 10) {
-                        Map.setScale(Map.getScale() - 2);
-                    } else {
-                        Map.setScale(Map.getScale() - 1);
+                    if(Map.getScale() > 9) {
+                        double CellsOfCenterX = (((Display.WIGHT/2) - Map.getIndentX()) / Map.getScale());     // находим количество клеток до центра
+                        double changeIndentX = (CellsOfCenterX * (Map.getScale() - 3) - (Display.WIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
+                        changeIndentX *= -1;        // инверсируем
+
+                        Map.setIndentX((int)(changeIndentX));
+
+                        double CellsOfCenterY = (((Display.HIGHT/2) - Map.getIndentY()) / Map.getScale());     // находим количество клеток до центра
+                        double changeIndentY = (CellsOfCenterY * (Map.getScale() - 3) - (Display.HIGHT/2));        // находим на сколько нужно подвинуть что бы цетр был == клеток центру
+                        changeIndentY *= -1;        // инверсируем
+
+                        Map.setIndentY((int)(changeIndentY));
+
+                        Map.setScale(Map.getScale() - 3);
+
                     }
                 }
-                System.out.println("Scale " + Map.getScale());
+
             }
         });
-
 
         // обьявления основных панелей
         JPanel panel = new JPanel(new BorderLayout());
@@ -74,6 +96,7 @@ public class Display {
         MenutextLabel = new JLabel("x:0  y:0");
         MenuTextStageMouse = new JLabel("mouse");
         MenuTextTask = new JLabel("Task: 0");
+        MenuTextSelect = new JLabel("Select: 0");
 
         JPanel panelMenuAction = new JPanel();
         Dimension MenuSizeButtonMine = new Dimension(75, 25);
@@ -82,14 +105,21 @@ public class Display {
         MenuButtonMine.setActionCommand(MouseTypeAction.MINE);
         MenuButtonMine.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
 
+        MenuButtonCancel = new JButton("Cancel");
+        MenuButtonCancel.setPreferredSize(MenuSizeButtonMine);
+        MenuButtonCancel.setActionCommand(MouseTypeAction.CANCEL);
+        MenuButtonCancel.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
+
 
         //панель информации
         panelMenuInformation.add(MenutextLabel);
         panelMenuInformation.add(MenuTextStageMouse);
         panelMenuInformation.add(MenuTextTask);
+        panelMenuInformation.add(MenuTextSelect);
 
         // панель кнопак
         panelMenuAction.add(MenuButtonMine);
+        panelMenuAction.add(MenuButtonCancel);
 
 
         // панель меню с кнопками и информацией
@@ -97,19 +127,15 @@ public class Display {
         panelMenu.add(panelMenuInformation);
         panelMenu.add(panelMenuAction);
 
-
         Dimension sizeMenu = new Dimension(200, HIGHT);
         panelMenu.setPreferredSize(sizeMenu);
         panelMenu.setBackground(new Color(0x4D4E4F));
 
-
         panelCanvas.setBackground(Color.BLACK);
         panelCanvas.add(content);
 
-
         panel.add(panelCanvas, BorderLayout.CENTER);
         panel.add(panelMenu, BorderLayout.EAST);
-
 
         //  frame.setSize(WIGHT,HIGHT);
         frame.setResizable(false);
@@ -119,7 +145,6 @@ public class Display {
         frame.setVisible(true);
         frame.addMouseListener(new MouseAction());
 
-
         buffer = new BufferedImage(WIGHT, HIGHT, BufferedImage.TYPE_INT_ARGB);
         bufferData = ((DataBufferInt) buffer.getRaster().getDataBuffer()).getData();
         bufferGraphics = buffer.getGraphics();
@@ -128,7 +153,6 @@ public class Display {
 
         content.createBufferStrategy(numBuffer);
         bufferStrategy = content.getBufferStrategy();
-
     }
 
     public static void clear() {
@@ -141,9 +165,8 @@ public class Display {
         bufferStrategy.show();
     }
 
-
     public static void setTitle(String title) {
-        frame.setTitle("Mpts   " + title);
+        frame.setTitle("The World of Tasks   " + title);
     }
 
     public static Graphics2D getGraphics() {

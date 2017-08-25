@@ -13,6 +13,10 @@ public class Item {
         this.durability = durability;
     }
 
+    public void destroy() {
+        count = 0;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -43,5 +47,13 @@ public class Item {
 
     public int getDurability() {
         return durability;
+    }
+
+    public boolean isNone() {
+        if (count == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
