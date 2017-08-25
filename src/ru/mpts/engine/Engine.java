@@ -26,11 +26,6 @@ public class Engine implements Runnable {
         Display.CreateBuffer(0xff000000, 2);
         graphics2D = Display.getGraphics();
 
-        int x = 10;
-        int width = 100;
-        int scale = 64;
-        System.out.println((x*scale-((width/(64/scale)-scale)/2)));
-
         map = new Map();
         units = new Units();
 

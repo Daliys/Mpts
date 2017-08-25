@@ -12,64 +12,66 @@ public class Object {
         this.location = location;
         this.type = type;
         durability = 100;
+        String path;
 
         switch (type) {
             case MapObjectType.AIR: {
-                sprite = new Sprite("air.png");
+                path = "air.png";
                 break;
             }
             case MapObjectType.GRASS: {
-                sprite = new Sprite("grass(1).png");
+                path = "grass(1).png";
                 break;
             }
             case MapObjectType.HERO: {
-                sprite = new Sprite("hero(1).png");
+                path = "hero(1).png";
                 break;
             }
             case MapObjectType.IRON_ORE: {
-                sprite = new Sprite("ironOreBlockCenter(1).png");
+                path = "ironOreBlockCenter(1).png";
                 break;
             }
             case MapObjectType.STONE: {
-                sprite = new Sprite("stoneBlockCenter(1).png");
+                path = "stoneBlockCenter(1).png";
                 break;
             }
             default: {
-                sprite = new Sprite("default.png");
+                path = "default.png";
                 break;
             }
         }
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public void setDurability(int durability) {
-        this.durability = durability;
-    }
-
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
+        sprite = new Sprite(path, location);
     }
 
     public Location getLocation() {
         return location;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public int getType() {
         return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public int getDurability() {
         return durability;
     }
 
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+
     public Sprite getSprite() {
         return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
     }
 }

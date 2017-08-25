@@ -84,7 +84,6 @@ public class Display {
             }
         });
 
-
         // обьявления основных панелей
         JPanel panel = new JPanel(new BorderLayout());
         JPanel panelCanvas = new JPanel();
@@ -121,19 +120,15 @@ public class Display {
         panelMenu.add(panelMenuInformation);
         panelMenu.add(panelMenuAction);
 
-
         Dimension sizeMenu = new Dimension(200, HIGHT);
         panelMenu.setPreferredSize(sizeMenu);
         panelMenu.setBackground(new Color(0x4D4E4F));
 
-
         panelCanvas.setBackground(Color.BLACK);
         panelCanvas.add(content);
 
-
         panel.add(panelCanvas, BorderLayout.CENTER);
         panel.add(panelMenu, BorderLayout.EAST);
-
 
         //  frame.setSize(WIGHT,HIGHT);
         frame.setResizable(false);
@@ -143,7 +138,6 @@ public class Display {
         frame.setVisible(true);
         frame.addMouseListener(new MouseAction());
 
-
         buffer = new BufferedImage(WIGHT, HIGHT, BufferedImage.TYPE_INT_ARGB);
         bufferData = ((DataBufferInt) buffer.getRaster().getDataBuffer()).getData();
         bufferGraphics = buffer.getGraphics();
@@ -152,7 +146,6 @@ public class Display {
 
         content.createBufferStrategy(numBuffer);
         bufferStrategy = content.getBufferStrategy();
-
     }
 
     public static void clear() {
