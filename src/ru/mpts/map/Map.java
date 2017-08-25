@@ -96,9 +96,14 @@ public class Map {
         scale = 20;
     }
 
-    private void generationWorld(int seed) {
-        int i = Random();
+    private void generationWorld() {
+
         setObject(new Location(0, 0, 0), MapObjectType.STONE);
+        setObject(new Location(29, 0, 0), MapObjectType.STONE);
+        setObject(new Location(15, 29, 0), MapObjectType.STONE);
+
+        for ()
+
     }
 
     private void InitializationMap() {
@@ -109,7 +114,7 @@ public class Map {
             }
         }
 
-        generationWorld(1);
+        generationWorld();
     }
 
     public void setRectangleObject(Location startLocation, Location endLocation, int objectType) {
