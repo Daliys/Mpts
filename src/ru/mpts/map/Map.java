@@ -102,8 +102,15 @@ public class Map {
         setObject(new Location(29, 0, 0), MapObjectType.STONE);
         setObject(new Location(15, 29, 0), MapObjectType.STONE);
 
-        for ()
-
+        for (int i = 0; i < 10; i++) {
+            for (int x = 0; x < WightMap; x++) {
+                for (int y = 0; y < WightMap; y++) {
+                    if (getObject(new Location(x, y, 0)).getType() == MapObjectType.STONE) {
+                        setObject(new Location;
+                    }
+                }
+            }
+        }
     }
 
     private void InitializationMap() {
