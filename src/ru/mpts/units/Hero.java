@@ -242,6 +242,9 @@ public class Hero {
                     StageHero = TaskType.MOVE;
 
 
+                }else {
+                    TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(),taskLocation.getY(),0));
+                    removeTask();
                 }
             }
 
@@ -265,7 +268,7 @@ public class Hero {
         threadFineWay.start();
     }
 
-    private void CheckWayMove() {
+    private void CheckWayMove() {       // проверка пути на возможность прохождение персонажем этого пути без проблем если не так то поиск нового пути
         StageHero = TaskType.WAIT_FIND_WAY;
         Location nowCellWay = new Location(heroLocation.getX(), heroLocation.getY(), 0);
         Location lastCellWay = new Location(-1, -1, 0);
@@ -366,9 +369,7 @@ public class Hero {
             }
 
             if(!freeCell){
-                TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(), taskLocation.getY(),0));
-                removeTask();
-                StageHero = TaskType.NONE;
+                StageHero = TaskType.FIND_WAY;
                 return;
             }
 
@@ -377,7 +378,7 @@ public class Hero {
 
     }
 
-
+        // движение героя по карте
     private void MoveOnMap() {
         if ((((heroLocation.getX() - taskLocation.getX()) == 1 || (heroLocation.getX() - taskLocation.getX()) == -1) && ((heroLocation.getY() - taskLocation.getY()) == 0)) ||
                 (((heroLocation.getY() - taskLocation.getY()) == 1 || (heroLocation.getY() - taskLocation.getY()) == -1) && ((heroLocation.getX() - taskLocation.getX()) == 0))) {
