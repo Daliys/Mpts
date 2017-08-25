@@ -52,10 +52,6 @@ public class Hero {
                     // graphics.drawLine((int)((ru.mpts.map.Map.scale*x)+5+(ru.mpts.map.Map.scale/2)),(int)((ru.mpts.map.Map.scale*y)+5+(ru.mpts.map.Map.scale/2)),);
                     graphics.fillRect((int) ((Map.getScale() * x) + Map.getIndentX() + 2), (int) ((Map.getScale() * y) + Map.getIndentY() + 2), (int) (Map.getScale() - 4), (int) (Map.getScale() - 4));
 
-                   /* graphics.setColor(new Color(0xAD0001));
-                    // graphics.setStroke(mapWay[x][y]);
-                    graphics.drawString(mapWay[x][y] + "", (int) ((Map.getScale() * x) + Map.getIndentX() + 2 + 5 + 2), (int) ((Map.getScale() * y) + Map.getIndentY() + 2 + 15));
-             */
                 }
             }
         }
@@ -92,9 +88,10 @@ public class Hero {
             case TaskType.FIND_WAY: {
 
                 FindWayTask();
-
-
                 break;
+            }
+            case TaskType.CHECK_WAY_MOVE:{
+                CheckWayMove();
             }
         }
     }
@@ -246,8 +243,6 @@ public class Hero {
 
 
                 }
-
-
             }
 
             private boolean CheckFreeMap(Location location) {
@@ -268,7 +263,97 @@ public class Hero {
 
         });
         threadFineWay.start();
+    }
 
+    private void CheckWayMove() {
+        StageHero = TaskType.WAIT_FIND_WAY;
+        Location nowCellWay = new Location(heroLocation.getX(), heroLocation.getY(), 0);
+            Location lastCellWay = new Location(-1, -1, 0);
+        boolean flagWhile = true;
+        while (flagWhile) {
+            // если найдет последнюю клетку то выходит
+            if((taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY()))){
+                StageHero = TaskType.MOVE;
+                return;
+            }
+            System.out.println("check");
+            boolean freeCell = false;
+
+            if((nowCellWay.getX()+1) < Map.getWightMap() && mapWay[(nowCellWay.getX()+1)][nowCellWay.getY()] == -10){    //  право
+                if(Map.getObject(new Location((nowCellWay.getX()+1),(nowCellWay.getY()),0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()+1) && taskLocation.getY() == (nowCellWay.getY()))){
+                    freeCell = true;
+                    nowCellWay.setX((nowCellWay.getX()+1));
+                }
+            }else if((nowCellWay.getX()-1) >= 0 && mapWay[(nowCellWay.getX()-1)][nowCellWay.getY()] == -10){     // лево
+                if(Map.getObject(new Location((nowCellWay.getX()-1),(nowCellWay.getY()),0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()-1) && taskLocation.getY() == (nowCellWay.getY()))){
+                    freeCell = true;
+                    nowCellWay.setX((nowCellWay.getX()-1));
+                }
+            }else if((nowCellWay.getY()+1) < Map.getHeightMap() && mapWay[nowCellWay.getX()][(nowCellWay.getY()+1)] == -10
+                    && !(lastCellWay.getX() == nowCellWay.getX() && lastCellWay.getY() == nowCellWay.getY())){  //низ
+                if(Map.getObject(new Location((nowCellWay.getX()),(nowCellWay.getY()+1),0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY()+1))){
+                    freeCell = true;
+                    nowCellWay.setY((nowCellWay.getY()+1));
+                }
+            }else if((nowCellWay.getY()-1) >= 0 && mapWay[nowCellWay.getX()][(nowCellWay.getY()-1)] == -10){         // верх
+                System.out.println("pred");
+                if(Map.getObject(new Location((nowCellWay.getX()),(nowCellWay.getY()-1),0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY()-1))){
+                    System.out.println("VERX");
+                    freeCell = true;
+                    lastCellWay.setY(nowCellWay.getY());
+                    nowCellWay.setY((nowCellWay.getY()-1));
+                }
+            }else if((nowCellWay.getX()+1) < Map.getWightMap() && (nowCellWay.getY()-1) >= 0      // право верх
+                    && mapWay[(nowCellWay.getX()+1)][(nowCellWay.getY()-1)] == -10){
+
+                if(Map.getObject(new Location((nowCellWay.getX()+1),(nowCellWay.getY()-1),0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()+1) && taskLocation.getY() == (nowCellWay.getY()-1))){
+                    freeCell = true;
+                    nowCellWay.setX((nowCellWay.getX()+1));
+                    nowCellWay.setY((nowCellWay.getY()));
+                    nowCellWay.setY((nowCellWay.getY()-1));
+                }
+            }else if((nowCellWay.getX()-1) >= 0 && (nowCellWay.getY()-1) >= 0     // лево верх
+                    && mapWay[(nowCellWay.getX()-1)][(nowCellWay.getY()-1)] == -10){
+
+                if(Map.getObject(new Location((nowCellWay.getX()-1),(nowCellWay.getY()-1),0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()-1) && taskLocation.getY() == (nowCellWay.getY()-1))){
+                    freeCell = true;
+                    nowCellWay.setX((nowCellWay.getX()-1));
+                    nowCellWay.setY((nowCellWay.getY()-1));
+                }
+            }else if((nowCellWay.getX()+1) < Map.getWightMap() && (nowCellWay.getY()+1) < Map.getHeightMap()      // право низ
+                    && mapWay[(nowCellWay.getX()+1)][(nowCellWay.getY()+1)] == -10){
+
+                if(Map.getObject(new Location((nowCellWay.getX()+1),(nowCellWay.getY()+1),0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()+1) && taskLocation.getY() == (nowCellWay.getY()+1))){
+                    freeCell = true;
+                    nowCellWay.setX((nowCellWay.getX()+1));
+                    nowCellWay.setY((nowCellWay.getY()+1));
+                }
+            }else if((nowCellWay.getX()-1) >= 0 && (nowCellWay.getY()+1) < Map.getHeightMap()         // лево низ
+                    && mapWay[(nowCellWay.getX()-1)][(nowCellWay.getY()+1)] == -10){
+                if(Map.getObject(new Location((nowCellWay.getX()-1),(nowCellWay.getY()+1),0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()-1) && taskLocation.getY() == (nowCellWay.getY()+1))){
+                    freeCell = true;
+                    nowCellWay.setX((nowCellWay.getX()-1));
+                    nowCellWay.setY((nowCellWay.getY()+1));
+                }
+            }
+
+            if(!freeCell){
+                TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(), taskLocation.getY(),0));
+                //removeTask();
+                StageHero = 1543;
+                return;
+            }
+
+
+        }
 
     }
 
@@ -341,39 +426,9 @@ public class Hero {
             Map.setObject(heroLocation, MapObjectType.HERO);
         }
 
-            StageHero = TaskType.MOVE;
-        }
+        StageHero = TaskType.CHECK_WAY_MOVE;
+    }
 
-     /*  private void MoveOnMap() {        /// old version
-         if ((((heroLocation.getX() - taskLocation.getX()) == 1 || (heroLocation.getX() - taskLocation.getX()) == -1) && ((heroLocation.getY() - taskLocation.getY()) == 0)) ||
-                 (((heroLocation.getY() - taskLocation.getY()) == 1 || (heroLocation.getY() - taskLocation.getY()) == -1) && ((heroLocation.getX() - taskLocation.getX()) == 0))) {
-
-             StageHero = TaskType.MINE;
-             return;
-         }
-         if ((location.getX() - 1) >= 0 && mapWay[location.getX() - 1][location.getY()] == -10 && Map.getObject(new Location(location.getX()-1, location.getY(), 0)).getType() != MapObjectType.HERO) {
-             Map.addObject(location, MapObjectType.AIR);
-             location.setX(location.getX()-1);
-             Map.addObject(location, MapObjectType.HERO);
-             System.out.println("move");
-         } else if ((location.getX() + 1) < Map.getWightMap() && mapWay[location.getX() + 1][location.getY()] == -10 && Map.getObject(new Location(location.getX()+1, location.getY(), 0)).getType() != MapObjectType.HERO) {
-             Map.addObject(location, MapObjectType.AIR);
-             location.setX(location.getX()+1);
-             Map.addObject(location, MapObjectType.HERO);
-             System.out.println("move");
-         } else if ((location.getY() - 1) >= 0 && mapWay[location.getX()][location.getY() - 1] == -10 && Map.getObject(new Location(location.getX(), location.getY()-1, 0)).getType() != MapObjectType.HERO) {
-             Map.addObject(location, MapObjectType.AIR);
-             location.setY(location.getY()-1);
-             Map.addObject(location, MapObjectType.HERO);
-             System.out.println("move");
-         } else if ((location.getY() + 1) < Map.getHeightMap() && mapWay[location.getX()][location.getY() + 1] == -10 && Map.getObject(new Location(location.getX(), location.getY()+1, 0)).getType() != MapObjectType.HERO) {
-             Map.addObject(location, MapObjectType.AIR);
-             location.setY(location.getY()+1);
-             Map.addObject(location, MapObjectType.HERO);
-             System.out.println("move");
-         }
-         StageHero = TaskType.FIND_WAY;
-     }*/
 
     private void CleanMapWay(int numR) {
         for (int x = 0; x < Map.getWightMap(); x++) {
@@ -384,16 +439,7 @@ public class Hero {
             }
         }
 
-    }/*private void CleanMapWay(int numR) {         //OLD Versions
-        for (int x = 0; x < Map.getWightMap(); x++) {
-            for (int y = 0; y < Map.getHeightMap(); y++) {
-                if (mapWay[x][y] != numR) {
-                    mapWay[x][y] = 0;
-                }
-            }
-        }
-
-    }*/
+    }
 
     public void setTask(Location location, int numAction) {
         taskLocation = location;
@@ -410,114 +456,6 @@ public class Hero {
 
     }
 
- /*   private void FindWay() {
-
-        Thread threadFindWay = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                StageHero = TaskType.WAIT_FIND_WAY;
-                CleanMapAll();
-                int inc = 2;
-                mapWay[heroLocation.getX()][heroLocation.getY()] = inc;
-                boolean boolWhile = true;
-                boolean FindRout = false;
-
-                exitWhile:
-                while (boolWhile) {
-                    boolean AliveTide = false;
-
-                    for (int x = 0; x < Map.getWightMap(); x++) {
-                        for (int y = 0; y < Map.getHeightMap(); y++) {
-                            //System.out.println(taskAction.get(a)[0]+" - "+x+" "+taskAction.get(a)[1]+" - " + y + "  |"+mapWay[x][y] + " - " + inc);
-                            if (x == taskLocation.getX() && y == taskLocation.getY() && (mapWay[x][y] == (inc - 1) || mapWay[x][y] == inc)) {
-                                FindRout = true;
-                                break exitWhile;
-                            } else if (mapWay[x][y] == inc) {
-
-                                if ((x + 1) < Map.getWightMap() && (Map.getObject(new Location(x+1, y, 0)).getType() == MapObjectType.AIR || ((x + 1) == taskLocation.getX() && y == taskLocation.getY())) && mapWay[x + 1][y] == 0) {
-                                    mapWay[x + 1][y] = (inc + 1);
-                                    AliveTide = true;
-                                }
-                                if ((x - 1) >= 0 && (Map.getObject(new Location(x-1, y, 0)).getType() == MapObjectType.AIR || ((x - 1) == taskLocation.getX() && y == taskLocation.getY())) && mapWay[x - 1][y] == 0) {
-                                    mapWay[x - 1][y] = (inc + 1);
-                                    AliveTide = true;
-                                }
-                                if ((y + 1) < Map.getHeightMap() && (Map.getObject(new Location(x, y+1, 0)).getType() == MapObjectType.AIR || (x == taskLocation.getX() && (y + 1) == taskLocation.getY())) && mapWay[x][y + 1] == 0) {
-                                    mapWay[x][y + 1] = (inc + 1);
-                                    AliveTide = true;
-                                }
-                                if ((y - 1) >= 0 && (Map.getObject(new Location(x, y-1, 0)).getType() == MapObjectType.AIR || (x == taskLocation.getX() && (y - 1) == taskLocation.getY())) && mapWay[x][y - 1] == 0) {
-                                    mapWay[x][y - 1] = (inc + 1);
-                                    AliveTide = true;
-                                }
-                            }
-                        }
-                    }
-
-                    if (!AliveTide) {
-                        boolWhile = false;
-                        FindRout = false;
-                        StageHero = TaskType.NONE;
-                        // дописать удаления из списка и из героя
-                    }
-                    inc++;
-                }
-
-                if (FindRout) {
-
-                    System.out.println("id:" + id + "  x:" + heroLocation.getX() + "  y:" + heroLocation.getY() + "  Long:" + (inc - 2));
-                    int xWay = taskLocation.getX();
-                    int yWay = taskLocation.getY();
-                    inc = mapWay[xWay][yWay];
-                    mapWay[xWay][yWay] = -10;
-
-                    while (inc > 3) {
-                        inc--;
-                        char rand = RandomWay(xWay, yWay, inc);
-                        if (rand == 'L') {
-                            xWay--;
-                        } else if (rand == 'R') {
-                            xWay++;
-                        } else if (rand == 'U') {
-                            yWay--;
-                        } else if (rand == 'D') {
-                            yWay++;
-                        }
-                        mapWay[xWay][yWay] = -10;
-                    }
-                    CleanMapWay(-10);
-                } else {
-                    StageHero = TaskType.NONE;
-                }
-                StageHero = TaskType.MOVE;
-            }
-
-            char RandomWay(int mX, int mY, int inc) {
-                ArrayList<Character> AvailableMove = new ArrayList<>();
-                Random random = new Random();
-
-                if ((mX - 1) >= 0 && mapWay[mX - 1][mY] == inc) {
-                    AvailableMove.add('L');
-                }
-                if ((mY - 1) >= 0 && mapWay[mX][mY - 1] == inc) {
-                    AvailableMove.add('U');
-                }
-                if ((mX + 1) < Map.getWightMap() && mapWay[mX + 1][mY] == inc) {
-                    AvailableMove.add('R');
-                }
-                if ((mY + 1) < Map.getHeightMap() && mapWay[mX][mY + 1] == inc) {
-                    AvailableMove.add('D');
-                }
-                if (AvailableMove.size() == 0) {
-                    return 'N';
-                }
-
-                return AvailableMove.get(random.nextInt(AvailableMove.size()));
-            }
-        });
-        threadFindWay.start();
-
-    }*/
 
     public int getId() {
         return id;

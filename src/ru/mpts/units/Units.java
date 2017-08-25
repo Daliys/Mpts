@@ -15,7 +15,7 @@ public class Units {
         /*AddHero(new Location(1, 15, 0), 1.0f, 100);
         AddHero(new Location(2, 15, 0), 1.0f, 100);*/
         AddHero(new Location(28, 15, 0), 1.0f, 100);
-        AddHero(new Location(3, 15, 0), 1.0f, 100);
+        //AddHero(new Location(3, 15, 0), 1.0f, 100);
     }
 
     public static void AddHero(Location location, int id) {

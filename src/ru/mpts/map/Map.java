@@ -106,7 +106,7 @@ public class Map {
             for (int x = 0; x < WightMap; x++) {
                 for (int y = 0; y < WightMap; y++) {
                     if (getObject(new Location(x, y, 0)).getType() == MapObjectType.STONE) {
-                        setObject(new Location;
+
                     }
                 }
             }

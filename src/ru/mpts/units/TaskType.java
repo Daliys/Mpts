@@ -9,4 +9,5 @@ public abstract class TaskType {
     public static final int WAIT_TASK = 5; // Задача: Ожидание ответа доступных задач
     public static final int WAIT_FIND_WAY = 6; // Задача: Ожидает ответа, происходит поиск пути
     public static final int FIND_WAY = 7; // Задача: Начать поиск пути, происходит поиск пути
+    public static final int CHECK_WAY_MOVE = 8; // Задача: Начать поиск пути, происходит поиск пути
 }
