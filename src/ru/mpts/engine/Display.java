@@ -30,6 +30,7 @@ public class Display {
     public static JLabel MenuTextSelect;
 
     public static JButton MenuButtonMine;
+    public static JButton MenuButtonCancel;
 
 
     public static void CreateBuffer(int _color, int numBuffer) {
@@ -104,6 +105,11 @@ public class Display {
         MenuButtonMine.setActionCommand(MouseTypeAction.MINE);
         MenuButtonMine.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
 
+        MenuButtonCancel = new JButton("Cancel");
+        MenuButtonCancel.setPreferredSize(MenuSizeButtonMine);
+        MenuButtonCancel.setActionCommand(MouseTypeAction.CANCEL);
+        MenuButtonCancel.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
+
 
         //панель информации
         panelMenuInformation.add(MenutextLabel);
@@ -113,6 +119,7 @@ public class Display {
 
         // панель кнопак
         panelMenuAction.add(MenuButtonMine);
+        panelMenuAction.add(MenuButtonCancel);
 
 
         // панель меню с кнопками и информацией
@@ -158,9 +165,8 @@ public class Display {
         bufferStrategy.show();
     }
 
-
     public static void setTitle(String title) {
-        frame.setTitle("Mpts   " + title);
+        frame.setTitle("The World of Tasks   " + title);
     }
 
     public static Graphics2D getGraphics() {

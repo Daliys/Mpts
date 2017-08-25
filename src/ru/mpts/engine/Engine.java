@@ -45,9 +45,9 @@ public class Engine implements Runnable {
         Display.clear();
 
         map.render();
-        units.render();
-        HandlingMouseEvent.render();
         TaskPlayers.render();
+        HandlingMouseEvent.render();
+        units.render();
 
         Display.swapBuffer();
         if (timer.getTime(timer.RENDER_SPEED))
