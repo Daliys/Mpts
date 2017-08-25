@@ -1,5 +1,6 @@
 package ru.mpts.sprite;
 
+import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
 
 import ru.mpts.map.Location;
@@ -35,6 +36,7 @@ public class Sprite {
         int x = (int) (location.getX() * scale + Map.getIndentX());
         int y = (int) (location.getY() * scale + Map.getIndentY());
 
+        if (Math.round(x - ((width / (64 / scale) - scale) / 2)) <= Display.WIGHT+60 && Math.round(y - ((height / (64 / scale) - scale) / 2)) <= Display.HIGHT+60 && Math.round(x - ((width / (64 / scale) - scale) / 2)) >= -70 && Math.round(y - ((height / (64 / scale) - scale) / 2)) >= -70)
         Engine.graphics2D.drawImage(image, Math.round(x - ((width / (64 / scale) - scale) / 2)), Math.round(y - ((height / (64 / scale) - scale))), Math.round(width / (64 / scale)), Math.round(height / (64 / scale)), null);
     }
 
