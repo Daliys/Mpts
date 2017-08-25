@@ -23,7 +23,7 @@ public class HandlingMouseEvent {
     public HandlingMouseEvent() {
         locationStartSelect = new Location(0, 0, 0);
         locationNowSelect = new Location(0, 0, 0);
-        spriteSelectCell = new Sprite("selectCell.png");
+        spriteSelectCell = new Sprite("selectCell.png", new Location(1,1,1));
         isSelect = false;
         graphics = Engine.graphics2D;
     }
@@ -140,7 +140,8 @@ public class HandlingMouseEvent {
 
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                spriteSelectCell.draw((int) (x * Map.getScale() + Map.getIndentX()), (int)(y * Map.getScale() + Map.getIndentY()), Map.getScale());
+                spriteSelectCell.setLocation(new Location(x, y, 0));
+                spriteSelectCell.draw();
 
                 if(Map.getObject(new Location(x,y,0)).getType() == MapObjectType.IRON_ORE) {
                    countSelect++;

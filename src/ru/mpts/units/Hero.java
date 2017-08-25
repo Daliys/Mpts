@@ -33,7 +33,6 @@ public class Hero {
         this.healthPoints = healthPoints;
         this.action = new Action();
         this.id = id;
-        System.out.println("move speed===" + speedMove);
         taskLocation = new Location(0, 0, 0);
         TaskNumAction = 0;
 
@@ -67,9 +66,6 @@ public class Hero {
     }
 
     public void update() {
-
-        //  System.out.println("id:"+id+" St"+StageHero);
-
         switch (StageHero) {
             case TaskType.NONE: {
                 StageHero = TaskType.GET_TASK;
@@ -403,7 +399,6 @@ public class Hero {
     public void setTask(Location location, int numAction) {
         taskLocation = location;
         this.TaskNumAction = numAction;
-        System.out.println("Task:" + taskLocation.getX() + " " + taskLocation.getY() + " idD:" + id);
         StageHero = TaskType.FIND_WAY;
     }
 

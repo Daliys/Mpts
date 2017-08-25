@@ -2,7 +2,6 @@ package ru.mpts.map;
 
 import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
-import ru.mpts.sprite.Sprite;
 
 import java.awt.*;
 
@@ -11,7 +10,7 @@ public class Map {
     private static int HeightMap = 30;
     private static int IndentX = 0;
     private static int IndentY = 0;
-    private static float scale;
+    private static int scale;
     private static Object[][] mapObjects;
     private static Object[][] mapGrounds;
     private static Graphics2D graphics;
@@ -25,15 +24,76 @@ public class Map {
         graphics = Engine.graphics2D;
     }
 
+    public static void addObject(Location location, int objectType) {
+        mapObjects[location.getX()][location.getY()] = new Object(location, objectType);
+        mapObjects[location.getX()][location.getY()].getSprite().draw();
+    }
+
+    public static void addGround(Location location, int groundType) {
+        mapGrounds[location.getX()][location.getY()] = new Object(location, groundType);
+        mapGrounds[location.getX()][location.getY()].getSprite().draw();
+    }
+
+    public static Object getObject(Location location) {
+        return mapObjects[location.getX()][location.getY()];
+    }
+
+    public static int getHeightMap() {
+        return HeightMap;
+    }
+
+    public static void setHeightMap(int heightMap) {
+        HeightMap = heightMap;
+    }
+
+    public static int getWightMap() {
+        return WightMap;
+    }
+
+    public static void setWightMap(int wightMap) {
+        WightMap = wightMap;
+    }
+
+    public static int getIndentX() {
+        return IndentX;
+    }
+
+    public static void setIndentX(int indentX) {
+        IndentX = indentX;
+    }
+
+    public static int getIndentY() {
+        return IndentY;
+    }
+
+    public static void setIndentY(int indentY) {
+        IndentY = indentY;
+    }
+
+    public static int getScale() {
+        return scale;
+    }
+
+    public static void setScale(int scale) {
+        Map.scale = scale;
+    }
+
+    public static Object[][] getMapObjects() {
+        return mapObjects;
+    }
+
+    public static Object[][] getMapGrounds() {
+        return mapGrounds;
+    }
+
     private void setScale() {
         if ((float) (Display.WIGHT / WightMap) > (float) (Display.HIGHT / HeightMap)) {
-            scale = (float) ((Display.HIGHT - 10) / (HeightMap));
+            scale = (Display.HIGHT - 10) / (HeightMap);
         } else {
-            scale = (float) ((Display.WIGHT - 10) / (WightMap));
+            scale = (Display.WIGHT - 10) / (WightMap);
         }
         scale = 20;
     }
-
 
     private void InitializationMap() {
         for (int x = 0; x < WightMap; x++) {
@@ -103,20 +163,6 @@ public class Map {
         addObject(new Location(13, 21, 0), MapObjectType.IRON_ORE);
     }
 
-    public static void addObject(Location location, int objectType) {
-        mapObjects[location.getX()][location.getY()] = new Object(location, objectType);
-        mapObjects[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
-    }
-
-    public static void addGround(Location location, int groundType) {
-        mapGrounds[location.getX()][location.getY()] = new Object(location, groundType);
-        mapGrounds[location.getX()][location.getY()].getSprite().draw((int) ((scale * location.getX()) + IndentX), (int) ((scale * location.getY()) + IndentX), scale);
-    }
-
-    public static Object getObject(Location location) {
-        return mapObjects[location.getX()][location.getY()];
-    }
-
     public void update() {
 
     }
@@ -125,51 +171,11 @@ public class Map {
 
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < HeightMap; y++) {
-                mapGrounds[x][y].getSprite().draw((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), scale);
-                if(mapObjects[x][y].getType() != MapObjectType.AIR) {
-                    mapObjects[x][y].getSprite().draw((int) ((scale * x) + IndentX), (int) ((scale * y) + IndentY), scale);
+                mapGrounds[x][y].getSprite().draw();
+                if (mapObjects[x][y].getType() != MapObjectType.AIR) {
+                    mapObjects[x][y].getSprite().draw();
                 }
             }
         }
-    }
-
-    public static void setHeightMap(int heightMap) {
-        HeightMap = heightMap;
-    }
-
-    public static void setWightMap(int wightMap) {
-        WightMap = wightMap;
-    }
-
-    public static void setIndentX(int indentX) {
-        IndentX = indentX;
-    }
-
-    public static void setIndentY(int indentY) {
-        IndentY = indentY;
-    }
-
-    public static void setScale(float scale) {
-        Map.scale = scale;
-    }
-
-    public static int getHeightMap() {
-        return HeightMap;
-    }
-
-    public static int getWightMap() {
-        return WightMap;
-    }
-
-    public static int getIndentX() {
-        return IndentX;
-    }
-
-    public static int getIndentY() {
-        return IndentY;
-    }
-
-    public static float getScale() {
-        return scale;
     }
 }

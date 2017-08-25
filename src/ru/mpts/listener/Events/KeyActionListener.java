@@ -60,7 +60,6 @@ public class KeyActionListener implements KeyListener {
         int speedScrollMap = (int)(Map.getScale()*0.45);
         if (pressKey[0]) {
             Map.setIndentY(Map.getIndentY()+speedScrollMap);
-            System.out.println(Map.getScale());
         }
         if (pressKey[1]) {
             Map.setIndentY(Map.getIndentY()-speedScrollMap);
