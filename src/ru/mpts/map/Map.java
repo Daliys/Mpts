@@ -4,6 +4,7 @@ import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Map {
     private static int WightMap = 30;
@@ -24,12 +25,12 @@ public class Map {
         graphics = Engine.graphics2D;
     }
 
-    public static void addObject(Location location, int objectType) {
+    public static void setObject(Location location, int objectType) {
         mapObjects[location.getX()][location.getY()] = new Object(location, objectType);
         mapObjects[location.getX()][location.getY()].getSprite().draw();
     }
 
-    public static void addGround(Location location, int groundType) {
+    public static void setGround(Location location, int groundType) {
         mapGrounds[location.getX()][location.getY()] = new Object(location, groundType);
         mapGrounds[location.getX()][location.getY()].getSprite().draw();
     }
@@ -95,72 +96,33 @@ public class Map {
         scale = 20;
     }
 
+    private void generationWorld(int seed) {
+        setRectangleObject(new Location(0,0, 0), new Location(getWightMap()-1,getHeightMap()-1), MapObjectType.STONE);
+
+
+        setObject(new Location(), 0));
+    }
+
     private void InitializationMap() {
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < WightMap; y++) {
-                addGround(new Location(x, y, 0), MapGroundType.GRASS);
-                addObject(new Location(x, y, 0), MapObjectType.AIR);
+                setGround(new Location(x, y, 0), MapGroundType.GRASS);
+                setObject(new Location(x, y, 0), MapObjectType.AIR);
             }
         }
+    }
 
-        addObject(new Location(15, 25, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(16, 25, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(17, 25, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(18, 25, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(19, 25, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(20, 25, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(21, 25, 0), MapObjectType.IRON_ORE);
+    public void setRectangleObject(Location startLocation, Location endLocation, int objectType) {
+        int startLocationX = startLocation.getX();
+        int startLocationY = startLocation.getY();
+        int endLocationX = endLocation.getX();
+        int endLocationY = endLocation.getY();
 
-        addObject(new Location(15, 24, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(16, 24, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(17, 24, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(18, 24, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(19, 24, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(20, 24, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(21, 24, 0), MapObjectType.IRON_ORE);
-
-        addObject(new Location(15, 23, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(16, 23, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(17, 23, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(18, 23, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(19, 23, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(20, 23, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(21, 23, 0), MapObjectType.IRON_ORE);
-
-        addObject(new Location(15, 22, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(16, 22, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(17, 22, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(18, 22, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(19, 22, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(20, 22, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(21, 22, 0), MapObjectType.IRON_ORE);
-
-        addObject(new Location(15, 21, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(16, 21, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(17, 21, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(18, 21, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(19, 21, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(20, 21, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(21, 21, 0), MapObjectType.IRON_ORE);
-
-
-        addObject(new Location(11, 1, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(21, 10, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(1, 21, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(3, 16, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(8, 28, 0), MapObjectType.IRON_ORE);
-
-        addObject(new Location(17, 5, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(21, 27, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(4, 24, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(19, 25, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(18, 28, 0), MapObjectType.IRON_ORE);
-
-        addObject(new Location(17, 17, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(6, 20, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(9, 20, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(19, 19, 0), MapObjectType.IRON_ORE);
-        addObject(new Location(13, 21, 0), MapObjectType.IRON_ORE);
+        for (int x = Math.min(startLocationX, endLocationX); x <= Math.max(startLocationX, endLocationX); x++) {
+            for (int y = Math.min(startLocationY, endLocationY); y <= Math.max(startLocationY, endLocationY); y++) {
+                setObject(new Location(x, y, 0), objectType);
+            }
+        }
     }
 
     public void update() {
@@ -168,7 +130,6 @@ public class Map {
     }
 
     public void render() {
-
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < HeightMap; y++) {
                 mapGrounds[x][y].getSprite().draw();

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Mpts:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Mpts_jar</output-path>
+    <root id="archive" name="Mpts.jar">
+      <element id="module-output" name="Mpts" />
+      <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+    </root>
+  </artifact>
+</component>

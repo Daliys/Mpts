@@ -38,7 +38,7 @@ public class Hero {
 
         mapWay = new int[Map.getWightMap()][Map.getHeightMap()];
 
-        Map.addObject(InitHeroLocation, MapObjectType.HERO);
+        Map.setObject(InitHeroLocation, MapObjectType.HERO);
         graphics = Engine.graphics2D;
 
         timerHero = new Timer();
@@ -47,7 +47,7 @@ public class Hero {
     public void render() {
         for (int x = 0; x < Map.getWightMap(); x++) {
             for (int y = 0; y < Map.getHeightMap(); y++) {
-                if (mapWay[x][y] == -10) {
+                if (mapWay[x][y] == -10 && Map.getObject(new Location(x, y, 0)).getType() != MapObjectType.HERO) {
                     graphics.setColor(new Color(0x267775));
                     // graphics.drawLine((int)((ru.mpts.map.Map.scale*x)+5+(ru.mpts.map.Map.scale/2)),(int)((ru.mpts.map.Map.scale*y)+5+(ru.mpts.map.Map.scale/2)),);
                     graphics.fillRect((int) ((Map.getScale() * x) + Map.getIndentX() + 2), (int) ((Map.getScale() * y) + Map.getIndentY() + 2), (int) (Map.getScale() - 4), (int) (Map.getScale() - 4));
@@ -101,10 +101,9 @@ public class Hero {
 
     private void MineResource() {
         if (Map.getObject(taskLocation).getDurability() <= 0) {
-            if (Map.getObject(taskLocation).getType() == MapObjectType.IRON_ORE) {
-                Map.addObject(taskLocation, MapObjectType.AIR);
-                StageHero = TaskType.NONE;
-            }
+            Map.setObject(taskLocation, MapObjectType.AIR);
+            StageHero = TaskType.NONE;
+
             TaskPlayers.RemoveTask(taskLocation);
 
             taskLocation.setX(0);
@@ -284,62 +283,62 @@ public class Hero {
 
         if ((heroLocation.getX() - 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY()] == -10  // лево
                 && Map.getObject(new Location((heroLocation.getX() - 1), heroLocation.getY(), 0)).getType() != MapObjectType.HERO) {
-            Map.addObject(heroLocation, MapObjectType.AIR);
+            Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setX(heroLocation.getX() - 1);
-            Map.addObject(heroLocation, MapObjectType.HERO);
+            Map.setObject(heroLocation, MapObjectType.HERO);
 
         } else if ((heroLocation.getX() + 1) < Map.getWightMap() && mapWay[(heroLocation.getX() + 1)][heroLocation.getY()] == -10      // право
                 && Map.getObject(new Location((heroLocation.getX() + 1), heroLocation.getY(), 0)).getType() != MapObjectType.HERO) {
-            Map.addObject(heroLocation, MapObjectType.AIR);
+            Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setX(heroLocation.getX() + 1);
-            Map.addObject(heroLocation, MapObjectType.HERO);
+            Map.setObject(heroLocation, MapObjectType.HERO);
 
         } else if ((heroLocation.getY() - 1) >= 0 && mapWay[heroLocation.getX()][(heroLocation.getY() - 1)] == -10
                 && Map.getObject(new Location(heroLocation.getX(), (heroLocation.getY() - 1), 0)).getType() != MapObjectType.HERO) { // верх
-            Map.addObject(heroLocation, MapObjectType.AIR);
+            Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setY(heroLocation.getY() - 1);
-            Map.addObject(heroLocation, MapObjectType.HERO);
+            Map.setObject(heroLocation, MapObjectType.HERO);
 
         } else if ((heroLocation.getY() + 1) < Map.getHeightMap() && mapWay[heroLocation.getX()][(heroLocation.getY() + 1)] == -10         // низ
                 && Map.getObject(new Location(heroLocation.getX(), (heroLocation.getY() + 1), 0)).getType() != MapObjectType.HERO) {
-            Map.addObject(heroLocation, MapObjectType.AIR);
+            Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setY(heroLocation.getY() + 1);
-            Map.addObject(heroLocation, MapObjectType.HERO);
+            Map.setObject(heroLocation, MapObjectType.HERO);
 
         } else if ((heroLocation.getX() + 1) < Map.getWightMap() && (heroLocation.getY() - 1) >= 0 && mapWay[(heroLocation.getX() + 1)][heroLocation.getY() - 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() + 1), (heroLocation.getY() - 1), 0)).getType() != MapObjectType.HERO) {  // право верх
-            Map.addObject(heroLocation, MapObjectType.AIR);
+            Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setX(heroLocation.getX() + 1);
             heroLocation.setY(heroLocation.getY() - 1);
-            Map.addObject(heroLocation, MapObjectType.HERO);
+            Map.setObject(heroLocation, MapObjectType.HERO);
 
         } else if ((heroLocation.getX() - 1) < Map.getWightMap() && (heroLocation.getY() - 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() - 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() - 1), (heroLocation.getY() - 1), 0)).getType() != MapObjectType.HERO) {  // лево верх
-            Map.addObject(heroLocation, MapObjectType.AIR);
+            Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setX(heroLocation.getX() - 1);
             heroLocation.setY(heroLocation.getY() - 1);
-            Map.addObject(heroLocation, MapObjectType.HERO);
+            Map.setObject(heroLocation, MapObjectType.HERO);
 
         } else if ((heroLocation.getX() + 1) < Map.getWightMap() && (heroLocation.getY() + 1) >= 0 && mapWay[(heroLocation.getX() + 1)][heroLocation.getY() + 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() + 1), (heroLocation.getY() + 1), 0)).getType() != MapObjectType.HERO) {  // право низ
-            Map.addObject(heroLocation, MapObjectType.AIR);
+            Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setX(heroLocation.getX() + 1);
             heroLocation.setY(heroLocation.getY() + 1);
-            Map.addObject(heroLocation, MapObjectType.HERO);
+            Map.setObject(heroLocation, MapObjectType.HERO);
         } else if ((heroLocation.getX() - 1) < Map.getWightMap() && (heroLocation.getY() + 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() + 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() - 1), (heroLocation.getY() + 1), 0)).getType() != MapObjectType.HERO) {      //лево низ
-            Map.addObject(heroLocation, MapObjectType.AIR);
+            Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setX(heroLocation.getX() - 1);
             heroLocation.setY(heroLocation.getY() + 1);
-            Map.addObject(heroLocation, MapObjectType.HERO);
+            Map.setObject(heroLocation, MapObjectType.HERO);
         }
 
             StageHero = TaskType.MOVE;
