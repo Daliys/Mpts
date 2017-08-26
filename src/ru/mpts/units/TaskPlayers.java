@@ -81,7 +81,7 @@ public abstract class TaskPlayers {
         }
     }
     // удаляет задание из списка и из героя
-    public static void RemoveTaskFormListAndHeroes(Location location){
+    public static void RemoveTaskFormListAndHeroes(Location location){ 
         Units.removeHeroesTask(location);
         RemoveTask(location);
     }
