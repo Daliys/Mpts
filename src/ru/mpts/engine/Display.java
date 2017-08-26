@@ -13,8 +13,8 @@ import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 
 public class Display {
-    public static int HIGHT = 600;
-    public static int WIGHT = 600;
+    public static int WIGHT = 1366;
+    public static int HIGHT = 768;
     public static JFrame frame;
     private static BufferedImage buffer;
     private static int[] bufferData;

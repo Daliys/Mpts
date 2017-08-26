@@ -24,7 +24,7 @@ public class Object {
                 break;
             }
             case MapObjectType.HERO: {
-                path = "hero(1).png";
+                path = "hero(3).png";
                 break;
             }
             case MapObjectType.IRON_ORE: {
