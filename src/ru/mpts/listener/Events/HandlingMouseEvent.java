@@ -112,6 +112,8 @@ public class HandlingMouseEvent {
                             type == MapObjectType.STONE) {
                         TaskPlayers.AddSelectionTask(new Location(x, y, 0), TaskType.MINE);
                     }
+                }else if(mouseStage == MouseTypeAction.CANCEL){
+                    TaskPlayers.RemoveTaskFormListAndHeroes(new Location(x,y,0));
                 }
             }
         }
