@@ -450,7 +450,7 @@ public class Hero {
         StageHero = TaskType.CHECK_WAY_MOVE;
     }
 
-
+    // очищает карту остовляя только выбранную цифру
     private void CleanMapWay(int numR) {
         for (int x = 0; x < Map.getWightMap(); x++) {
             for (int y = 0; y < Map.getHeightMap(); y++) {
@@ -468,6 +468,7 @@ public class Hero {
         StageHero = TaskType.FIND_WAY;
     }
 
+    // удаление задание
     public void removeTask() {
         taskLocation.setX(0);
         taskLocation.setY(0);

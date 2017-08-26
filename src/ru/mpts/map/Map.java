@@ -7,8 +7,8 @@ import java.awt.*;
 import java.util.Random;
 
 public class Map {
-    private static int WightMap = 30;
-    private static int HeightMap = 30;
+    private static int WightMap = 128;
+    private static int HeightMap = 128;
     private static int IndentX = 0;
     private static int IndentY = 0;
     private static int scale;

@@ -23,9 +23,8 @@ public abstract class TaskPlayers {
         }
         taskAction.add(new Action(location, action));
         Display.MenuTextTask.setText("Task: " + taskAction.size());
-
     }
-
+        // добовляет выделенную область задания в списки
     public static void AddSelectionTask(Location location, int action){
         if(!getFoundLocation(location)){
             taskAction.add(new Action(location,action));
@@ -33,7 +32,7 @@ public abstract class TaskPlayers {
         }
 
     }
-
+    // удаляет задания из героя и делает это здание достуным для других героев
     public static void RemoveTaskFromHero(Location location){
         for(int i =0; i < taskAction.size(); i++){
             if(location.getX() == taskAction.get(i).getLocation().getX() && location.getY() == taskAction.get(i).getLocation().getY()){
@@ -63,6 +62,7 @@ public abstract class TaskPlayers {
         Display.MenuTextTask.setText("Task: " + taskAction.size());
         return false;
     }
+    // проверяет есть ли задание в списках
     public static boolean getFoundLocation(Location location){
         for(int i = 0; i < taskAction.size(); i++){
             if(taskAction.get(i).getLocation().getX() == location.getX() && taskAction.get(i).getLocation().getY() == location.getY()){
@@ -71,7 +71,7 @@ public abstract class TaskPlayers {
         }
         return false;
     }
-    // удали задание из списка заданий  и из задания героя
+    // удали задание только из списка заданий
     public static void RemoveTask(Location location) {
         for (int a = 0; a < taskAction.size(); a++) {
             if (taskAction.get(a).getLocation().getX() == location.getX() && taskAction.get(a).getLocation().getY() == location.getY()) {
@@ -79,6 +79,11 @@ public abstract class TaskPlayers {
                 Display.MenuTextTask.setText("Task: " + taskAction.size());
             }
         }
+    }
+    // удаляет задание из списка и из героя
+    public static void RemoveTaskFormListAndHeroes(Location location){
+        Units.removeHeroesTask(location);
+        RemoveTask(location);
     }
 
     private static boolean ThreadTask = true;
