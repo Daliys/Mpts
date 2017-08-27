@@ -424,7 +424,7 @@ public class Hero {
             heroLocation.setY(heroLocation.getY() - 1);
             Map.setObject(heroLocation, MapObjectType.HERO);
 
-        } else if ((heroLocation.getX() - 1) < Map.getWightMap() && (heroLocation.getY() - 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() - 1] == -10
+        } else if ((heroLocation.getX() - 1) >= 0 && (heroLocation.getY() - 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() - 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() - 1), (heroLocation.getY() - 1), 0)).getType() != MapObjectType.HERO) {  // лево верх
             Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
@@ -432,14 +432,14 @@ public class Hero {
             heroLocation.setY(heroLocation.getY() - 1);
             Map.setObject(heroLocation, MapObjectType.HERO);
 
-        } else if ((heroLocation.getX() + 1) < Map.getWightMap() && (heroLocation.getY() + 1) >= 0 && mapWay[(heroLocation.getX() + 1)][heroLocation.getY() + 1] == -10
+        } else if ((heroLocation.getX() + 1) < Map.getWightMap() && (heroLocation.getY() + 1) < Map.getHeightMap()   && mapWay[(heroLocation.getX() + 1)][heroLocation.getY() + 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() + 1), (heroLocation.getY() + 1), 0)).getType() != MapObjectType.HERO) {  // право низ
             Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setX(heroLocation.getX() + 1);
             heroLocation.setY(heroLocation.getY() + 1);
             Map.setObject(heroLocation, MapObjectType.HERO);
-        } else if ((heroLocation.getX() - 1) < Map.getWightMap() && (heroLocation.getY() + 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() + 1] == -10
+        } else if ((heroLocation.getX() - 1) >= 0 && (heroLocation.getY() + 1) < Map.getHeightMap() && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() + 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() - 1), (heroLocation.getY() + 1), 0)).getType() != MapObjectType.HERO) {      //лево низ
             Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
