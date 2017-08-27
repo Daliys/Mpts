@@ -8,6 +8,7 @@ import ru.mpts.map.MapObjectType;
 import ru.mpts.sprite.Sprite;
 import ru.mpts.units.TaskPlayers;
 import ru.mpts.units.TaskType;
+import ru.mpts.units.Units;
 
 import java.awt.*;
 
@@ -19,6 +20,7 @@ public class HandlingMouseEvent {
     private static boolean isPressMouse = false;
     private static Sprite spriteSelectCell;
     private boolean isSelect;
+    public static int followTheHeroID = -1;
 
     public HandlingMouseEvent() {
         locationStartSelect = new Location(0, 0, 0);
@@ -45,6 +47,18 @@ public class HandlingMouseEvent {
     }
 
     public static void render() {
+        if(followTheHeroID != -1){
+            int x = Units.getHero(followTheHeroID).getLocation().getX();
+            int y = Units.getHero(followTheHeroID).getLocation().getY();
+            String str ="<html>ID:"+followTheHeroID+ "  Task:" + Units.getHero(followTheHeroID).getTaskLocation().getX()+" "+Units.getHero(followTheHeroID).getTaskLocation().getY()
+                    + "<br>TaskType:"+Units.getHero(followTheHeroID).getTaskNumAction() + " StageHero: "+Units.getHero(followTheHeroID).getStageHero() + "<br>LocationHero: " +
+                    Units.getHero(followTheHeroID).getLocation().getX() + " "+Units.getHero(followTheHeroID).getLocation().getY()+"</html>";
+            Display.MenuTextInformationHero.setText(str);
+
+            spriteSelectCell.setLocation(new Location(x, y, 0));
+            spriteSelectCell.draw();
+        }
+
         int countSelect = 0;
         Display.MenuTextSelect.setText(Integer.toString(countSelect) + " Iron");
         if (!isPressMouse()) {
@@ -57,8 +71,10 @@ public class HandlingMouseEvent {
 
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
+
                 spriteSelectCell.setLocation(new Location(x, y, 0));
                 spriteSelectCell.draw();
+
 
                 switch (Map.getObject(new Location(x, y, 0)).getType()) {
                     case MapObjectType.IRON_ORE: {
@@ -71,9 +87,12 @@ public class HandlingMouseEvent {
                         Display.MenuTextSelect.setText(Integer.toString(countSelect) + " Stone");
                         break;
                     }
+
                 }
             }
         }
+
+
     }
 
     public Location getLocationStartSelect() {
@@ -115,6 +134,20 @@ public class HandlingMouseEvent {
                 }else if(mouseStage == MouseTypeAction.CANCEL){
                     TaskPlayers.RemoveTaskFormListAndHeroes(new Location(x,y,0));
                 }
+                /*else if(mouseStage == MouseTypeAction.MOUSE){
+                    if(((maxX-minX)+(maxY-minY)) == 1){
+                        System.out.println("==1");
+                        if(Units.getHero(new Location(x,y,0)) != null){
+
+                            try {
+                                followTheHeroID = Units.getHero(new Location(x,y,0)).getId();
+                                System.out.println(followTheHeroID);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }*/
             }
         }
     }

@@ -12,8 +12,7 @@ import java.util.List;
 
 public abstract class TaskPlayers {
 
-    public static boolean ADD_SELECT_ALL = true;
-    public static boolean REMOVE_SELECT_ALL = false;
+
 
     public static volatile List<Action> taskAction = new ArrayList<Action>();
 
@@ -81,9 +80,9 @@ public abstract class TaskPlayers {
         }
     }
     // удаляет задание из списка и из героя
-    public static void RemoveTaskFormListAndHeroes(Location location){ 
-        Units.removeHeroesTask(location);
+    public static void RemoveTaskFormListAndHeroes(Location location){
         RemoveTask(location);
+        Units.removeHeroesTask(location);
     }
 
     private static boolean ThreadTask = true;
@@ -117,7 +116,7 @@ public abstract class TaskPlayers {
                     for (int x = 0; x < Map.getWightMap(); x++) {
                         for (int y = 0; y < Map.getHeightMap(); y++) {
                             //System.out.println(taskAction.get(a).getLocation().getX()+" - "+x+" "+taskAction.get(a).getLocation().getY()+" - " + y + "  |"+mapWay[x][y] + " - " + inc);
-                            if (x == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY() && (ThreadMapWay[x][y] == (inc - 1) || ThreadMapWay[x][y] == inc)) {
+                            if (taskAction.size() > a && x == taskAction.get(a).getLocation().getX() && y == taskAction.get(a).getLocation().getY() && (ThreadMapWay[x][y] == (inc - 1) || ThreadMapWay[x][y] == inc)) {
                                 FindRout = true;
                                 break exitWhile;
                             } else if (ThreadMapWay[x][y] == inc) {
@@ -152,8 +151,10 @@ public abstract class TaskPlayers {
                 }
                 if (FindRout) {
                     if (!taskAction.get(a).isTaken()) {
-                        Units.setHeroesTask(taskAction.get(a).getLocation(), taskAction.get(a).getAction(), heroId);
-                        taskAction.get(a).setTaken(true);
+                        if(taskAction.get(a).getLocation().getX() != -1 && taskAction.get(a).getLocation().getY() != -1) {
+                            Units.setHeroesTask(taskAction.get(a).getLocation(), taskAction.get(a).getAction(), heroId);
+                            taskAction.get(a).setTaken(true);
+                        }
 
                     }
                     ThreadTask = true;

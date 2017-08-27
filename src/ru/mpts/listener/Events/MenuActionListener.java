@@ -24,5 +24,6 @@ public class MenuActionListener implements ActionListener {
                 MouseAction.setMouseStage(MouseTypeAction.CANCEL);
             }
         }
+
     }
 }
