@@ -1,6 +1,7 @@
 package ru.mpts.map;
 
 public abstract class MapObjectType {
+    public static final int NONE = 0;
     public static final int AIR = 1;
     public static final int GRASS = 2;
     public static final int HERO = 3;

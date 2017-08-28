@@ -27,7 +27,7 @@ public class Map {
 
     public static void setObject(Location location, int objectType) {
         mapObjects[location.getX()][location.getY()] = new Object(location, objectType);
-        mapObjects[location.getX()][location.getY()].getSprite().draw();
+        mapObjects[location.getX()][location.getY()].draw();
     }
 
     public static void setGround(Location location, int groundType) {
@@ -36,7 +36,15 @@ public class Map {
     }
 
     public static Object getObject(Location location) {
-        return mapObjects[location.getX()][location.getY()];
+        if (location.getX() >= 0 && location.getX() < getWightMap() && location.getY() >= 0 && location.getY() < getHeightMap())
+            return mapObjects[location.getX()][location.getY()];
+        else
+            return new Object(location, MapObjectType.NONE);
+    }
+
+    public static Object getObject(int x, int y) {
+        Location location = new Location(x, y, 0);
+        return getObject(location);
     }
 
     public static Object getGround(Location location) {
@@ -223,7 +231,7 @@ public class Map {
             for (int y = 0; y < HeightMap; y++) {
                 mapGrounds[x][y].getSprite().draw();
                 if (mapObjects[x][y].getType() != MapObjectType.AIR) {
-                    mapObjects[x][y].getSprite().draw();
+                    mapObjects[x][y].draw();
                 }
             }
         }
