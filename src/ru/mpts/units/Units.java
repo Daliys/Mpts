@@ -35,6 +35,21 @@ public class Units {
         heroesList.sort(Comparator.comparing(Hero::getId));
     }
 
+    public static Hero getHero(Location location){
+        for(int a = 0; a < heroesList.size(); a++) {
+            if (heroesList.get(a).getLocation().getX() == location.getX() && heroesList.get(a).getLocation().getY() == location.getY()){
+                return heroesList.get(a);
+            }
+        }
+        return null;
+    }
+
+    public static Hero getHero(int Id){
+        if(Id <= heroesList.size())
+        return heroesList.get(Id);
+        return null;
+    }
+
     public static void AddHero(Location location, float speedMove, int healthPoints) {
         for (int i = 0; i < heroesList.size(); i++) {
             if (heroesList.get(i).getId() != i) {

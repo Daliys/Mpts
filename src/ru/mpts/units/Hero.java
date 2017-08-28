@@ -33,7 +33,7 @@ public class Hero {
         this.healthPoints = healthPoints;
         this.action = new Action();
         this.id = id;
-        taskLocation = new Location(0, 0, 0);
+        taskLocation = new Location(-1, -1, 0);
         TaskNumAction = 0;
 
         mapWay = new int[Map.getWightMap()][Map.getHeightMap()];
@@ -90,7 +90,7 @@ public class Hero {
                 FindWayTask();
                 break;
             }
-            case TaskType.CHECK_WAY_MOVE:{
+            case TaskType.CHECK_WAY_MOVE: {
                 CheckWayMove();
             }
         }
@@ -99,13 +99,9 @@ public class Hero {
     private void MineResource() {
         if (Map.getObject(taskLocation).getDurability() <= 0) {
             Map.setObject(taskLocation, MapObjectType.AIR);
-            StageHero = TaskType.NONE;
+            System.out.println("Hero ID:"+id+"  excavated: "+taskLocation.getX()+" "+taskLocation.getY());
 
-            TaskPlayers.RemoveTask(taskLocation);
-
-            taskLocation.setX(0);
-            taskLocation.setY(0);
-            StageHero = TaskType.NONE;
+            TaskPlayers.RemoveTaskFormListAndHeroes(taskLocation);
         } else {
             Map.getObject(taskLocation).setDurability(Map.getObject(taskLocation).getDurability() - 5);
         }
@@ -130,6 +126,12 @@ public class Hero {
                 boolean boolWhile = false;
                 boolean boolFindWay = false;
                 int increment = 1;
+                if (TaskNumAction == 0 && (taskLocation.getX() != -1 && taskLocation.getY() != -1)) {
+                    StageHero = TaskType.NONE;
+                    TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(), taskLocation.getY(), 0));
+                    removeTask();
+                    return;
+                }
 
                 exitWhile:
 
@@ -242,8 +244,8 @@ public class Hero {
                     StageHero = TaskType.MOVE;
 
 
-                }else {
-                    TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(),taskLocation.getY(),0));
+                } else {
+                    TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(), taskLocation.getY(), 0));
                     removeTask();
                 }
             }
@@ -275,100 +277,100 @@ public class Hero {
         boolean flagWhile = true;
         while (flagWhile) {
             // если найдет последнюю клетку то выходит
-            if((taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY()))){
+            if ((taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY()))) {
                 StageHero = TaskType.MOVE;
                 return;
             }
             //System.out.println("check");
             boolean freeCell = false;
 
-            if((nowCellWay.getX()+1) < Map.getWightMap() && mapWay[(nowCellWay.getX()+1)][nowCellWay.getY()] == -10
-                    && !(lastCellWay.getX() == (nowCellWay.getX()+1) && lastCellWay.getY() == (nowCellWay.getY()))){    //  право
-                if(Map.getObject(new Location((nowCellWay.getX()+1),(nowCellWay.getY()),0)).getType() == MapObjectType.AIR
-                        || (taskLocation.getX() == (nowCellWay.getX()+1) && taskLocation.getY() == (nowCellWay.getY()))){
+            if ((nowCellWay.getX() + 1) < Map.getWightMap() && mapWay[(nowCellWay.getX() + 1)][nowCellWay.getY()] == -10
+                    && !(lastCellWay.getX() == (nowCellWay.getX() + 1) && lastCellWay.getY() == (nowCellWay.getY()))) {    //  право
+                if (Map.getObject(new Location((nowCellWay.getX() + 1), (nowCellWay.getY()), 0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX() + 1) && taskLocation.getY() == (nowCellWay.getY()))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
                     lastCellWay.setX(nowCellWay.getX());
-                    nowCellWay.setX((nowCellWay.getX()+1));
+                    nowCellWay.setX((nowCellWay.getX() + 1));
                 }
-            }else if((nowCellWay.getX()-1) >= 0 && mapWay[(nowCellWay.getX()-1)][nowCellWay.getY()] == -10
-                    && !(lastCellWay.getX() == (nowCellWay.getX()-1) && lastCellWay.getY() == (nowCellWay.getY()))){     // лево
-                if(Map.getObject(new Location((nowCellWay.getX()-1),(nowCellWay.getY()),0)).getType() == MapObjectType.AIR
-                        || (taskLocation.getX() == (nowCellWay.getX()-1) && taskLocation.getY() == (nowCellWay.getY()))){
+            } else if ((nowCellWay.getX() - 1) >= 0 && mapWay[(nowCellWay.getX() - 1)][nowCellWay.getY()] == -10
+                    && !(lastCellWay.getX() == (nowCellWay.getX() - 1) && lastCellWay.getY() == (nowCellWay.getY()))) {     // лево
+                if (Map.getObject(new Location((nowCellWay.getX() - 1), (nowCellWay.getY()), 0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX() - 1) && taskLocation.getY() == (nowCellWay.getY()))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
                     lastCellWay.setX(nowCellWay.getX());
-                    nowCellWay.setX((nowCellWay.getX()-1));
+                    nowCellWay.setX((nowCellWay.getX() - 1));
                 }
-            }else if((nowCellWay.getY()+1) < Map.getHeightMap() && mapWay[nowCellWay.getX()][(nowCellWay.getY()+1)] == -10
-                    && !(lastCellWay.getX() == nowCellWay.getX() && lastCellWay.getY() == (nowCellWay.getY()+1))){  //низ
-                if(Map.getObject(new Location((nowCellWay.getX()),(nowCellWay.getY()+1),0)).getType() == MapObjectType.AIR
-                        || (taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY()+1))){
+            } else if ((nowCellWay.getY() + 1) < Map.getHeightMap() && mapWay[nowCellWay.getX()][(nowCellWay.getY() + 1)] == -10
+                    && !(lastCellWay.getX() == nowCellWay.getX() && lastCellWay.getY() == (nowCellWay.getY() + 1))) {  //низ
+                if (Map.getObject(new Location((nowCellWay.getX()), (nowCellWay.getY() + 1), 0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY() + 1))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
                     lastCellWay.setX(nowCellWay.getX());
-                    nowCellWay.setY((nowCellWay.getY()+1));
+                    nowCellWay.setY((nowCellWay.getY() + 1));
                 }
-            }else if((nowCellWay.getY()-1) >= 0 && mapWay[nowCellWay.getX()][(nowCellWay.getY()-1)] == -10
-                    && !(lastCellWay.getX() == (nowCellWay.getX()) && lastCellWay.getY() == (nowCellWay.getY()-1))){         // верх
+            } else if ((nowCellWay.getY() - 1) >= 0 && mapWay[nowCellWay.getX()][(nowCellWay.getY() - 1)] == -10
+                    && !(lastCellWay.getX() == (nowCellWay.getX()) && lastCellWay.getY() == (nowCellWay.getY() - 1))) {         // верх
                 //System.out.println("pred");
-                if(Map.getObject(new Location((nowCellWay.getX()),(nowCellWay.getY()-1),0)).getType() == MapObjectType.AIR
-                        || (taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY()-1))){
+                if (Map.getObject(new Location((nowCellWay.getX()), (nowCellWay.getY() - 1), 0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY() - 1))) {
                     //System.out.println("VERX");
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
                     lastCellWay.setX(nowCellWay.getX());
-                    nowCellWay.setY((nowCellWay.getY()-1));
+                    nowCellWay.setY((nowCellWay.getY() - 1));
                 }
-            }else if((nowCellWay.getX()+1) < Map.getWightMap() && (nowCellWay.getY()-1) >= 0      // право верх
-                    && mapWay[(nowCellWay.getX()+1)][(nowCellWay.getY()-1)] == -10
-                    && !(lastCellWay.getX() == (nowCellWay.getX()+1) && lastCellWay.getY() == (nowCellWay.getY()-1))){
+            } else if ((nowCellWay.getX() + 1) < Map.getWightMap() && (nowCellWay.getY() - 1) >= 0      // право верх
+                    && mapWay[(nowCellWay.getX() + 1)][(nowCellWay.getY() - 1)] == -10
+                    && !(lastCellWay.getX() == (nowCellWay.getX() + 1) && lastCellWay.getY() == (nowCellWay.getY() - 1))) {
 
-                if(Map.getObject(new Location((nowCellWay.getX()+1),(nowCellWay.getY()-1),0)).getType() == MapObjectType.AIR
-                        || (taskLocation.getX() == (nowCellWay.getX()+1) && taskLocation.getY() == (nowCellWay.getY()-1))){
+                if (Map.getObject(new Location((nowCellWay.getX() + 1), (nowCellWay.getY() - 1), 0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX() + 1) && taskLocation.getY() == (nowCellWay.getY() - 1))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
                     lastCellWay.setX(nowCellWay.getX());
-                    nowCellWay.setX((nowCellWay.getX()+1));
+                    nowCellWay.setX((nowCellWay.getX() + 1));
                     //nowCellWay.setY((nowCellWay.getY()));
-                    nowCellWay.setY((nowCellWay.getY()-1));
+                    nowCellWay.setY((nowCellWay.getY() - 1));
                 }
-            }else if((nowCellWay.getX()-1) >= 0 && (nowCellWay.getY()-1) >= 0     // лево верх
-                    && mapWay[(nowCellWay.getX()-1)][(nowCellWay.getY()-1)] == -10
-                    && !(lastCellWay.getX() == (nowCellWay.getX()-1) && lastCellWay.getY() == (nowCellWay.getY()-1))){
+            } else if ((nowCellWay.getX() - 1) >= 0 && (nowCellWay.getY() - 1) >= 0     // лево верх
+                    && mapWay[(nowCellWay.getX() - 1)][(nowCellWay.getY() - 1)] == -10
+                    && !(lastCellWay.getX() == (nowCellWay.getX() - 1) && lastCellWay.getY() == (nowCellWay.getY() - 1))) {
 
-                if(Map.getObject(new Location((nowCellWay.getX()-1),(nowCellWay.getY()-1),0)).getType() == MapObjectType.AIR
-                        || (taskLocation.getX() == (nowCellWay.getX()-1) && taskLocation.getY() == (nowCellWay.getY()-1))){
+                if (Map.getObject(new Location((nowCellWay.getX() - 1), (nowCellWay.getY() - 1), 0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX() - 1) && taskLocation.getY() == (nowCellWay.getY() - 1))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
                     lastCellWay.setX(nowCellWay.getX());
-                    nowCellWay.setX((nowCellWay.getX()-1));
-                    nowCellWay.setY((nowCellWay.getY()-1));
+                    nowCellWay.setX((nowCellWay.getX() - 1));
+                    nowCellWay.setY((nowCellWay.getY() - 1));
                 }
-            }else if((nowCellWay.getX()+1) < Map.getWightMap() && (nowCellWay.getY()+1) < Map.getHeightMap()      // право низ
-                    && mapWay[(nowCellWay.getX()+1)][(nowCellWay.getY()+1)] == -10
-                    && !(lastCellWay.getX() == (nowCellWay.getX()+1) && lastCellWay.getY() == (nowCellWay.getY()+1))){
+            } else if ((nowCellWay.getX() + 1) < Map.getWightMap() && (nowCellWay.getY() + 1) < Map.getHeightMap()      // право низ
+                    && mapWay[(nowCellWay.getX() + 1)][(nowCellWay.getY() + 1)] == -10
+                    && !(lastCellWay.getX() == (nowCellWay.getX() + 1) && lastCellWay.getY() == (nowCellWay.getY() + 1))) {
 
-                if(Map.getObject(new Location((nowCellWay.getX()+1),(nowCellWay.getY()+1),0)).getType() == MapObjectType.AIR
-                        || (taskLocation.getX() == (nowCellWay.getX()+1) && taskLocation.getY() == (nowCellWay.getY()+1))){
+                if (Map.getObject(new Location((nowCellWay.getX() + 1), (nowCellWay.getY() + 1), 0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX() + 1) && taskLocation.getY() == (nowCellWay.getY() + 1))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
                     lastCellWay.setX(nowCellWay.getX());
-                    nowCellWay.setX((nowCellWay.getX()+1));
-                    nowCellWay.setY((nowCellWay.getY()+1));
+                    nowCellWay.setX((nowCellWay.getX() + 1));
+                    nowCellWay.setY((nowCellWay.getY() + 1));
                 }
-            }else if((nowCellWay.getX()-1) >= 0 && (nowCellWay.getY()+1) < Map.getHeightMap()         // лево низ
-                    && mapWay[(nowCellWay.getX()-1)][(nowCellWay.getY()+1)] == -10
-                    && !(lastCellWay.getX() == (nowCellWay.getX()-1) && lastCellWay.getY() == (nowCellWay.getY()+1))){
-                if(Map.getObject(new Location((nowCellWay.getX()-1),(nowCellWay.getY()+1),0)).getType() == MapObjectType.AIR
-                        || (taskLocation.getX() == (nowCellWay.getX()-1) && taskLocation.getY() == (nowCellWay.getY()+1))){
+            } else if ((nowCellWay.getX() - 1) >= 0 && (nowCellWay.getY() + 1) < Map.getHeightMap()         // лево низ
+                    && mapWay[(nowCellWay.getX() - 1)][(nowCellWay.getY() + 1)] == -10
+                    && !(lastCellWay.getX() == (nowCellWay.getX() - 1) && lastCellWay.getY() == (nowCellWay.getY() + 1))) {
+                if (Map.getObject(new Location((nowCellWay.getX() - 1), (nowCellWay.getY() + 1), 0)).getType() == MapObjectType.AIR
+                        || (taskLocation.getX() == (nowCellWay.getX() - 1) && taskLocation.getY() == (nowCellWay.getY() + 1))) {
                     freeCell = true;
-                    nowCellWay.setX((nowCellWay.getX()-1));
-                    nowCellWay.setY((nowCellWay.getY()+1));
+                    nowCellWay.setX((nowCellWay.getX() - 1));
+                    nowCellWay.setY((nowCellWay.getY() + 1));
                 }
             }
 
-            if(!freeCell){
+            if (!freeCell) {
                 StageHero = TaskType.FIND_WAY;
                 return;
             }
@@ -378,7 +380,7 @@ public class Hero {
 
     }
 
-        // движение героя по карте
+    // движение героя по карте
     private void MoveOnMap() {
         if ((((heroLocation.getX() - taskLocation.getX()) == 1 || (heroLocation.getX() - taskLocation.getX()) == -1) && ((heroLocation.getY() - taskLocation.getY()) == 0)) ||
                 (((heroLocation.getY() - taskLocation.getY()) == 1 || (heroLocation.getY() - taskLocation.getY()) == -1) && ((heroLocation.getX() - taskLocation.getX()) == 0))) {
@@ -423,7 +425,7 @@ public class Hero {
             heroLocation.setY(heroLocation.getY() - 1);
             Map.setObject(heroLocation, MapObjectType.HERO);
 
-        } else if ((heroLocation.getX() - 1) < Map.getWightMap() && (heroLocation.getY() - 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() - 1] == -10
+        } else if ((heroLocation.getX() - 1) >= 0 && (heroLocation.getY() - 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() - 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() - 1), (heroLocation.getY() - 1), 0)).getType() != MapObjectType.HERO) {  // лево верх
             Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
@@ -431,14 +433,14 @@ public class Hero {
             heroLocation.setY(heroLocation.getY() - 1);
             Map.setObject(heroLocation, MapObjectType.HERO);
 
-        } else if ((heroLocation.getX() + 1) < Map.getWightMap() && (heroLocation.getY() + 1) >= 0 && mapWay[(heroLocation.getX() + 1)][heroLocation.getY() + 1] == -10
+        } else if ((heroLocation.getX() + 1) < Map.getWightMap() && (heroLocation.getY() + 1) < Map.getHeightMap()   && mapWay[(heroLocation.getX() + 1)][heroLocation.getY() + 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() + 1), (heroLocation.getY() + 1), 0)).getType() != MapObjectType.HERO) {  // право низ
             Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
             heroLocation.setX(heroLocation.getX() + 1);
             heroLocation.setY(heroLocation.getY() + 1);
             Map.setObject(heroLocation, MapObjectType.HERO);
-        } else if ((heroLocation.getX() - 1) < Map.getWightMap() && (heroLocation.getY() + 1) >= 0 && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() + 1] == -10
+        } else if ((heroLocation.getX() - 1) >= 0 && (heroLocation.getY() + 1) < Map.getHeightMap() && mapWay[(heroLocation.getX() - 1)][heroLocation.getY() + 1] == -10
                 && Map.getObject(new Location((heroLocation.getX() - 1), (heroLocation.getY() + 1), 0)).getType() != MapObjectType.HERO) {      //лево низ
             Map.setObject(heroLocation, MapObjectType.AIR);
             mapWay[heroLocation.getX()][heroLocation.getY()] = 0;
@@ -447,7 +449,7 @@ public class Hero {
             Map.setObject(heroLocation, MapObjectType.HERO);
         }
 
-        StageHero = TaskType.CHECK_WAY_MOVE;
+        StageHero = TaskType.FIND_WAY;
     }
 
     // очищает карту остовляя только выбранную цифру
@@ -470,8 +472,8 @@ public class Hero {
 
     // удаление задание
     public void removeTask() {
-        taskLocation.setX(0);
-        taskLocation.setY(0);
+        taskLocation.setX(-1);
+        taskLocation.setY(-1);
         TaskNumAction = 0;
         StageHero = TaskType.NONE;
         CleanMapAll();
@@ -489,6 +491,10 @@ public class Hero {
 
     public Location getLocation() {
         return heroLocation;
+    }
+
+    public int getTaskNumAction() {
+        return TaskNumAction;
     }
 
     public void setLocation(Location location) {

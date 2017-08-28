@@ -3,6 +3,8 @@ package ru.mpts.listener.Events;
 import ru.mpts.engine.Display;
 import ru.mpts.map.Location;
 import ru.mpts.map.Map;
+import ru.mpts.map.MapObjectType;
+import ru.mpts.units.Units;
 
 import java.applet.Applet;
 import java.awt.event.MouseEvent;
@@ -31,10 +33,23 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        int x = (int) ((e.getX() - Map.getIndentX()) / Map.getScale());
+        int y = (int) ((e.getY() - Map.getIndentY()) / Map.getScale());
+        if(Units.getHero(new Location(x,y,0)) != null){
+                HandlingMouseEvent.followTheHeroID = Units.getHero(new Location(x,y,0)).getId();
+                System.out.println(HandlingMouseEvent.followTheHeroID);
+        }else if(Map.getObject(new Location(x,y,0)) != null){
+            if(Map.getObject(new Location(x,y,0)).getType() != MapObjectType.AIR) {
+                HandlingMouseEvent.followTheBlock = new Location(x, y, 0);
+            }else{
+                HandlingMouseEvent.followTheBlock = null;
+            }
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        HandlingMouseEvent.followTheHeroID = -1;
         if(isMouseBeyundBorders(new Location(e.getX(),e.getY(),0))) {
             handlingMouseEvent.getLocationStartSelect().setX((int) ((e.getX() - Map.getIndentX()) / Map.getScale()));
             handlingMouseEvent.getLocationStartSelect().setY((int) ((e.getY() - Map.getIndentY()) / Map.getScale()));
