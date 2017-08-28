@@ -60,73 +60,76 @@ public class Object {
         }
     }
 
-    public void draw() {
+    public String getRow() {
         int x = location.getX();
         int y = location.getY();
-
-        switch (type) {
-            case MapObjectType.STONE: {
-                if (Map.getObject(x, y-1).getType() == MapObjectType.AIR || Map.getObject(x, y-1).getType() == MapObjectType.HERO) {
-                    if (Map.getObject(x, y+1).getType() == MapObjectType.AIR || Map.getObject(x, y+1).getType() == MapObjectType.HERO) {
-                        if (Map.getObject(x-1, y).getType() == MapObjectType.AIR || Map.getObject(x-1, y).getType() == MapObjectType.HERO) {
-                            if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
-                                sprite.draw("stoneBlock(Only).png");
-                            } else {
-                                sprite.draw("stoneBlock(UpDownLeft).png");
-                            }
-                        } else {
-                            if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
-                                sprite.draw("stoneBlock(UpDownRight).png");
-                            } else {
-                                sprite.draw("stoneBlock(UpDown).png");
-                            }
-                        }
+        if (Map.getObject(x, y-1).getType() == MapObjectType.AIR || Map.getObject(x, y-1).getType() == MapObjectType.HERO) {
+            if (Map.getObject(x, y+1).getType() == MapObjectType.AIR || Map.getObject(x, y+1).getType() == MapObjectType.HERO) {
+                if (Map.getObject(x-1, y).getType() == MapObjectType.AIR || Map.getObject(x-1, y).getType() == MapObjectType.HERO) {
+                    if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
+                        return "Only";
                     } else {
-                        if (Map.getObject(x-1, y).getType() == MapObjectType.AIR || Map.getObject(x-1, y).getType() == MapObjectType.HERO) {
-                            if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
-                                sprite.draw("stoneBlock(UpLeftRight).png");
-                            } else {
-                                sprite.draw("stoneBlock(UpLeft).png");
-                            }
-                        } else {
-                            if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
-                                sprite.draw("stoneBlock(UpRight).png");
-                            } else {
-                                sprite.draw("stoneBlock(Up).png");
-                            }
-                        }
+                        return "UpDownLeft";
                     }
                 } else {
-                    if (Map.getObject(x, y+1).getType() == MapObjectType.AIR || Map.getObject(x, y+1).getType() == MapObjectType.HERO) {
-                        if (Map.getObject(x-1, y).getType() == MapObjectType.AIR || Map.getObject(x-1, y).getType() == MapObjectType.HERO) {
-                            if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
-                                sprite.draw("stoneBlock(DownLeftRight).png");
-                            } else {
-                                sprite.draw("stoneBlock(DownLeft).png");
-                            }
-                        } else {
-                            if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
-                                sprite.draw("stoneBlock(DownRight).png");
-                            } else {
-                                sprite.draw("stoneBlock(Down).png");
-                            }
-                        }
+                    if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
+                        return "UpDownRight";
                     } else {
-                        if (Map.getObject(x-1, y).getType() == MapObjectType.AIR || Map.getObject(x-1, y).getType() == MapObjectType.HERO) {
-                            if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
-                                sprite.draw("stoneBlock(LeftRight).png");
-                            } else {
-                                sprite.draw("stoneBlock(Left).png");
-                            }
-                        } else {
-                            if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
-                                sprite.draw("stoneBlock(Right).png");
-                            } else {
-                                sprite.draw("stoneBlock(Center).png");
-                            }
-                        }
+                        return "UpDown";
                     }
                 }
+            } else {
+                if (Map.getObject(x-1, y).getType() == MapObjectType.AIR || Map.getObject(x-1, y).getType() == MapObjectType.HERO) {
+                    if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
+                        return "UpLeftRight";
+                    } else {
+                        return "UpLeft";
+                    }
+                } else {
+                    if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
+                        return "UpRight";
+                    } else {
+                        return "Up";
+                    }
+                }
+            }
+        } else {
+            if (Map.getObject(x, y+1).getType() == MapObjectType.AIR || Map.getObject(x, y+1).getType() == MapObjectType.HERO) {
+                if (Map.getObject(x-1, y).getType() == MapObjectType.AIR || Map.getObject(x-1, y).getType() == MapObjectType.HERO) {
+                    if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
+                        return "DownLeftRight";
+                    } else {
+                        return "DownLeft";
+                    }
+                } else {
+                    if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
+                        return "DownRight";
+                    } else {
+                        return "Down";
+                    }
+                }
+            } else {
+                if (Map.getObject(x-1, y).getType() == MapObjectType.AIR || Map.getObject(x-1, y).getType() == MapObjectType.HERO) {
+                    if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
+                        return "LeftRight";
+                    } else {
+                        return "Left";
+                    }
+                } else {
+                    if (Map.getObject(x+1, y).getType() == MapObjectType.AIR || Map.getObject(x+1, y).getType() == MapObjectType.HERO) {
+                        return "Right";
+                    } else {
+                        return "Center";
+                    }
+                }
+            }
+        }
+    }
+
+    public void draw() {
+        switch (type) {
+            case MapObjectType.STONE: {
+                sprite.draw("stoneBlock(" + getRow() + ").png");
                 break;
             }
             case MapObjectType.AIR: {
