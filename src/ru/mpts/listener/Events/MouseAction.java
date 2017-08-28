@@ -3,6 +3,7 @@ package ru.mpts.listener.Events;
 import ru.mpts.engine.Display;
 import ru.mpts.map.Location;
 import ru.mpts.map.Map;
+import ru.mpts.map.MapObjectType;
 import ru.mpts.units.Units;
 
 import java.applet.Applet;
@@ -35,11 +36,14 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
         int x = (int) ((e.getX() - Map.getIndentX()) / Map.getScale());
         int y = (int) ((e.getY() - Map.getIndentY()) / Map.getScale());
         if(Units.getHero(new Location(x,y,0)) != null){
-
                 HandlingMouseEvent.followTheHeroID = Units.getHero(new Location(x,y,0)).getId();
                 System.out.println(HandlingMouseEvent.followTheHeroID);
-
-
+        }else if(Map.getObject(new Location(x,y,0)) != null){
+            if(Map.getObject(new Location(x,y,0)).getType() != MapObjectType.AIR) {
+                HandlingMouseEvent.followTheBlock = new Location(x, y, 0);
+            }else{
+                HandlingMouseEvent.followTheBlock = null;
+            }
         }
     }
 

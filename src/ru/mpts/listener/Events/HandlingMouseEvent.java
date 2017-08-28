@@ -9,6 +9,7 @@ import ru.mpts.sprite.Sprite;
 import ru.mpts.units.TaskPlayers;
 import ru.mpts.units.TaskType;
 import ru.mpts.units.Units;
+import ru.mpts.map.Object;
 
 import java.awt.*;
 
@@ -21,6 +22,7 @@ public class HandlingMouseEvent {
     private static Sprite spriteSelectCell;
     private boolean isSelect;
     public static int followTheHeroID = -1;
+    public static Location followTheBlock = null;
 
     public HandlingMouseEvent() {
         locationStartSelect = new Location(0, 0, 0);
@@ -57,6 +59,13 @@ public class HandlingMouseEvent {
 
             spriteSelectCell.setLocation(new Location(x, y, 0));
             spriteSelectCell.draw();
+        }else if(followTheBlock != null){
+            String srt = "<html>Block:"+Map.getObject(followTheBlock).getType()+"<br>"+
+                    "Location:"+followTheBlock.getX()+" "+followTheBlock.getY()+
+                    "<br>"+"durability:"+Map.getObject(followTheBlock).getDurability()+"</html>";
+            Display.MenuTextInformationHero.setText(srt);
+        }else{
+            Display.MenuTextInformationHero.setText("/");
         }
 
         int countSelect = 0;

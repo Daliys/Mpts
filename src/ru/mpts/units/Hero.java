@@ -99,6 +99,7 @@ public class Hero {
     private void MineResource() {
         if (Map.getObject(taskLocation).getDurability() <= 0) {
             Map.setObject(taskLocation, MapObjectType.AIR);
+            System.out.println("Hero ID:"+id+"  excavated: "+taskLocation.getX()+" "+taskLocation.getY());
 
             TaskPlayers.RemoveTaskFormListAndHeroes(taskLocation);
         } else {
