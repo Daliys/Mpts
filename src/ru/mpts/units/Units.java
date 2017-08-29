@@ -75,7 +75,7 @@ public class Units {
 
     public static void removeHeroesTask(Location location) {
        for (int i = 0; i < heroesList.size(); i++) {
-            if (heroesList.get(i).getTaskLocation().getX() == location.getX() && heroesList.get(i).getTaskLocation().getY() == location.getY()) {
+            if (heroesList.get(i).getTaskLocation() != null && heroesList.get(i).getTaskLocation().getX() == location.getX() && heroesList.get(i).getTaskLocation().getY() == location.getY()) {
                 heroesList.get(i).removeTask();
                 
                 return;

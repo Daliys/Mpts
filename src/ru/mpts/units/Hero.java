@@ -33,7 +33,7 @@ public class Hero {
         this.healthPoints = healthPoints;
         this.action = new Action();
         this.id = id;
-        taskLocation = new Location(-1, -1, 0);
+        taskLocation = null;
         TaskNumAction = 0;
 
         mapWay = new int[Map.getWightMap()][Map.getHeightMap()];
@@ -126,7 +126,7 @@ public class Hero {
                 boolean boolWhile = false;
                 boolean boolFindWay = false;
                 int increment = 1;
-                if (TaskNumAction == 0 && (taskLocation.getX() != -1 && taskLocation.getY() != -1)) {
+                if (TaskNumAction == 0 || taskLocation == null) {
                     StageHero = TaskType.NONE;
                     TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(), taskLocation.getY(), 0));
                     removeTask();
@@ -172,9 +172,10 @@ public class Hero {
                     increment++;
 
                     if (!AliveTide) {
-                        StageHero = TaskType.NONE;
                         boolWhile = true;
                         boolFindWay = false;
+                        TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(), taskLocation.getY(), 0));
+                        removeTask();
                     }
                 }
 
@@ -245,8 +246,10 @@ public class Hero {
 
 
                 } else {
-                    TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(), taskLocation.getY(), 0));
-                    removeTask();
+                    if(taskLocation != null) {
+                        TaskPlayers.RemoveTaskFromHero(new Location(taskLocation.getX(), taskLocation.getY(), 0));
+                        removeTask();
+                    }
                 }
             }
 
@@ -273,7 +276,7 @@ public class Hero {
     private void CheckWayMove() {       // проверка пути на возможность прохождение персонажем этого пути без проблем если не так то поиск нового пути
         StageHero = TaskType.WAIT_FIND_WAY;
         Location nowCellWay = new Location(heroLocation.getX(), heroLocation.getY(), 0);
-        Location lastCellWay = new Location(-1, -1, 0);
+        Location lastCellWay = null;
         boolean flagWhile = true;
         while (flagWhile) {
             // если найдет последнюю клетку то выходит
@@ -472,8 +475,7 @@ public class Hero {
 
     // удаление задание
     public void removeTask() {
-        taskLocation.setX(-1);
-        taskLocation.setY(-1);
+        taskLocation = null;
         TaskNumAction = 0;
         StageHero = TaskType.NONE;
         CleanMapAll();

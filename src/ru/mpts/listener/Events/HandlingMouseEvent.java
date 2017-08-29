@@ -52,8 +52,14 @@ public class HandlingMouseEvent {
         if(followTheHeroID != -1){
             int x = Units.getHero(followTheHeroID).getLocation().getX();
             int y = Units.getHero(followTheHeroID).getLocation().getY();
-            String str ="<html>ID:"+followTheHeroID+ "  Task:" + Units.getHero(followTheHeroID).getTaskLocation().getX()+" "+Units.getHero(followTheHeroID).getTaskLocation().getY()
-                    + "<br>TaskType:"+Units.getHero(followTheHeroID).getTaskNumAction() + " StageHero: "+Units.getHero(followTheHeroID).getStageHero() + "<br>LocationHero: " +
+
+            String str ="<html>ID:"+followTheHeroID;
+            if(Units.getHero(followTheHeroID).getTaskLocation() != null) {
+                str += "  Task:" + Units.getHero(followTheHeroID).getTaskLocation().getX() + " " + Units.getHero(followTheHeroID).getTaskLocation().getY();
+            }else{
+                str+="  Task: null";
+            }
+            str+="<br>TaskType:"+Units.getHero(followTheHeroID).getTaskNumAction() + " StageHero: "+Units.getHero(followTheHeroID).getStageHero() + "<br>LocationHero: " +
                     Units.getHero(followTheHeroID).getLocation().getX() + " "+Units.getHero(followTheHeroID).getLocation().getY()+"</html>";
             Display.MenuTextInformationHero.setText(str);
 
@@ -65,7 +71,13 @@ public class HandlingMouseEvent {
                     "<br>"+"durability:"+Map.getObject(followTheBlock).getDurability()+"</html>";
             Display.MenuTextInformationHero.setText(srt);
         }else{
-            Display.MenuTextInformationHero.setText("/");
+            String str = "<html>";
+            for(int i = 0; i < TaskPlayers.taskAction.size(); i++) {
+                str+= "Location: " + TaskPlayers.taskAction.get(i).getLocation().getX()+" "+TaskPlayers.taskAction.get(i).getLocation().getY()
+                        +" Action:"+TaskPlayers.taskAction.get(i).getAction()+"<br>";
+            }
+            str += "/html";
+            Display.MenuTextInformationHero.setText(str);
         }
 
         int countSelect = 0;
