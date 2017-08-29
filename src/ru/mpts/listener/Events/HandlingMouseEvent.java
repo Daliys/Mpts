@@ -42,7 +42,7 @@ public class HandlingMouseEvent {
 
     public static boolean isPressMouse() {
         return isPressMouse;
-    }
+    } 
 
     public static void setIsPressMouse(boolean isPressMouse) {
         HandlingMouseEvent.isPressMouse = isPressMouse;
