@@ -100,11 +100,7 @@ public abstract class TaskPlayers {
         }
         Thread FindWays = new Thread(() -> {
 
-          /*  for (int a = 0; a < taskAction.size(); a++) {
-                if (taskAction.get(a).isTaken()) {
-                    continue;
-                }
-*/
+
                 int ThreadMapWay[][] = new int[Map.getWightMap()][Map.getHeightMap()];
                 int inc = 2;
                 ThreadMapWay[location.getX()][location.getY()] = inc;
@@ -170,7 +166,7 @@ public abstract class TaskPlayers {
                     return;
                 }
 
-           // }
+
 
             ThreadTask = true;
 

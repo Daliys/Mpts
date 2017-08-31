@@ -42,39 +42,39 @@ public class HandlingMouseEvent {
 
     public static boolean isPressMouse() {
         return isPressMouse;
-    } 
+    }
 
     public static void setIsPressMouse(boolean isPressMouse) {
         HandlingMouseEvent.isPressMouse = isPressMouse;
     }
 
     public static void render() {
-        if(followTheHeroID != -1){
+        if (followTheHeroID != -1) {
             int x = Units.getHero(followTheHeroID).getLocation().getX();
             int y = Units.getHero(followTheHeroID).getLocation().getY();
 
-            String str ="<html>ID:"+followTheHeroID;
-            if(Units.getHero(followTheHeroID).getTaskLocation() != null) {
+            String str = "<html>ID:" + followTheHeroID;
+            if (Units.getHero(followTheHeroID).getTaskLocation() != null) {
                 str += "  Task:" + Units.getHero(followTheHeroID).getTaskLocation().getX() + " " + Units.getHero(followTheHeroID).getTaskLocation().getY();
-            }else{
-                str+="  Task: null";
+            } else {
+                str += "  Task: null";
             }
-            str+="<br>TaskType:"+Units.getHero(followTheHeroID).getTaskNumAction() + " StageHero: "+Units.getHero(followTheHeroID).getStageHero() + "<br>LocationHero: " +
-                    Units.getHero(followTheHeroID).getLocation().getX() + " "+Units.getHero(followTheHeroID).getLocation().getY()+"</html>";
+            str += "<br>TaskType:" + Units.getHero(followTheHeroID).getTaskNumAction() + " StageHero: " + Units.getHero(followTheHeroID).getStageHero() + "<br>LocationHero: " +
+                    Units.getHero(followTheHeroID).getLocation().getX() + " " + Units.getHero(followTheHeroID).getLocation().getY() + "</html>";
             Display.MenuTextInformationHero.setText(str);
 
             spriteSelectCell.setLocation(new Location(x, y, 0));
             spriteSelectCell.draw();
-        }else if(followTheBlock != null){
-            String srt = "<html>Block:"+Map.getObject(followTheBlock).getType()+"<br>"+
-                    "Location:"+followTheBlock.getX()+" "+followTheBlock.getY()+
-                    "<br>"+"durability:"+Map.getObject(followTheBlock).getDurability()+"</html>";
+        } else if (followTheBlock != null) {
+            String srt = "<html>Block:" + Map.getObject(followTheBlock).getType() + "<br>" +
+                    "Location:" + followTheBlock.getX() + " " + followTheBlock.getY() +
+                    "<br>" + "durability:" + Map.getObject(followTheBlock).getDurability() + "</html>";
             Display.MenuTextInformationHero.setText(srt);
-        }else{
+        } else {
             String str = "<html>";
-            for(int i = 0; i < TaskPlayers.taskAction.size(); i++) {
-                str+= "Location: " + TaskPlayers.taskAction.get(i).getLocation().getX()+" "+TaskPlayers.taskAction.get(i).getLocation().getY()
-                        +" Action:"+TaskPlayers.taskAction.get(i).getAction()+"<br>";
+            for (int i = 0; i < TaskPlayers.taskAction.size(); i++) {
+                str += "Location: " + TaskPlayers.taskAction.get(i).getLocation().getX() + " " + TaskPlayers.taskAction.get(i).getLocation().getY()
+                        + " Action:" + TaskPlayers.taskAction.get(i).getAction() + "<br>";
             }
             str += "/html";
             Display.MenuTextInformationHero.setText(str);
@@ -152,8 +152,8 @@ public class HandlingMouseEvent {
                             type == MapObjectType.STONE) {
                         TaskPlayers.AddSelectionTask(new Location(x, y, 0), TaskType.MINE);
                     }
-                }else if(mouseStage == MouseTypeAction.CANCEL){
-                    TaskPlayers.RemoveTaskFormListAndHeroes(new Location(x,y,0));
+                } else if (mouseStage == MouseTypeAction.CANCEL) {
+                    TaskPlayers.RemoveTaskFormListAndHeroes(new Location(x, y, 0));
                 }
                 /*else if(mouseStage == MouseTypeAction.MOUSE){
                     if(((maxX-minX)+(maxY-minY)) == 1){
