@@ -14,7 +14,6 @@ public class Action {
     }
 
     public Action() {
-        this.location = location;
         this.action = TaskType.NONE;
         isTaken = false;
     }

@@ -24,6 +24,15 @@ public class MenuActionListener implements ActionListener {
                 MouseAction.setMouseStage(MouseTypeAction.CANCEL);
             }
         }
+        if (e.getActionCommand() == MouseTypeAction.BUILD) {
+            if (MouseAction.getMouseStage() == MouseTypeAction.BUILD) {
+                System.out.println(MouseTypeAction.MOUSE);
+                MouseAction.setMouseStage(MouseTypeAction.MOUSE);
+            } else {
+                System.out.println(MouseTypeAction.BUILD);
+                MouseAction.setMouseStage(MouseTypeAction.BUILD);
+            }
+        }
 
     }
 }

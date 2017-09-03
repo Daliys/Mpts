@@ -12,31 +12,38 @@ import java.util.List;
 
 public abstract class TaskPlayers {
 
-
-    public static volatile List<Action> taskAction = new ArrayList<Action>();
+    /// добавить разные списки для разных типов заданией (для копания , строительства)
+    public static volatile List<Action> taskActionMine = new ArrayList<Action>();
+    public static volatile List<Action> taskActionBuild = new ArrayList<Action>();
 
     public static void AddTask(Location location, int action) {
         if (CheckListTask(location)) {     // проверка на то ести ли в заднияx эта задача(х,у),если есть то удалить ее
             return;
         }
-        taskAction.add(new Action(location, action));
-        Display.MenuTextTask.setText("Task: " + taskAction.size());
+        taskActionMine.add(new Action(location, action));
+        Display.MenuTextTask.setText("Task: " + taskActionMine.size());
     }
 
-    // добовляет выделенную область задания в списки
+    // добовляет выделенную область задания в спискиs
     public static void AddSelectionTask(Location location, int action) {
         if (!getFoundLocation(location)) {
-            taskAction.add(new Action(location, action));
-            Display.MenuTextTask.setText("Task: " + taskAction.size());
+            if(action == TaskType.MINE) {
+                taskActionMine.add(new Action(location, action));
+            }else if(action == TaskType.BUILD){
+                taskActionBuild.add(new Action(location, action));
+            }
+            Display.MenuTextTask.setText("Task: " + taskActionMine.size());
         }
-
     }
+
+
+
 
     // удаляет задания из героя и делает это здание достуным для других героев
     public static void RemoveTaskFromHero(Location location) {
-        for (int i = 0; i < taskAction.size(); i++) {
-            if (location.getX() == taskAction.get(i).getLocation().getX() && location.getY() == taskAction.get(i).getLocation().getY()) {
-                taskAction.get(i).setTaken(false);
+        for (int i = 0; i < taskActionMine.size(); i++) {
+            if (location.getX() == taskActionMine.get(i).getLocation().getX() && location.getY() == taskActionMine.get(i).getLocation().getY()) {
+                taskActionMine.get(i).setTaken(false);
             }
         }
     }
@@ -44,29 +51,29 @@ public abstract class TaskPlayers {
 
     // проверят на наличие задания, если в этой клетке нет задания то добавить, иначе удалить это задание
     private static boolean CheckListTask(Location location) {
-        for (int i = 0; i < taskAction.size(); i++) {
-            if (taskAction.get(i).getLocation().getX() == location.getX() && taskAction.get(i).getLocation().getY() == location.getY()) {
-                if (!taskAction.get(i).isTaken()) {
-                    taskAction.remove(i);
+        for (int i = 0; i < taskActionMine.size(); i++) {
+            if (taskActionMine.get(i).getLocation().getX() == location.getX() && taskActionMine.get(i).getLocation().getY() == location.getY()) {
+                if (!taskActionMine.get(i).isTaken()) {
+                    taskActionMine.remove(i);
 
-                } else if (taskAction.get(i).isTaken()) {
+                } else if (taskActionMine.get(i).isTaken()) {
                     Units.removeHeroesTask(location);
-                    taskAction.remove(i);
+                    taskActionMine.remove(i);
 
                 }
-                Display.MenuTextTask.setText("Task: " + taskAction.size());
+                Display.MenuTextTask.setText("Task: " + taskActionMine.size());
 
                 return true;
             }
         }
-        Display.MenuTextTask.setText("Task: " + taskAction.size());
+        Display.MenuTextTask.setText("Task: " + taskActionMine.size());
         return false;
     }
 
     // проверяет есть ли задание в списках
     public static boolean getFoundLocation(Location location) {
-        for (int i = 0; i < taskAction.size(); i++) {
-            if (taskAction.get(i).getLocation().getX() == location.getX() && taskAction.get(i).getLocation().getY() == location.getY()) {
+        for (int i = 0; i < taskActionMine.size(); i++) {
+            if (taskActionMine.get(i).getLocation().getX() == location.getX() && taskActionMine.get(i).getLocation().getY() == location.getY()) {
                 return true;
             }
         }
@@ -75,10 +82,10 @@ public abstract class TaskPlayers {
 
     // удали задание только из списка заданий
     public static void RemoveTask(Location location) {
-        for (int a = 0; a < taskAction.size(); a++) {
-            if (taskAction.get(a).getLocation().getX() == location.getX() && taskAction.get(a).getLocation().getY() == location.getY()) {
-                taskAction.remove(a);
-                Display.MenuTextTask.setText("Task: " + taskAction.size());
+        for (int a = 0; a < taskActionMine.size(); a++) {
+            if (taskActionMine.get(a).getLocation().getX() == location.getX() && taskActionMine.get(a).getLocation().getY() == location.getY()) {
+                taskActionMine.remove(a);
+                Display.MenuTextTask.setText("Task: " + taskActionMine.size());
             }
         }
     }
@@ -113,10 +120,10 @@ public abstract class TaskPlayers {
                     boolean AliveTide = false;
                     for (int x = 0; x < Map.getWightMap(); x++) {
                         for (int y = 0; y < Map.getHeightMap(); y++) {
-                            //System.out.println(taskAction.get(a).getLocation().getX()+" - "+x+" "+taskAction.get(a).getLocation().getY()+" - " + y + "  |"+mapWay[x][y] + " - " + inc);
-                            for (int i = 0; i < taskAction.size(); i++) {
-                                if(!taskAction.get(i).isTaken()) {
-                                    if (taskAction.size() > i && x == taskAction.get(i).getLocation().getX() && y == taskAction.get(i).getLocation().getY() && (ThreadMapWay[x][y] == (inc - 1) || ThreadMapWay[x][y] == inc)) {
+                            //System.out.println(taskActionMine.get(a).getLocation().getX()+" - "+x+" "+taskActionMine.get(a).getLocation().getY()+" - " + y + "  |"+mapWay[x][y] + " - " + inc);
+                            for (int i = 0; i < taskActionMine.size(); i++) {
+                                if(!taskActionMine.get(i).isTaken()) {
+                                    if (taskActionMine.size() > i && x == taskActionMine.get(i).getLocation().getX() && y == taskActionMine.get(i).getLocation().getY() && (ThreadMapWay[x][y] == (inc - 1) || ThreadMapWay[x][y] == inc)) {
                                         FindRout = true;
                                         numGetTask = i;
                                         break exitWhile;
@@ -154,10 +161,10 @@ public abstract class TaskPlayers {
 
                 }
                 if (FindRout) {
-                    if (numGetTask < taskAction.size() && numGetTask != -1 && !taskAction.get(numGetTask).isTaken()) {
-                        if (taskAction.get(numGetTask).getLocation().getX() != -1 && taskAction.get(numGetTask).getLocation().getY() != -1) {
-                            Units.setHeroesTask(taskAction.get(numGetTask).getLocation(), taskAction.get(numGetTask).getAction(), heroId);
-                            taskAction.get(numGetTask).setTaken(true);
+                    if (numGetTask < taskActionMine.size() && numGetTask != -1 && !taskActionMine.get(numGetTask).isTaken()) {
+                        if (taskActionMine.get(numGetTask).getLocation().getX() != -1 && taskActionMine.get(numGetTask).getLocation().getY() != -1) {
+                            Units.setHeroesTask(taskActionMine.get(numGetTask).getLocation(), taskActionMine.get(numGetTask).getAction(), heroId);
+                            taskActionMine.get(numGetTask).setTaken(true);
                         }
 
                     }
@@ -177,16 +184,16 @@ public abstract class TaskPlayers {
     }
 
     public static void render() {
-        for (int i = 0; i < taskAction.size(); i++) {
-            if (!taskAction.get(i).isTaken()) {
+        for (int i = 0; i < taskActionMine.size(); i++) {
+            if (!taskActionMine.get(i).isTaken()) {
                 Engine.graphics2D.setColor(new Color(0xAC5800));
             } else {
                 Engine.graphics2D.setColor(new Color(0x00A8BB));
-                Engine.graphics2D.fillRect(taskAction.get(i).getLocation().getX() * Map.getScale() + Map.getIndentX() + 2, taskAction.get(i).getLocation().getY() * Map.getScale() + Map.getIndentY() + 2,
+                Engine.graphics2D.fillRect(taskActionMine.get(i).getLocation().getX() * Map.getScale() + Map.getIndentX() + 2, taskActionMine.get(i).getLocation().getY() * Map.getScale() + Map.getIndentY() + 2,
                         Map.getScale() - 5, Map.getScale() - 5);
                 Engine.graphics2D.setColor(new Color(0xAF0063));
             }
-            Engine.graphics2D.drawRect(taskAction.get(i).getLocation().getX() * Map.getScale() + Map.getIndentX() + 2, taskAction.get(i).getLocation().getY() * Map.getScale() + Map.getIndentY() + 2,
+            Engine.graphics2D.drawRect(taskActionMine.get(i).getLocation().getX() * Map.getScale() + Map.getIndentX() + 2, taskActionMine.get(i).getLocation().getY() * Map.getScale() + Map.getIndentY() + 2,
                     Map.getScale() - 5, Map.getScale() - 5);
 
         }

@@ -9,7 +9,6 @@ import ru.mpts.sprite.Sprite;
 import ru.mpts.units.TaskPlayers;
 import ru.mpts.units.TaskType;
 import ru.mpts.units.Units;
-import ru.mpts.map.Object;
 
 import java.awt.*;
 
@@ -72,9 +71,9 @@ public class HandlingMouseEvent {
             Display.MenuTextInformationHero.setText(srt);
         } else {
             String str = "<html>";
-            for (int i = 0; i < TaskPlayers.taskAction.size(); i++) {
-                str += "Location: " + TaskPlayers.taskAction.get(i).getLocation().getX() + " " + TaskPlayers.taskAction.get(i).getLocation().getY()
-                        + " Action:" + TaskPlayers.taskAction.get(i).getAction() + "<br>";
+            for (int i = 0; i < TaskPlayers.taskActionMine.size(); i++) {
+                str += "Location: " + TaskPlayers.taskActionMine.get(i).getLocation().getX() + " " + TaskPlayers.taskActionMine.get(i).getLocation().getY()
+                        + " Action:" + TaskPlayers.taskActionMine.get(i).getAction() + "<br>";
             }
             str += "/html";
             Display.MenuTextInformationHero.setText(str);
@@ -154,21 +153,10 @@ public class HandlingMouseEvent {
                     }
                 } else if (mouseStage == MouseTypeAction.CANCEL) {
                     TaskPlayers.RemoveTaskFormListAndHeroes(new Location(x, y, 0));
-                }
-                /*else if(mouseStage == MouseTypeAction.MOUSE){
-                    if(((maxX-minX)+(maxY-minY)) == 1){
-                        System.out.println("==1");
-                        if(Units.getHero(new Location(x,y,0)) != null){
+                } else if(mouseStage == MouseTypeAction.BUILD){
 
-                            try {
-                                followTheHeroID = Units.getHero(new Location(x,y,0)).getId();
-                                System.out.println(followTheHeroID);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }*/
+                }
+
             }
         }
     }

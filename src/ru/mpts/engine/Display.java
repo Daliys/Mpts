@@ -32,6 +32,7 @@ public class Display {
 
     public static JButton MenuButtonMine;
     public static JButton MenuButtonCancel;
+    public static JButton MenuButtonBuild;
 
 
     public static void CreateBuffer(int _color, int numBuffer) {
@@ -115,6 +116,12 @@ public class Display {
         MenuButtonCancel.setActionCommand(MouseTypeAction.CANCEL);
         MenuButtonCancel.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
 
+        MenuButtonBuild = new JButton("Build");
+        MenuButtonCancel.setPreferredSize(MenuSizeButtonMine);
+        MenuButtonCancel.setActionCommand(MouseTypeAction.BUILD);
+        MenuButtonCancel.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
+
+
 
         //панель информации
         panelMenuInformation.add(MenutextLabel);
@@ -126,6 +133,7 @@ public class Display {
         // панель кнопак
         panelMenuAction.add(MenuButtonMine);
         panelMenuAction.add(MenuButtonCancel);
+        panelMenuAction.add(MenuButtonBuild);
 
 
         // панель меню с кнопками и информацией
