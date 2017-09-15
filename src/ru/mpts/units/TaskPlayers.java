@@ -73,7 +73,7 @@ public abstract class TaskPlayers {
     // проверяет есть ли задание в списках
     public static boolean getFoundLocation(Location location) {
         for (int i = 0; i < taskActionMine.size(); i++) {
-            if (taskActionMine.get(i).getLocation().getX() == location.getX() && taskActionMine.get(i).getLocation().getY() == location.getY()) {
+            if (taskActionMine.get(i).getLocation().getX() == location.getX() && taskActionMine.get(i).getLocation().getY() == location.getY() && !taskActionMine.get(i).isTaken()) {
                 return true;
             }
         }
@@ -132,19 +132,19 @@ public abstract class TaskPlayers {
                             }
                             if (ThreadMapWay[x][y] == inc) {
 
-                                if ((x + 1) < Map.getWightMap() && (Map.getObject(new Location(x + 1, y, 0)).getType() == MapObjectType.AIR || (getFoundLocation(new Location((x + 1),y,0)))) && ThreadMapWay[x + 1][y] == 0) {
+                                if ((x + 1) < Map.getWightMap() && (Map.isPassableBlock(new Location(x + 1, y, 0)) || (getFoundLocation(new Location((x + 1),y,0)))) && ThreadMapWay[x + 1][y] == 0) {
                                     ThreadMapWay[x + 1][y] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((x - 1) >= 0 && (Map.getObject(new Location(x - 1, y, 0)).getType() == MapObjectType.AIR || (getFoundLocation(new Location((x - 1),y,0)))) && ThreadMapWay[x - 1][y] == 0) {
+                                if ((x - 1) >= 0 && (Map.isPassableBlock(new Location(x - 1, y, 0)) || (getFoundLocation(new Location((x - 1),y,0)))) && ThreadMapWay[x - 1][y] == 0) {
                                     ThreadMapWay[x - 1][y] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((y + 1) < Map.getHeightMap() && (Map.getObject(new Location(x, y + 1, 0)).getType() == MapObjectType.AIR || (getFoundLocation(new Location(x, (y + 1),0)))) && ThreadMapWay[x][y + 1] == 0) {
+                                if ((y + 1) < Map.getHeightMap() && (Map.isPassableBlock(new Location(x, y + 1, 0)) || (getFoundLocation(new Location(x, (y + 1),0)))) && ThreadMapWay[x][y + 1] == 0) {
                                     ThreadMapWay[x][y + 1] = (inc + 1);
                                     AliveTide = true;
                                 }
-                                if ((y - 1) >= 0 && (Map.getObject(new Location(x, y - 1, 0)).getType() == MapObjectType.AIR || (getFoundLocation(new Location(x, (y - 1),0)))) && ThreadMapWay[x][y - 1] == 0) {
+                                if ((y - 1) >= 0 && (Map.isPassableBlock(new Location(x, y - 1, 0)) || (getFoundLocation(new Location(x, (y - 1),0)))) && ThreadMapWay[x][y - 1] == 0) {
                                     ThreadMapWay[x][y - 1] = (inc + 1);
                                     AliveTide = true;
                                 }

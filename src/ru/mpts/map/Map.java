@@ -4,7 +4,6 @@ import ru.mpts.engine.Display;
 import ru.mpts.engine.Engine;
 
 import java.awt.*;
-import java.util.Random;
 
 public class Map {
     private static int WightMap = 32;
@@ -12,13 +11,15 @@ public class Map {
     private static int IndentX = 0;
     private static int IndentY = 0;
     private static int scale;
-    private static Object[][] mapObjects;
-    private static Object[][] mapGrounds;
+    private static Object[][] mapObjects; // находятся все блоки и герой
+    private static Object[][] mapGrounds;   // отоброжения земли (пола)
+    private static Object[][] mapDropObject;      // ноходятся все упавший блоки, добытые рессурсы
     private static Graphics2D graphics;
 
     public Map() {
         mapObjects = new Object[WightMap][HeightMap];
         mapGrounds = new Object[WightMap][HeightMap];
+        mapDropObject = new Object[WightMap][HeightMap];
 
         setScale();
         InitializationMap();
@@ -28,6 +29,10 @@ public class Map {
     public static void setObject(Location location, int objectType) {
         mapObjects[location.getX()][location.getY()] = new Object(location, objectType);
         mapObjects[location.getX()][location.getY()].draw();
+    }
+    public static void setMapDropObject(Location location, int objectType){
+        mapDropObject[location.getX()][location.getY()] = new Object(location, objectType);
+        mapDropObject[location.getX()][location.getY()].draw();
     }
 
     public static void setGround(Location location, int groundType) {
@@ -45,6 +50,14 @@ public class Map {
     public static Object getObject(int x, int y) {
         Location location = new Location(x, y, 0);
         return getObject(location);
+    }
+
+    // проверяет можно ли пройти герою по этому блоку
+    public static boolean isPassableBlock(Location location){
+        if(Map.getObject(location).getType() == MapObjectType.AIR){
+            return true;
+        }
+        return false;
     }
 
     public static Object getGround(Location location) {
@@ -203,6 +216,7 @@ public class Map {
             for (int y = 0; y < WightMap; y++) {
                 setGround(new Location(x, y, 0), MapGroundType.GRASS);
                 setObject(new Location(x, y, 0), MapObjectType.AIR);
+                setMapDropObject(new Location(x,y,0), MapDropObjectType.NULL);
             }
         }
 
@@ -230,6 +244,7 @@ public class Map {
         for (int x = 0; x < WightMap; x++) {
             for (int y = 0; y < HeightMap; y++) {
                 mapGrounds[x][y].getSprite().draw();
+                mapDropObject[x][y].getSprite().draw();
                 if (mapObjects[x][y].getType() != MapObjectType.AIR) {
                     mapObjects[x][y].draw();
                 }

@@ -23,8 +23,8 @@ public class MouseAction extends Applet implements MouseListener, MouseMotionLis
     }
 
     public static void setMouseStage(String stage) {
-        handlingMouseEvent.setMouseStage(stage);
         Display.MenuTextStageMouse.setText(stage);
+        handlingMouseEvent.setMouseStage(stage);
     }
 
     public static String getMouseStage() {

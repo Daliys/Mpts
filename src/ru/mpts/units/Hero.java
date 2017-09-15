@@ -5,6 +5,7 @@ import ru.mpts.engine.Engine;
 import ru.mpts.inventory.Inventory;
 import ru.mpts.map.Location;
 import ru.mpts.map.Map;
+import ru.mpts.map.MapDropObjectType;
 import ru.mpts.map.MapObjectType;
 import ru.mpts.timers.Timer;
 
@@ -25,6 +26,7 @@ public class Hero {
     private Inventory inventory;
     private Graphics2D graphics;
     private Timer timerHero;
+    private int chanseOfLossStone = 20;     // какой шанс выпадения осколка камня в % (перенести в отдельный класс)
 
     public Hero(int id, Location InitHeroLocation, Inventory inventory, float speedMove, int healthPoints) {
         this.heroLocation = InitHeroLocation;
@@ -99,6 +101,15 @@ public class Hero {
     private void MineResource() {
         if (Map.getObject(taskLocation).getDurability() <= 0) {
             Map.setObject(taskLocation, MapObjectType.AIR);
+
+            // учитывания шанса ранжома выпадения
+            Random random = new Random();
+            int rand = random.nextInt((int)(100/chanseOfLossStone));
+
+            if(rand == 0){
+                Map.setMapDropObject(taskLocation, MapDropObjectType.SPLINTTER_STONE    );
+            }
+
             System.out.println("Hero ID:"+id+"  excavated: "+taskLocation.getX()+" "+taskLocation.getY());
 
             TaskPlayers.RemoveTaskFormListAndHeroes(taskLocation);
@@ -147,19 +158,19 @@ public class Hero {
                                 break exitWhile;
                             } else if (mapWay[x][y] == increment) {
 
-                                if (((x - 1) >= 0) && (CheckFreeMap(new Location((x - 1), y, 0)) || CheckTaskCell(new Location((x - 1), y, 0))) && mapWay[(x - 1)][y] == 0) {
+                                if (((x - 1) >= 0) && (Map.isPassableBlock(new Location((x - 1), y, 0)) || CheckTaskCell(new Location((x - 1), y, 0))) && mapWay[(x - 1)][y] == 0) {
                                     mapWay[x - 1][y] = (increment + 1);
                                     AliveTide = true;
                                 }
-                                if (((x + 1) < Map.getWightMap()) && (CheckFreeMap(new Location((x + 1), y, 0)) || CheckTaskCell(new Location((x + 1), y, 0))) && mapWay[(x + 1)][y] == 0) {
+                                if (((x + 1) < Map.getWightMap()) && (Map.isPassableBlock(new Location((x + 1), y, 0)) || CheckTaskCell(new Location((x + 1), y, 0))) && mapWay[(x + 1)][y] == 0) {
                                     mapWay[x + 1][y] = (increment + 1);
                                     AliveTide = true;
                                 }
-                                if (((y - 1) >= 0) && (CheckFreeMap(new Location(x, (y - 1), 0)) || CheckTaskCell(new Location(x, (y - 1), 0))) && mapWay[x][(y - 1)] == 0) {
+                                if (((y - 1) >= 0) && (Map.isPassableBlock(new Location(x, (y - 1), 0)) || CheckTaskCell(new Location(x, (y - 1), 0))) && mapWay[x][(y - 1)] == 0) {
                                     mapWay[x][y - 1] = (increment + 1);
                                     AliveTide = true;
                                 }
-                                if (((y + 1) < Map.getHeightMap()) && (CheckFreeMap(new Location(x, (y + 1), 0)) || CheckTaskCell(new Location(x, (y + 1), 0))) && mapWay[x][(y + 1)] == 0) {
+                                if (((y + 1) < Map.getHeightMap()) && (Map.isPassableBlock(new Location(x, (y + 1), 0)) || CheckTaskCell(new Location(x, (y + 1), 0))) && mapWay[x][(y + 1)] == 0) {
                                     mapWay[x][y + 1] = (increment + 1);
                                     AliveTide = true;
                                 }
@@ -253,14 +264,6 @@ public class Hero {
                 }
             }
 
-            private boolean CheckFreeMap(Location location) {
-                if (Map.getObject(location).getType() == MapObjectType.AIR) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
             private boolean CheckTaskCell(Location location) {
                 if (taskLocation.getX() == location.getX() && taskLocation.getY() == location.getY()) {
                     return true;
@@ -289,7 +292,7 @@ public class Hero {
 
             if ((nowCellWay.getX() + 1) < Map.getWightMap() && mapWay[(nowCellWay.getX() + 1)][nowCellWay.getY()] == -10
                     && !(lastCellWay.getX() == (nowCellWay.getX() + 1) && lastCellWay.getY() == (nowCellWay.getY()))) {    //  право
-                if (Map.getObject(new Location((nowCellWay.getX() + 1), (nowCellWay.getY()), 0)).getType() == MapObjectType.AIR
+                if (Map.isPassableBlock(new Location((nowCellWay.getX() + 1), (nowCellWay.getY()), 0))
                         || (taskLocation.getX() == (nowCellWay.getX() + 1) && taskLocation.getY() == (nowCellWay.getY()))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
@@ -298,7 +301,7 @@ public class Hero {
                 }
             } else if ((nowCellWay.getX() - 1) >= 0 && mapWay[(nowCellWay.getX() - 1)][nowCellWay.getY()] == -10
                     && !(lastCellWay.getX() == (nowCellWay.getX() - 1) && lastCellWay.getY() == (nowCellWay.getY()))) {     // лево
-                if (Map.getObject(new Location((nowCellWay.getX() - 1), (nowCellWay.getY()), 0)).getType() == MapObjectType.AIR
+                if (Map.isPassableBlock(new Location((nowCellWay.getX() - 1), (nowCellWay.getY()), 0))
                         || (taskLocation.getX() == (nowCellWay.getX() - 1) && taskLocation.getY() == (nowCellWay.getY()))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
@@ -307,7 +310,7 @@ public class Hero {
                 }
             } else if ((nowCellWay.getY() + 1) < Map.getHeightMap() && mapWay[nowCellWay.getX()][(nowCellWay.getY() + 1)] == -10
                     && !(lastCellWay.getX() == nowCellWay.getX() && lastCellWay.getY() == (nowCellWay.getY() + 1))) {  //низ
-                if (Map.getObject(new Location((nowCellWay.getX()), (nowCellWay.getY() + 1), 0)).getType() == MapObjectType.AIR
+                if (Map.isPassableBlock(new Location((nowCellWay.getX()), (nowCellWay.getY() + 1), 0))
                         || (taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY() + 1))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
@@ -317,7 +320,7 @@ public class Hero {
             } else if ((nowCellWay.getY() - 1) >= 0 && mapWay[nowCellWay.getX()][(nowCellWay.getY() - 1)] == -10
                     && !(lastCellWay.getX() == (nowCellWay.getX()) && lastCellWay.getY() == (nowCellWay.getY() - 1))) {         // верх
                 //System.out.println("pred");
-                if (Map.getObject(new Location((nowCellWay.getX()), (nowCellWay.getY() - 1), 0)).getType() == MapObjectType.AIR
+                if (Map.isPassableBlock(new Location((nowCellWay.getX()), (nowCellWay.getY() - 1), 0))
                         || (taskLocation.getX() == (nowCellWay.getX()) && taskLocation.getY() == (nowCellWay.getY() - 1))) {
                     //System.out.println("VERX");
                     freeCell = true;
@@ -329,7 +332,7 @@ public class Hero {
                     && mapWay[(nowCellWay.getX() + 1)][(nowCellWay.getY() - 1)] == -10
                     && !(lastCellWay.getX() == (nowCellWay.getX() + 1) && lastCellWay.getY() == (nowCellWay.getY() - 1))) {
 
-                if (Map.getObject(new Location((nowCellWay.getX() + 1), (nowCellWay.getY() - 1), 0)).getType() == MapObjectType.AIR
+                if (Map.isPassableBlock(new Location((nowCellWay.getX() + 1), (nowCellWay.getY() - 1), 0))
                         || (taskLocation.getX() == (nowCellWay.getX() + 1) && taskLocation.getY() == (nowCellWay.getY() - 1))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
@@ -342,7 +345,7 @@ public class Hero {
                     && mapWay[(nowCellWay.getX() - 1)][(nowCellWay.getY() - 1)] == -10
                     && !(lastCellWay.getX() == (nowCellWay.getX() - 1) && lastCellWay.getY() == (nowCellWay.getY() - 1))) {
 
-                if (Map.getObject(new Location((nowCellWay.getX() - 1), (nowCellWay.getY() - 1), 0)).getType() == MapObjectType.AIR
+                if (Map.isPassableBlock(new Location((nowCellWay.getX() - 1), (nowCellWay.getY() - 1), 0))
                         || (taskLocation.getX() == (nowCellWay.getX() - 1) && taskLocation.getY() == (nowCellWay.getY() - 1))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
@@ -354,7 +357,7 @@ public class Hero {
                     && mapWay[(nowCellWay.getX() + 1)][(nowCellWay.getY() + 1)] == -10
                     && !(lastCellWay.getX() == (nowCellWay.getX() + 1) && lastCellWay.getY() == (nowCellWay.getY() + 1))) {
 
-                if (Map.getObject(new Location((nowCellWay.getX() + 1), (nowCellWay.getY() + 1), 0)).getType() == MapObjectType.AIR
+                if (Map.isPassableBlock(new Location((nowCellWay.getX() + 1), (nowCellWay.getY() + 1), 0))
                         || (taskLocation.getX() == (nowCellWay.getX() + 1) && taskLocation.getY() == (nowCellWay.getY() + 1))) {
                     freeCell = true;
                     lastCellWay.setY(nowCellWay.getY());
@@ -365,7 +368,7 @@ public class Hero {
             } else if ((nowCellWay.getX() - 1) >= 0 && (nowCellWay.getY() + 1) < Map.getHeightMap()         // лево низ
                     && mapWay[(nowCellWay.getX() - 1)][(nowCellWay.getY() + 1)] == -10
                     && !(lastCellWay.getX() == (nowCellWay.getX() - 1) && lastCellWay.getY() == (nowCellWay.getY() + 1))) {
-                if (Map.getObject(new Location((nowCellWay.getX() - 1), (nowCellWay.getY() + 1), 0)).getType() == MapObjectType.AIR
+                if (Map.isPassableBlock(new Location((nowCellWay.getX() - 1), (nowCellWay.getY() + 1), 0))
                         || (taskLocation.getX() == (nowCellWay.getX() - 1) && taskLocation.getY() == (nowCellWay.getY() + 1))) {
                     freeCell = true;
                     nowCellWay.setX((nowCellWay.getX() - 1));

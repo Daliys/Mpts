@@ -53,6 +53,14 @@ public class Object {
                 sprite = new Sprite(paths, counts, location);
                 break;
             }
+            case MapDropObjectType.SPLINTTER_STONE:{
+                sprite = new Sprite("splinterStone.png",location);
+                break;
+            }
+            case MapDropObjectType.NULL:{
+                sprite = new Sprite("air.png",location);
+                break;
+            }
             default: {
                 sprite = new Sprite("default.png", location);
                 break;
@@ -135,6 +143,8 @@ public class Object {
             case MapObjectType.AIR: {
                 break;
             }
+            case MapDropObjectType.NULL:
+                break;
             default: {
                 sprite.draw();
                 break;

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 public class MenuActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getActionCommand() == MouseTypeAction.MINE) {
             if (MouseAction.getMouseStage() == MouseTypeAction.MINE) {
                 System.out.println(MouseTypeAction.MOUSE);
@@ -24,6 +25,7 @@ public class MenuActionListener implements ActionListener {
                 MouseAction.setMouseStage(MouseTypeAction.CANCEL);
             }
         }
+
         if (e.getActionCommand() == MouseTypeAction.BUILD) {
             if (MouseAction.getMouseStage() == MouseTypeAction.BUILD) {
                 System.out.println(MouseTypeAction.MOUSE);

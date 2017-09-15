@@ -13,8 +13,10 @@ import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 
 public class Display {
-    public static int WIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-    public static int HIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    //public static int WIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+   // public static int HIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    public static int WIGHT = (int)800; // тестровые значения
+    public static int HIGHT = (int)800; // тестровые значения
     public static JFrame frame;
     private static BufferedImage buffer;
     private static int[] bufferData;
@@ -106,6 +108,9 @@ public class Display {
 
         JPanel panelMenuAction = new JPanel();
         Dimension MenuSizeButtonMine = new Dimension(75, 25);
+
+
+
         MenuButtonMine = new JButton("Mine");
         MenuButtonMine.setPreferredSize(MenuSizeButtonMine);
         MenuButtonMine.setActionCommand(MouseTypeAction.MINE);
@@ -117,9 +122,9 @@ public class Display {
         MenuButtonCancel.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
 
         MenuButtonBuild = new JButton("Build");
-        MenuButtonCancel.setPreferredSize(MenuSizeButtonMine);
-        MenuButtonCancel.setActionCommand(MouseTypeAction.BUILD);
-        MenuButtonCancel.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
+        MenuButtonBuild.setPreferredSize(MenuSizeButtonMine);
+        MenuButtonBuild.setActionCommand(MouseTypeAction.BUILD);
+        MenuButtonBuild.addActionListener(new MenuActionListener());     // cлушатель кнопкпи
 
 
 
